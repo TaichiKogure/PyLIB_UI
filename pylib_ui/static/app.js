@@ -170,7 +170,8 @@ function renderChart() {
     yMin -= margin;
     yMax += margin;
     xMax = xMax || 1;
-    const width = 800, height = 310, left = 65, right = 24, top = 30, bottom = 44;
+    const width = Math.max(260, $("chart").clientWidth), height = $("chart").clientHeight, left = 52, right = 16,
+        top = 30, bottom = 44;
     const px = (x) => left + x / xMax * (width - left - right);
     const py = (y) => height - bottom - (y - yMin) / (yMax - yMin) * (height - top - bottom);
     const svg = svgElement("svg", {
@@ -237,7 +238,7 @@ function renderChart() {
             "stroke-width": 2
         }));
         const entry = element("span"), swatch = element("i", undefined, `series-${index}`);
-        entry.append(swatch, document.createTextNode(`${run.name} / ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · 合成${state.current?.id === run.id ? "（表示中）" : ""}`));
+        entry.append(swatch, document.createTextNode(`${run.name} / ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · 合成${state.current?.id === run.id ? "（表示中）" : ""}`));
         legend.push(entry);
     });
     $("chart").replaceChildren(svg);
@@ -430,4 +431,5 @@ async function init() {
     }
 }
 
+window.addEventListener("resize", renderChart);
 init();
