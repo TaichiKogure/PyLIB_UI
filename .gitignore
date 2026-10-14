@@ -7362,3 +7362,16 @@ tags
 result
 result-*
 
+# PyLIB source (the upstream template above ignores root directories).
+!/pylib_ui/
+!/pylib_ui/**
+!/tests/
+!/tests/**
+!/docs/
+!/docs/**
+!/start.ps1
+/data/
+/.test_tmp/
+**/__pycache__/
+*.py[cod]
+

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <title>PyLIB — セルシミュレーション</title>
+    <link href="/style.css" rel="stylesheet">
+    <script defer src="/app.js"></script>
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/"><span class="brand-icon">ϟ</span> PyLIB <span class="brand-sub">WORKBENCH</span></a>
+    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.1</span></span>
+</header>
+<main>
+    <div class="heading">
+        <div><p class="eyebrow">CYLINDRICAL CELL / SIMULATION</p>
+            <h1>セルの挙動を、ひと目で。</h1>
+            <p class="intro">条件を変えて、充放電カーブを比較する。小さな実験から始めるLIBワークベンチ。</p></div>
+        <span class="pill">合成モデル · 未校正</span></div>
+    <div class="steps">
+        <span><b>01</b> セルを設定</span><i>→</i><span><b>02</b> 試験条件を入力</span><i>→</i><span><b>03</b> 計算・カーブ確認</span><i>→</i><span><b>04</b> 保存して比較</span>
+    </div>
+    <div aria-live="polite" class="message" id="message" role="status">起動しています…</div>
+    <div class="workspace">
+        <aside class="panel settings">
+            <form id="simulation-form">
+                <div class="section-title"><h2><span>01</span> セル設定</h2>
+                    <button class="text-button" id="reset" type="button">初期値に戻す</button>
+                </div>
+                <div class="cell-preview">
+                    <svg aria-label="円筒セルの模式図" role="img" viewBox="0 0 130 150">
+                        <defs>
+                            <linearGradient id="cell-fill">
+                                <stop stop-color="#bbdccc"/>
+                                <stop offset=".5" stop-color="#e3f4ec"/>
+                                <stop offset="1" stop-color="#9fcbb8"/>
+                            </linearGradient>
+                        </defs>
+                        <rect fill="url(#cell-fill)" height="99" width="64" x="32" y="26"/>
+                        <ellipse cx="64" cy="125" fill="#8fbfaa" rx="32" ry="12"/>
+                        <ellipse cx="64" cy="26" fill="#d4ebe0" rx="32" ry="12"/>
+                        <ellipse cx="64" cy="26" fill="#648b79" rx="20" ry="7"/>
+                        <ellipse cx="64" cy="24" fill="#edf6f1" rx="11" ry="4"/>
+                        <path d="M61 61h12l-10 15h10L56 99l5-18H51z" fill="#3d7158"/>
+                    </svg>
+                    <div><strong id="cell-title">21700</strong><span
+                            id="cell-size">Ø21 × 70 mm</span><small>寸法は放熱面積に反映</small></div>
+                </div>
+                <div class="fields two">
+                    <label>セル形式<select name="cell_format">
+                        <option value="21700">21700</option>
+                        <option value="18650">18650</option>
+                    </select></label>
+                    <label>正極系の模式曲線<select name="chemistry">
+                        <option value="NMC">NMC（NCXの一例）</option>
+                        <option value="LFP">LFP</option>
+                    </select></label>
+                </div>
+                <label>基準容量 <span class="unit">Ah</span><input max="100" min="0.1" name="capacity_ah" required
+                                                                   step="0.1" type="number"></label>
+                <p class="field-note">Cレートの基準。寸法から容量は自動算定しません。</p>
+                <div class="fields two"><label>外径 <span class="unit">mm</span><input max="50" min="10"
+                                                                                       name="diameter_mm" required
+                                                                                       step="0.1"
+                                                                                       type="number"></label><label>全高
+                    <span class="unit">mm</span><input max="150" min="20" name="height_mm" required step="0.1"
+                                                       type="number"></label></div>
+                <hr>
+                <div class="section-title"><h2><span>02</span> 試験条件</h2></div>
+                <label>計算名<input maxlength="100" name="name" required></label>
+                <div class="fields two"><label>試験モード<select name="mode">
+                    <option value="discharge">定電流放電</option>
+                    <option value="charge">定電流充電</option>
+                    <option value="rest">休止（0 A）</option>
+                </select></label><label>Cレート <span class="unit">C</span><input max="5" min="0.01" name="c_rate"
+                                                                                  required step="0.01"
+                                                                                  type="number"></label>
+                </div>
+                <p class="field-note" id="current-preview">電流：5.00 A</p>
+                <label>初期SOC
+                    <output id="soc-output">95%</output>
+                    <input aria-label="初期SOC" max="1" min="0" name="initial_soc" step="0.01" type="range"></label>
+                <div class="fields two"><label>試験時間 <span class="unit">min</span><input max="360"
+                                                                                            min="0.1"
+                                                                                            name="duration_min"
+                                                                                            required step="0.1"
+                                                                                            type="number"></label><label>周囲温度
+                    <span class="unit">°C</span><input max="60" min="-20" name="ambient_temp_c" required step="0.1"
+                                                       type="number"></label></div>
+                <details>
+                    <summary>モデル・詳細条件 <span>＋</span></summary>
+                    <label>計算モデル<select name="model">
+                        <option value="ecm_1rc">等価回路 1RC ＋ 集中熱</option>
+                    </select></label>
+                    <div class="fields two">
+                        <label>初期温度 <span class="unit">°C</span><input max="60" min="-20" name="initial_temp_c"
+                                                                           required step="0.1" type="number"></label>
+                        <label>出力間隔 <span class="unit">s</span><input max="60" min="1" name="dt_s" required
+                                                                          step="1" type="number"></label>
+                        <label>直列抵抗 R₀ <span class="unit">mΩ</span><input max="500" min="0" name="r0_mohm"
+                                                                              required step="0.1" type="number"></label>
+                        <label>分極抵抗 R₁ <span class="unit">mΩ</span><input max="500" min="0" name="r1_mohm"
+                                                                              required step="0.1" type="number"></label>
+                        <label>RC時定数 <span class="unit">s</span><input max="3600" min="1" name="tau_s" required
+                                                                          step="1" type="number"></label>
+                        <label>熱容量 <span class="unit">J/K</span><input max="1000" min="1"
+                                                                          name="thermal_capacity_j_k" required step="1"
+                                                                          type="number"></label>
+                        <label>熱伝達率 <span class="unit">W/(m²·K)</span><input max="1000"
+                                                                                 min="0" name="heat_transfer_w_m2_k"
+                                                                                 required
+                                                                                 step="0.1" type="number"></label>
+                        <label>下限電圧 <span class="unit">V</span><input max="4.5" min="1.5" name="min_voltage_v"
+                                                                          required step="0.01" type="number"></label>
+                        <label>上限電圧 <span class="unit">V</span><input max="4.5" min="1.5" name="max_voltage_v"
+                                                                          required step="0.01" type="number"></label>
+                    </div>
+                    <p class="field-note">単一ステップのCC／休止。初期分極は0 V。電圧・SOC・時間で終了します。</p>
+                </details>
+                <button class="primary" disabled id="run" type="submit">▶ シミュレーションを実行</button>
+                <p class="field-note centered">入力の変更だけでは計算・保存しません。</p>
+            </form>
+        </aside>
+        <section class="results">
+            <div class="panel result-panel">
+                <div class="result-top">
+                    <div><p class="eyebrow">SIMULATION RESULT</p>
+                        <h2 id="result-title">カーブを見てみましょう</h2></div>
+                    <span class="pill muted" id="result-state">未実行</span></div>
+                <p class="result-meta" id="result-meta">左の条件を設定して「シミュレーションを実行」を押してください。</p>
+                <div class="metrics">
+                    <div><span>通過容量</span><strong id="metric-capacity">—</strong><small>Ah ·
+                        電流絶対値の積算</small></div>
+                    <div><span>端子エネルギー</span><strong id="metric-energy">—</strong><small>Wh · 放電＋／充電−</small>
+                    </div>
+                    <div><span>最高温度</span><strong id="metric-temp">—</strong><small>°C · セル平均</small></div>
+                    <div><span>最終SOC</span><strong id="metric-soc">—</strong><small>% · 推定状態</small></div>
+                </div>
+                <div class="chart-toolbar">
+                    <div aria-label="表示する変数" class="tabs" role="group">
+                        <button aria-pressed="true" data-chart="voltage_v" type="button">電圧</button>
+                        <button aria-pressed="false" data-chart="soc" type="button">SOC</button>
+                        <button aria-pressed="false" data-chart="temperature_c" type="button">温度</button>
+                        <button aria-pressed="false" data-chart="current_a" type="button">電流</button>
+                    </div>
+                    <label class="axis-select">横軸<select aria-label="グラフの横軸" id="x-axis">
+                        <option value="time_s">時間 (min)</option>
+                        <option value="capacity_ah">通過容量 (Ah)</option>
+                    </select></label></div>
+                <div class="chart" id="chart">
+                    <div class="chart-empty"><span>⌁</span><strong>あなたの最初のカーブを、ここに。</strong>
+                        <p>電圧・SOC・温度・電流を切り替えて確認できます。</p></div>
+                </div>
+                <div class="legend" id="legend"></div>
+                <div class="result-actions">
+                    <button disabled id="save" type="button">＋ 結果を保存</button>
+                    <button disabled id="csv" type="button">CSV出力 ↓</button>
+                    <button disabled id="json" type="button">条件付きJSON ↓</button>
+                    <button class="text-button" disabled id="restore" type="button">この結果の条件を復元</button>
+                </div>
+                <details id="snapshot-details">
+                    <summary>計算に使用した入力・モデルの範囲 <span>＋</span></summary>
+                    <div id="snapshot">計算後に条件と制約が表示されます。</div>
+                </details>
+            </div>
+            <div class="panel library">
+                <div class="section-title">
+                    <div><p class="eyebrow">SAVED CURVES</p>
+                        <h2>保存したカーブを比較</h2></div>
+                    <button class="text-button" id="refresh" type="button">更新 ↻</button>
+                </div>
+                <p class="field-note">チェックで最大3件を重ね合わせ。現在の結果を含めて最大4本表示します。</p>
+                <div id="history"><p class="empty-history">
+                    まだ保存した結果はありません。計算後に「結果を保存」で追加できます。</p></div>
+            </div>
+            <div class="model-note"><span class="note-icon">i</span>
+                <div><strong>まずは、軽量なモデルで条件の違いを観察。</strong>
+                    <p>
+                        合成・未校正の等価回路モデルです。寸法は放熱面積に反映。全面集電の局所分布・析出・膨張・応力は未計算です。実測との照合やSPMe／DFNへの拡張は次の段階です。</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>PyLIB WORKBENCH <span>等価回路 1RC · 集中熱 · 合成データ</span></footer>
+</main>
+</body>
+</html>
