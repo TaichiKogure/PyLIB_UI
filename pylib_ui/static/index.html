@@ -6,11 +6,12 @@
     <title>PyLIB — セルシミュレーション</title>
     <link href="/style.css" rel="stylesheet">
     <script defer src="/app.js"></script>
+    <script defer src="/library.js"></script>
 </head>
 <body>
 <header class="topbar">
     <a class="brand" href="/"><span class="brand-icon">ϟ</span> PyLIB <span class="brand-sub">WORKBENCH</span></a>
-    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.1</span></span>
+    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.2</span></span>
 </header>
 <main>
     <div class="heading">
@@ -22,6 +23,12 @@
         <span><b>01</b> セルを設定</span><i>→</i><span><b>02</b> 試験条件を入力</span><i>→</i><span><b>03</b> 計算・カーブ確認</span><i>→</i><span><b>04</b> 保存して比較</span>
     </div>
     <div aria-live="polite" class="message" id="message" role="status">起動しています…</div>
+    <div class="project-bar panel">
+        <label>プロジェクト<select id="project"></select></label>
+        <label>新しいプロジェクト名<input id="project-name" maxlength="100" placeholder="例：基準セルの比較"></label>
+        <button id="create-project" type="button">作成</button>
+        <a href="#import-panel">実測・表データを取り込む ↓</a>
+    </div>
     <div class="workspace">
         <aside class="panel settings">
             <form id="simulation-form">
@@ -125,7 +132,7 @@
         <section class="results">
             <div class="panel result-panel">
                 <div class="result-top">
-                    <div><p class="eyebrow">SIMULATION RESULT</p>
+                    <div><p class="eyebrow">CURVE VIEW / RESULT &amp; IMPORT PREVIEW</p>
                         <h2 id="result-title">カーブを見てみましょう</h2></div>
                     <span class="pill muted" id="result-state">未実行</span></div>
                 <p class="result-meta" id="result-meta">左の条件を設定して「シミュレーションを実行」を押してください。</p>
@@ -147,6 +154,7 @@
                     <label class="axis-select">横軸<select aria-label="グラフの横軸" id="x-axis">
                         <option value="time_s">時間 (min)</option>
                         <option value="capacity_ah">通過容量 (Ah)</option>
+                        <option value="soc">SOC (%)</option>
                     </select></label></div>
                 <div class="chart" id="chart">
                     <div class="chart-empty"><span>⌁</span><strong>あなたの最初のカーブを、ここに。</strong>
@@ -158,9 +166,10 @@
                     <button disabled id="csv" type="button">CSV出力 ↓</button>
                     <button disabled id="json" type="button">条件付きJSON ↓</button>
                     <button class="text-button" disabled id="restore" type="button">この結果の条件を復元</button>
+                    <button disabled id="original" type="button">取込原本 ↓</button>
                 </div>
                 <details id="snapshot-details">
-                    <summary>計算に使用した入力・モデルの範囲 <span>＋</span></summary>
+                    <summary>入力・取込条件・出典・モデルの範囲 <span>＋</span></summary>
                     <div id="snapshot">計算後に条件と制約が表示されます。</div>
                 </details>
             </div>
@@ -173,7 +182,100 @@
                 <p class="field-note">チェックで最大3件を重ね合わせ。現在の結果を含めて最大4本表示します。</p>
                 <div id="history"><p class="empty-history">
                     まだ保存した結果はありません。計算後に「結果を保存」で追加できます。</p></div>
+                <details>
+                    <summary>比較セットを保存・復元 <span>＋</span></summary>
+                    <p class="field-note">
+                        表示中＋チェック済みの保存データ、軸、注釈を保存します。値の自動整列・正規化は行いません。</p>
+                    <label>比較名<input id="comparison-name" maxlength="100" value="カーブ比較"></label>
+                    <label>注釈<textarea id="comparison-notes" maxlength="4000" rows="2"></textarea></label>
+                    <button id="save-comparison" type="button">比較セットを保存</button>
+                    <div id="comparison-list"></div>
+                </details>
             </div>
+            <section class="panel library" id="import-panel">
+                <p class="eyebrow">CURVE DATA LIBRARY</p>
+                <h2>実測・表データを取り込む</h2>
+                <p class="field-note">①原本を選択／貼付け → ②列・単位・符号を指定 → ③変換プレビュー →
+                    ④結果を保存。プレビューだけでは保存しません。</p>
+                <form id="import-form">
+                    <div class="fields two">
+                        <label>CSV／TSV原本（2 MiB以内）<input accept=".csv,.tsv,.txt" id="import-file"
+                                                            type="file"></label>
+                        <label>データ名<input id="import-name" maxlength="100" required value="取込カーブ"></label>
+                    </div>
+                    <label>表の貼付け・手入力<textarea id="import-text" placeholder="time,voltage,current&#10;0,4.1,1&#10;60,4.0,1"
+                                                       rows="5"></textarea></label>
+                    <div class="fields two">
+                        <label>文字コード<select id="import-encoding">
+                            <option value="utf-8-sig">UTF-8</option>
+                            <option value="cp932">CP932</option>
+                        </select></label>
+                        <label>区切り<select id="import-delimiter">
+                            <option value="auto">自動（カンマ／タブ）</option>
+                            <option value=",">カンマ</option>
+                            <option value="tab">タブ</option>
+                            <option value=";">セミコロン</option>
+                        </select></label>
+                        <label>ヘッダ行<input id="import-header" max="200" min="1" required type="number"
+                                              value="1"></label>
+                        <label>小数点<select id="import-decimal">
+                            <option value=".">ピリオド</option>
+                            <option value=",">カンマ</option>
+                        </select></label>
+                    </div>
+                    <button id="inspect-import" type="button">① 列を読み込む</button>
+                    <div class="table-scroll" id="raw-preview"></div>
+                    <div class="column-mapping" id="column-mapping"></div>
+                    <div class="fields two">
+                        <label>データ形態<select id="import-shape">
+                            <option value="time_series">時間・電圧・電流</option>
+                            <option value="capacity_voltage">容量–電圧</option>
+                            <option value="soc_ocv">SOC–OCV</option>
+                        </select></label>
+                        <label>データ種別<select id="import-type">
+                            <option value="user_measured">ユーザー実測（未検証）</option>
+                            <option value="public_measured">公開実測（未検証）</option>
+                            <option value="synthetic_demo">合成デモ</option>
+                            <option value="digitized">図から読取</option>
+                        </select></label>
+                        <label>原本の電流符号<select id="import-sign">
+                            <option value="discharge_positive">放電＋・充電−</option>
+                            <option value="charge_positive">充電＋・放電−</option>
+                            <option value="direction_column">電流の絶対値＋区分列</option>
+                        </select></label>
+                        <label>充放電区分<select id="import-mode">
+                            <option value="unknown">不明</option>
+                            <option value="discharge">放電</option>
+                            <option value="charge">充電</option>
+                            <option value="rest">休止</option>
+                            <option value="mixed">混在</option>
+                        </select></label>
+                        <label>実セル個体ID（任意）<input id="import-specimen" maxlength="100"></label>
+                        <label>温度測定位置（任意）<input id="import-position" maxlength="100"
+                                                        placeholder="表面／中心／雰囲気／不明"></label>
+                    </div>
+                    <details>
+                        <summary>絶対値電流の区分値（区分列を指定した場合）<span>＋</span></summary>
+                        <div class="fields two"><label>充電の値<input id="charge-value" maxlength="50"
+                                                                      value="C"></label><label>放電の値<input
+                                id="discharge-value" maxlength="50" value="D"></label><label>休止の値（複数は |
+                            区切り）<input id="rest-value" maxlength="50" value="R"></label></div>
+                    </details>
+                    <label>出典（公開実測・図読取は必須）<input id="import-source" maxlength="2000"
+                                                              placeholder="出典URL・測定記録名など"></label>
+                    <label>ライセンス・利用条件<input id="import-license" maxlength="500"></label>
+                    <label>注釈・測定条件<textarea id="import-notes" maxlength="4000" rows="2"></textarea></label>
+                    <button class="primary" disabled id="preview-import" type="submit">② 変換してプレビュー</button>
+                </form>
+                <div aria-live="polite" id="import-quality"></div>
+                <details>
+                    <summary>操作確認用の合成デモ <span>＋</span></summary>
+                    <label>生成seed<input id="demo-seed" max="4294967295" min="0" type="number" value="42"></label>
+                    <button id="demo-import" type="button">デモを生成してプレビュー</button>
+                    <p class="field-note">
+                        式・seed・原本を記録。実測検証には使えません。保存は「結果を保存」で確定します。</p>
+                </details>
+            </section>
             <div class="model-note"><span class="note-icon">i</span>
                 <div><strong>まずは、軽量なモデルで条件の違いを観察。</strong>
                     <p>

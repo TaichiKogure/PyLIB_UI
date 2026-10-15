@@ -7374,4 +7374,8 @@ result-*
 /.test_tmp/
 **/__pycache__/
 *.py[cod]
+!/scripts/
+!/scripts/**
+!/requirements-research.lock.txt
+!/setup-research.ps1
 

@@ -90,6 +90,14 @@ function syncInput() {
 }
 
 function updateResultState() {
+    if (state.current.record_type === "dataset") {
+        const saved = state.savedIds.has(state.current.id);
+        $("result-state").textContent = `${saved ? "保存済み" : "未保存プレビュー"} · ${sourceLabel(state.current)}`;
+        $("result-state").className = `pill ${saved ? "saved" : ""}`;
+        $("save").textContent = saved ? "✓ 保存済み" : "＋ このプレビューを保存";
+        $("save").disabled = state.busy || saved;
+        return;
+    }
     const dirty = Object.keys(state.defaults).some(key => readInput()[key] !== state.current.input[key]);
     const saved = state.savedIds.has(state.current.id);
     $("result-state").textContent = dirty ? "条件変更あり · 再計算待ち" : saved ? "保存済み · 合成" : "未保存 · 合成";
@@ -114,15 +122,21 @@ async function api(path, body) {
     return data;
 }
 
-function busy(enabled) {
+function busy(enabled, operation = "計算") {
     state.busy = enabled;
     $("run").disabled = enabled;
-    $("run").textContent = enabled ? "計算しています…" : "▶ シミュレーションを実行";
+    $("run").textContent = enabled ? `${operation}中…` : "▶ シミュレーションを実行";
     $("save").disabled = enabled || !state.current || state.savedIds.has(state.current.id);
+    for (const id of ["project", "create-project", "demo-import"]) $(id).disabled = enabled;
 }
 
 function showResult(run) {
     state.current = run;
+    $("original").disabled = !run.original;
+    if (run.record_type === "dataset") {
+        showDataset(run);
+        return;
+    }
     $("result-title").textContent = run.name;
     const cfg = run.input, s = run.summary;
     $("result-meta").textContent = `${cfg.cell_format} / ${cfg.chemistry} / ${modes[cfg.mode]} ${cfg.mode === "rest" ? "0 A" : `${cfg.c_rate}C`} · ${reasons[run.termination]} · ${(s.duration_s / 60).toFixed(2)} min · ${s.point_count.toLocaleString()}点`;
@@ -155,16 +169,34 @@ function renderChart() {
     const runs = new Map();
     if (state.current) runs.set(state.current.id, state.current);
     for (const [id, run] of state.comparisons) if (run) runs.set(id, run);
-    if (!runs.size) return;
-    const series = [...runs.values()], variable = state.variable, xKey = $("x-axis").value;
-    const yFactor = variable === "soc" ? 100 : 1, xFactor = xKey === "time_s" ? 1 / 60 : 1;
-    const labels = {voltage_v: "端子電圧 (V)", soc: "SOC (%)", temperature_c: "平均温度 (°C)", current_a: "電流 (A)"};
-    let yMin = Infinity, yMax = -Infinity, xMax = 0;
+    if (!runs.size) {
+        $("chart").replaceChildren(element("p", "表示・比較するカーブを選択してください。", "chart-empty"));
+        $("legend").replaceChildren();
+        return;
+    }
+    const allSeries = [...runs.values()], variable = state.variable, xKey = $("x-axis").value;
+    const valid = p => Number.isFinite(p[xKey]) && Number.isFinite(p[variable]);
+    const series = allSeries.filter(run => run.points.some(valid));
+    if (!series.length) {
+        $("chart").replaceChildren(element("p", "この軸に対応するデータがありません。欠損は補完していません。", "chart-empty"));
+        $("legend").replaceChildren();
+        return;
+    }
+    const yFactor = variable === "soc" ? 100 : 1, xFactor = xKey === "time_s" ? 1 / 60 : xKey === "soc" ? 100 : 1;
+    const labels = {
+        voltage_v: "電圧 (V)",
+        soc: "SOC (%)",
+        temperature_c: "温度 (°C) · 測定位置は来歴参照",
+        current_a: "電流 (A)"
+    };
+    let yMin = Infinity, yMax = -Infinity, xMax = 0, xMin = 0;
     for (const run of series) for (const p of run.points) {
+        if (!valid(p)) continue;
         const y = p[variable] * yFactor;
         yMin = Math.min(yMin, y);
         yMax = Math.max(yMax, y);
         xMax = Math.max(xMax, p[xKey] * xFactor);
+        xMin = Math.min(xMin, p[xKey] * xFactor);
     }
     const margin = Math.max((yMax - yMin) * 0.12, variable === "soc" ? 2 : 0.05);
     yMin -= margin;
@@ -172,16 +204,16 @@ function renderChart() {
     xMax = xMax || 1;
     const width = Math.max(260, $("chart").clientWidth), height = $("chart").clientHeight, left = 52, right = 16,
         top = 30, bottom = 44;
-    const px = (x) => left + x / xMax * (width - left - right);
+    const px = (x) => left + (x - xMin) / (xMax - xMin || 1) * (width - left - right);
     const py = (y) => height - bottom - (y - yMin) / (yMax - yMin) * (height - top - bottom);
     const svg = svgElement("svg", {
         viewBox: `0 0 ${width} ${height}`,
         role: "img",
         "aria-label": `${labels[variable]}の比較グラフ。${series.length}本。`
     });
-    svg.append(svgElement("title", {}, `${labels[variable]}。合成・未校正のカーブ`));
+    svg.append(svgElement("title", {}, `${labels[variable]}。凡例で種別を確認。自動整列・正規化なし`));
     for (let i = 0; i <= 5; i++) {
-        const y = yMin + (yMax - yMin) * i / 5, x = xMax * i / 5;
+        const y = yMin + (yMax - yMin) * i / 5, x = xMin + (xMax - xMin) * i / 5;
         svg.append(svgElement("line", {
             x1: left,
             x2: width - right,
@@ -212,12 +244,23 @@ function renderChart() {
         "text-anchor": "end",
         fill: "#708078",
         "font-size": 11
-    }, xKey === "time_s" ? "時間 (min)" : "通過容量 (Ah)"));
+    }, xKey === "time_s" ? "記録時間 (min)" : xKey === "soc" ? "SOC (%)" : "容量 (Ah) · 原本指定／区間通過容量"));
     const legend = [];
     series.forEach((run, index) => {
-        const every = Math.max(1, Math.ceil(run.points.length / 1500));
-        const points = run.points.filter((_, i) => i % every === 0 || i === run.points.length - 1);
-        const path = points.map((p, i) => `${i ? "L" : "M"}${px(p[xKey] * xFactor).toFixed(2)},${py(p[variable] * yFactor).toFixed(2)}`).join(" ");
+        // Preserve gaps and reset boundaries, including when values are absent.
+        let connected = false, previousSegment = null;
+        const commands = [];
+        for (const p of run.points) {
+            if (!valid(p)) {
+                connected = false;
+                continue;
+            }
+            if (p.segment_id !== previousSegment) connected = false;
+            commands.push(`${connected ? "L" : "M"}${px(p[xKey] * xFactor).toFixed(2)},${py(p[variable] * yFactor).toFixed(2)}`);
+            connected = true;
+            previousSegment = p.segment_id;
+        }
+        const path = commands.join(" ");
         const line = svgElement("path", {
             d: path,
             fill: "none",
@@ -226,9 +269,9 @@ function renderChart() {
             "stroke-linecap": "round",
             "stroke-linejoin": "round"
         });
-        line.append(svgElement("title", {}, `${run.name}（合成・未校正）`));
+        line.append(svgElement("title", {}, `${run.name}（${sourceLabel(run)}）`));
         svg.append(line);
-        const last = run.points.at(-1);
+        const last = run.points.filter(valid).at(-1);
         svg.append(svgElement("circle", {
             cx: px(last[xKey] * xFactor),
             cy: py(last[variable] * yFactor),
@@ -238,15 +281,16 @@ function renderChart() {
             "stroke-width": 2
         }));
         const entry = element("span"), swatch = element("i", undefined, `series-${index}`);
-        entry.append(swatch, document.createTextNode(`${run.name} / ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · 合成${state.current?.id === run.id ? "（表示中）" : ""}`));
+        entry.append(swatch, document.createTextNode(`${run.name} · ${sourceLabel(run)}${state.current?.id === run.id ? "（表示中）" : ""}`));
         legend.push(entry);
     });
+    for (const run of allSeries.filter(run => !series.includes(run))) legend.push(element("span", `${run.name}：この軸のデータなし`));
     $("chart").replaceChildren(svg);
     $("legend").replaceChildren(...legend);
 }
 
 async function refreshHistory() {
-    const history = await api("/api/runs");
+    const history = await api(`/api/runs?project_id=${encodeURIComponent(library.projectId)}`);
     state.savedIds = new Set(history.map(run => run.id));
     if (state.current) updateResultState();
     if (!history.length) {
@@ -293,7 +337,9 @@ async function refreshHistory() {
             hour: "2-digit",
             minute: "2-digit"
         });
-        info.append(element("p", `${run.input.cell_format} / ${run.input.chemistry} · ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 合成／未校正`));
+        info.append(element("p", run.record_type === "dataset"
+            ? `${sourceLabel(run)} · ${run.quality.row_count}点／${run.quality.segment_count}区間 · ${run.specimen_id || "個体不明"} · ${date} JST`
+            : `${run.input.cell_format} / ${run.input.chemistry} · ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · ${sourceLabel(run)}`));
         const open = element("button", "表示");
         open.type = "button";
         open.addEventListener("click", async () => {
@@ -302,7 +348,9 @@ async function refreshHistory() {
                 const result = await api(`/api/results/${run.id}`);
                 if (version !== state.viewVersion) return;
                 showResult(result);
-                message("保存結果を表示しました。入力は「この結果の条件を復元」で戻せます。");
+                message(result.record_type === "dataset"
+                    ? "保存カーブを表示しました。取込条件・出典は詳細欄、原本は「取込原本」で確認できます。"
+                    : "保存結果を表示しました。入力は「この結果の条件を復元」で戻せます。");
             } catch (error) {
                 message(error.message, "error");
             }
@@ -352,7 +400,7 @@ form.addEventListener("change", (event) => {
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (state.busy || !form.reportValidity()) return;
-    const input = readInput(), version = ++state.viewVersion;
+    const input = {...readInput(), project_id: library.projectId}, version = ++state.viewVersion;
     busy(true);
     message("シミュレーションを計算しています…", "busy");
     try {
@@ -373,7 +421,7 @@ $("reset").addEventListener("click", () => {
     message("入力を初期値に戻しました。表示中の結果は計算時の条件のままです。");
 });
 $("restore").addEventListener("click", () => {
-    if (!state.current) return;
+    if (!state.current || state.current.record_type === "dataset") return;
     state.nameEdited = true;
     setInput(state.current.input);
     message("表示中の結果の入力を復元しました。変更後に再計算できます。");
@@ -381,11 +429,11 @@ $("restore").addEventListener("click", () => {
 $("save").addEventListener("click", async () => {
     if (!state.current || state.busy) return;
     const run = state.current;
-    busy(true);
+    busy(true, "保存処理");
     try {
         await api("/api/save", {id: run.id});
         state.savedIds.add(run.id);
-        message("計算結果と入力条件を保存しました。");
+        message("カーブと来歴を保存しました。");
         await refreshHistory();
     } catch (error) {
         message(error.message, "error");
@@ -416,6 +464,7 @@ async function init() {
     try {
         const config = await api("/api/config");
         state.defaults = config.defaults;
+        await loadProjects();
         const options = config.models.map(model => {
             const option = element("option", model.label);
             option.value = model.id;
@@ -424,6 +473,7 @@ async function init() {
         value("model").replaceChildren(...options);
         setInput(config.defaults);
         await refreshHistory();
+        await refreshComparisons();
         $("run").disabled = false;
         message("準備完了。セルと試験条件を設定して、最初のカーブを計算してください。");
     } catch (error) {
@@ -432,4 +482,4 @@ async function init() {
 }
 
 window.addEventListener("resize", renderChart);
-init();
+window.addEventListener("DOMContentLoaded", init);

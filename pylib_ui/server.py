@@ -5,8 +5,9 @@ import logging
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, parse_qs
 
+from .datasets import table_preview
 from .models import MODEL_REGISTRY
 from .schema import SimulationInput
 from .service import SimulationService, export_csv
@@ -45,12 +46,26 @@ def create_server(port=8765, data_dir=None):
             return self.headers.get("Host") in {f"127.0.0.1:{self.server.server_port}",
                                                 f"localhost:{self.server.server_port}"}
 
+        def reject_post(self, status, error):
+            # Consume small rejected bodies so Windows does not reset the socket
+            # before the client can read the HTTP error response.
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if 0 < length <= 65536:
+                    self.connection.settimeout(2)
+                    self.rfile.read(length)
+            except (ValueError, OSError):
+                pass
+            return self.send(status, {"error": error})
+
         def do_GET(self):
             if not self.trusted_host():
                 return self.send(403, {"error": "ローカルURLからアクセスしてください。"})
             path = urlsplit(self.path).path
+            project_id = parse_qs(urlsplit(self.path).query).get("project_id", ["default"])[0]
             assets = {"/": ("index.html", "text/html; charset=utf-8"),
                       "/app.js": ("app.js", "text/javascript; charset=utf-8"),
+                      "/library.js": ("library.js", "text/javascript; charset=utf-8"),
                       "/style.css": ("style.css", "text/css; charset=utf-8")}
             try:
                 if path in assets:
@@ -61,9 +76,22 @@ def create_server(port=8765, data_dir=None):
                                            "models": [{"id": m.id, "label": m.label, "version": m.version} for m in
                                                       MODEL_REGISTRY.values()]})
                 if path == "/api/runs":
-                    return self.send(200, repository.list())
+                    return self.send(200, repository.list(project_id))
+                if path == "/api/projects":
+                    return self.send(200, repository.projects())
+                if path == "/api/comparisons":
+                    return self.send(200, repository.comparisons(project_id))
                 if path.startswith("/api/results/"):
                     run_id = path.removeprefix("/api/results/")
+                    if run_id.endswith("/original"):
+                        run_id = run_id.removesuffix("/original")
+                        original = service.original(run_id)
+                        if original is None:
+                            return self.send(404, {"error": "原本が見つかりません。"})
+                        record = service.get(run_id)
+                        suffix = Path(record["original"]["filename"]).suffix.lower() if record else ".txt"
+                        suffix = suffix if suffix in {".csv", ".tsv", ".txt"} else ".txt"
+                        return self.send(200, original, "application/octet-stream", f"original-{run_id}{suffix}")
                     csv_request, json_request = run_id.endswith(".csv"), run_id.endswith(".json")
                     if csv_request or json_request:
                         run_id = run_id[:-4] if csv_request else run_id[:-5]
@@ -74,6 +102,8 @@ def create_server(port=8765, data_dir=None):
                         return self.send(200, export_csv(result), "text/csv; charset=utf-8", f"lib-{run_id}.csv")
                     return self.send(200, result, filename=f"lib-{run_id}.json" if json_request else None)
                 return self.send(404, {"error": "ページが見つかりません。"})
+            except ValueError as error:
+                return self.send(400, {"error": str(error)})
             except Exception:
                 logger.exception("Local read failed")
                 return self.send(500, {"error": "ローカルのデータを読み込めませんでした。"})
@@ -82,22 +112,34 @@ def create_server(port=8765, data_dir=None):
             origin = self.headers.get("Origin")
             allowed = {f"http://127.0.0.1:{self.server.server_port}", f"http://localhost:{self.server.server_port}"}
             if not self.trusted_host() or (origin is not None and origin not in allowed):
-                return self.send(403, {"error": "ローカル画面から実行してください。"})
+                return self.reject_post(403, "ローカル画面から実行してください。")
             path = urlsplit(self.path).path
-            if path not in {"/api/simulate", "/api/save"}:
+            if path not in {"/api/simulate", "/api/save", "/api/projects", "/api/comparisons", "/api/import/inspect",
+                            "/api/import/preview", "/api/import/demo"}:
                 return self.send(404, {"error": "APIが見つかりません。"})
             try:
                 if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
                     raise ValueError("application/json で送信してください。")
                 length = int(self.headers.get("Content-Length", "0"))
-                if not 0 < length <= 65536:
+                if not 0 < length <= (3 * 1024 * 1024 if path.startswith("/api/import/") else 65536):
                     raise ValueError("リクエストサイズが範囲外です。")
                 try:
                     data = json.loads(self.rfile.read(length))
                 except (ValueError, UnicodeError):
                     raise ValueError("JSON形式を確認してください。") from None
+                if not isinstance(data, dict):
+                    raise ValueError("入力はオブジェクトで指定してください。")
+                if path == "/api/projects":
+                    return self.send(200, repository.create_project(data.get("name")))
+                if path == "/api/comparisons":
+                    return self.send(200, repository.save_comparison(data))
+                if path == "/api/import/inspect":
+                    return self.send(200, table_preview(data))
+                if path in {"/api/import/preview", "/api/import/demo"}:
+                    return self.send(200, service.preview_import(data, demo=path.endswith("demo")))
                 if path == "/api/simulate":
-                    return self.send(200, service.run(data))
+                    project_id = data.pop("project_id", "default")
+                    return self.send(200, service.run(data, project_id))
                 if not isinstance(data, dict) or not isinstance(data.get("id"), str):
                     raise ValueError("保存する計算IDが必要です。")
                 return self.send(200, service.save(data["id"]))
