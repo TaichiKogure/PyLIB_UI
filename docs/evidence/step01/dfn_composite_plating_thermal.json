@@ -1,0 +1,37 @@
+{
+  "case": "dfn_composite_plating_thermal",
+  "enabled": false,
+  "model": "DFN",
+  "parameter_set": "Chen2020_composite",
+  "options": {
+    "particle phases": [
+      "2",
+      "1"
+    ],
+    "open-circuit potential": [
+      [
+        "single",
+        "current sigmoid"
+      ],
+      "single"
+    ],
+    "thermal": "lumped",
+    "lithium plating": [
+      "partially reversible",
+      "none"
+    ]
+  },
+  "initial_soc": 0.5,
+  "protocol": [
+    "Discharge at C/5 for 30 seconds",
+    "Rest for 10 seconds",
+    "Charge at C/5 for 30 seconds"
+  ],
+  "solver": "CasadiSolver",
+  "rtol": 1e-06,
+  "atol": 1e-06,
+  "mesh": "PyBaMM defaults",
+  "status": "disabled",
+  "reason": "KeyError: \"Parameter 'Primary: Typical plated lithium concentration [mol.m-3]' not found. 'Primary: Typical plated lithium concentration [mol.m-3]' not found. Best matches are ['Primary: Bulk solvent concentration [mol.m-3]', 'Primary: Lithium interstitial reference concentration [mol.m-3]', 'Primary: EC initial concentration in electrolyte [mol.m-3]']\"",
+  "elapsed_s": 0.1584043000038946
+}

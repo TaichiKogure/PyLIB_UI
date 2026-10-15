@@ -1,0 +1,7 @@
+{
+  "runtime": "CPython 3.13.2 / Windows AMD64",
+  "setup": "fresh .test_tmp/research-repro venv; pip install -r requirements-research.lock.txt; pip check passed",
+  "case": "spme_chen",
+  "identical_csv_bytes": true,
+  "sha256": "1b53228ef0d4dcd08498c3b803a35917fe7e95e9cfa4e885e42909266b8868b5"
+}

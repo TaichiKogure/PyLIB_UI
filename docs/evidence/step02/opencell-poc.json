@@ -1,0 +1,51 @@
+{
+  "commit": "53178ecab1b9dc539bdc37e69ca7e86527142081",
+  "checked_at": "2026-10-15T11:01:02.795814+00:00",
+  "method": "AST-extracted numerical methods with minimal input objects; not full OpenCell package integration",
+  "source_sha256": {
+    "Electrodes.py": "17b85416295004258bea7ae82a880ae2df0f9d61080830e3c9d304bea1d6f568",
+    "Formulations.py": "481cf4e7af36d79ef36f51293f11a9d596c2b448543c1c2caa1b5ee3d8e5427b",
+    "JellyRolls.py": "419a5ba940ba66e171892c0a79dd4a10bc41778b5a2ca40d8b9a90b5459da48a",
+    "Laminate.py": "bc990822c9d7151633027d5410c093b3e0ea30c8c57130581a1232c97e6e2006",
+    "SpiralUtils.py": "917baa0f5961c084defa20bec269b29f151afc0a94e44c7f542ae3c81f8ff968"
+  },
+  "upstream_license": "AGPL-3.0-or-later source notices; independent runtime implementation retained",
+  "cases": [
+    {
+      "template": "21700",
+      "scalar_absolute_errors": {
+        "positive_loading_mg_cm2_abs": 0.0,
+        "positive_volume_cm3_abs": 8.881784197001252e-16,
+        "positive_total_thickness_um_abs": 0.0,
+        "positive_capacity_ah_abs": 0.0,
+        "negative_loading_mg_cm2_abs": 0.0,
+        "negative_volume_cm3_abs": 1.7763568394002505e-15,
+        "negative_total_thickness_um_abs": 0.0,
+        "negative_capacity_ah_abs": 8.881784197001252e-16
+      },
+      "annular_length_mm": 926.0899358914211,
+      "spiral_length_mm": 926.1406390204155,
+      "spiral_length_relative_difference": 5.474968146113035e-05,
+      "scalar_pass": true,
+      "geometry_within_0_1_percent": true
+    },
+    {
+      "template": "18650",
+      "scalar_absolute_errors": {
+        "positive_loading_mg_cm2_abs": 0.0,
+        "positive_volume_cm3_abs": 8.881784197001252e-16,
+        "positive_total_thickness_um_abs": 0.0,
+        "positive_capacity_ah_abs": 0.0,
+        "negative_loading_mg_cm2_abs": 0.0,
+        "negative_volume_cm3_abs": 0.0,
+        "negative_total_thickness_um_abs": 0.0,
+        "negative_capacity_ah_abs": 4.440892098500626e-16
+      },
+      "annular_length_mm": 664.4468462342412,
+      "spiral_length_mm": 664.4932402906591,
+      "spiral_length_relative_difference": 6.982357833562602e-05,
+      "scalar_pass": true,
+      "geometry_within_0_1_percent": true
+    }
+  ]
+}

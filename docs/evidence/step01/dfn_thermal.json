@@ -1,0 +1,26 @@
+{
+  "case": "dfn_thermal",
+  "enabled": true,
+  "model": "DFN",
+  "parameter_set": "Chen2020",
+  "options": {
+    "thermal": "lumped"
+  },
+  "initial_soc": 0.5,
+  "protocol": [
+    "Discharge at C/5 for 30 seconds",
+    "Rest for 10 seconds",
+    "Charge at C/5 for 30 seconds"
+  ],
+  "solver": "CasadiSolver",
+  "rtol": 1e-06,
+  "atol": 1e-06,
+  "mesh": "PyBaMM defaults",
+  "status": "solved",
+  "termination": "final time",
+  "end_time_s": 70.0,
+  "point_count": 71,
+  "voltage_start_v": 3.7212282567863415,
+  "voltage_end_v": 3.7882688056349054,
+  "elapsed_s": 1.8478230999971856
+}

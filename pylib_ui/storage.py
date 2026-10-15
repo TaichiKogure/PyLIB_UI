@@ -18,6 +18,10 @@ class RunRepository:
                 "CREATE TABLE IF NOT EXISTS datasets (id TEXT PRIMARY KEY, created_at TEXT NOT NULL, payload TEXT NOT NULL, original BLOB NOT NULL)")
             connection.execute(
                 "CREATE TABLE IF NOT EXISTS comparisons (id TEXT PRIMARY KEY, project_id TEXT NOT NULL, payload TEXT NOT NULL)")
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS designs (id TEXT PRIMARY KEY, project_id TEXT NOT NULL, payload TEXT NOT NULL)")
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS physics_jobs (id TEXT PRIMARY KEY, project_id TEXT NOT NULL, payload TEXT NOT NULL)")
 
     @contextmanager
     def connect(self):
@@ -119,3 +123,50 @@ class RunRepository:
             return [json.loads(r[0]) for r in
                     connection.execute("SELECT payload FROM comparisons WHERE project_id = ? ORDER BY rowid DESC",
                                        (project_id,))]
+
+    def save_design(self, data):
+        from datetime import datetime, timezone
+        from uuid import uuid4
+        from .design import evaluate_design
+        if not isinstance(data, dict) or set(data) - {"project_id", "input"}:
+            raise ValueError("設計保存の項目を確認してください。")
+        project_id = data.get("project_id", "default")
+        self.require_project(project_id)
+        record = evaluate_design(data.get("input"))
+        record.update(id=str(uuid4()), project_id=project_id, created_at=datetime.now(timezone.utc).isoformat())
+        with self.connect() as connection:
+            connection.execute("INSERT INTO designs VALUES (?, ?, ?)",
+                               (record["id"], project_id, json.dumps(record, ensure_ascii=False, allow_nan=False)))
+        return record
+
+    def designs(self, project_id):
+        self.require_project(project_id)
+        with self.connect() as connection:
+            return [json.loads(row[0]) for row in connection.execute(
+                "SELECT payload FROM designs WHERE project_id = ? ORDER BY rowid DESC", (project_id,))]
+
+    def design(self, design_id, project_id):
+        self.require_project(project_id)
+        with self.connect() as connection:
+            row = connection.execute("SELECT payload FROM designs WHERE id = ? AND project_id = ?",
+                                     (design_id, project_id)).fetchone()
+        if row is None:
+            raise ValueError("同じプロジェクトの保存済み設計を選択してください。")
+        return json.loads(row[0])
+
+    def put_job(self, job):
+        with self.connect() as connection:
+            connection.execute(
+                "INSERT INTO physics_jobs VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload",
+                (job['id'], job['project_id'], json.dumps(job, ensure_ascii=False, allow_nan=False)))
+
+    def jobs(self, project_id=None):
+        if project_id is not None:
+            self.require_project(project_id)
+        with self.connect() as connection:
+            if project_id is None:
+                rows = connection.execute("SELECT payload FROM physics_jobs ORDER BY rowid DESC").fetchall()
+            else:
+                rows = connection.execute("SELECT payload FROM physics_jobs WHERE project_id=? ORDER BY rowid DESC",
+                                          (project_id,)).fetchall()
+        return [json.loads(r[0]) for r in rows]

@@ -1,6 +1,7 @@
 """UI-independent orchestration and model registry dispatch."""
 import csv
 import io
+import math
 from collections import OrderedDict
 from datetime import datetime, timezone
 from threading import Lock
@@ -18,9 +19,21 @@ class SimulationService:
         self.lock = Lock()
         self.originals = {}
 
-    def run(self, data, project_id="default"):
+    def run(self, data, project_id="default", design_id=None):
         self.repository.require_project(project_id)
         config = SimulationInput.from_dict(data)
+        design = None
+        if design_id is not None:
+            if not isinstance(design_id, str):
+                raise ValueError("設計IDを確認してください。")
+            design = self.repository.design(design_id, project_id)
+            expected = design_simulation_fields(design)
+            for key, val in expected.items():
+                actual = getattr(config, key)
+                if (isinstance(val, str) and actual != val) or (isinstance(val, (float, int)) and
+                                                                not math.isclose(actual, val, rel_tol=1e-10,
+                                                                                 abs_tol=1e-12)):
+                    raise ValueError("設計と試験入力が一致しません。設計を再反映してください。")
         if config.model not in MODEL_REGISTRY:
             raise ValueError("未登録の計算モデルです。")
         model = MODEL_REGISTRY[config.model]
@@ -35,6 +48,10 @@ class SimulationService:
             "sign_convention": "current_a / energy_wh: discharge positive, charge negative; capacity_ah: absolute throughput",
             "termination": output.termination, "summary": output.summary, "points": output.points,
         }
+        if design is not None:
+            result["design_snapshot"] = design
+            result["limitations"].append(
+                "合成モデルには設計の寸法・Cレート基準容量・模式曲線のみ反映。材料配合・端面集電の物理応答は計算していません。")
         with self.lock:
             self.recent[result["id"]] = result
             while len(self.recent) > 20:
@@ -76,6 +93,13 @@ class SimulationService:
         return {"id": run_id, "saved": True}
 
 
+def design_simulation_fields(design):
+    c = design["input"]
+    return {"cell_format": c["cell_format"], "diameter_mm": c["diameter_mm"], "height_mm": c["height_mm"],
+            "capacity_ah": design["capacity"]["c_rate_reference_ah"],
+            "chemistry": "LFP" if c["positive_material"] == "LFP_demo" else "NMC"}
+
+
 def export_csv(run):
     stream = io.StringIO(newline="")
     if run.get("record_type") == "dataset":
@@ -96,7 +120,15 @@ def export_csv(run):
         "termination": run["termination"], "sign_convention": run["sign_convention"],
     }.items():
         stream.write(f"# {key}: {value}\n")
-    writer = csv.DictWriter(stream, fieldnames=COLUMNS)
+    columns = COLUMNS if run.get("record_type") != "physics" else COLUMNS + ("segment_id", "electrolyte_min_mol_m3",
+                                                                             "negative_surface_max_mol_m3")
+    if run.get("record_type") == "physics":
+        import json
+        for key in ("input", "parameter_provenance", "numerical", "step_results"):
+            stream.write(f"# {key}: {json.dumps(run[key], ensure_ascii=False)}\n")
+        if run.get("design_snapshot"):
+            stream.write(f'# design_id: {run["design_snapshot"]["id"]}\n')
+    writer = csv.DictWriter(stream, fieldnames=columns, extrasaction="ignore")
     writer.writeheader()
     writer.writerows(run["points"])
     return stream.getvalue().encode("utf-8-sig")

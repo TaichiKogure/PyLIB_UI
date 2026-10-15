@@ -1,0 +1,38 @@
+test_import_preview_save_original_and_projects (test_datasets.ImportHttpTests.test_import_preview_save_original_and_projects) ... ok
+test_capacity_only_and_soc_ocv_do_not_invent_dynamic_values (test_datasets.ImportTests.test_capacity_only_and_soc_ocv_do_not_invent_dynamic_values) ... ok
+test_cp932_header_and_original_exact_bytes (test_datasets.ImportTests.test_cp932_header_and_original_exact_bytes) ... ok
+test_demo_seed_repeatable_and_recorded (test_datasets.ImportTests.test_demo_seed_repeatable_and_recorded) ... ok
+test_missing_current_never_bridges_integral (test_datasets.ImportTests.test_missing_current_never_bridges_integral) ... ok
+test_missing_reset_and_duplicate_preserved (test_datasets.ImportTests.test_missing_reset_and_duplicate_preserved) ... ok
+test_nonfinite_text_and_bad_shape_rejected (test_datasets.ImportTests.test_nonfinite_text_and_bad_shape_rejected) ... ok
+test_restart_original_duplicate_project_and_comparison (test_datasets.ImportTests.test_restart_original_duplicate_project_and_comparison) ... ok
+test_reversal_integrates_absolute_linear_current (test_datasets.ImportTests.test_reversal_integrates_absolute_linear_current) ... ok
+test_units_sign_and_current_integral (test_datasets.ImportTests.test_units_sign_and_current_integral) ... ok
+test_unsigned_current_requires_explicit_direction (test_datasets.ImportTests.test_unsigned_current_requires_explicit_direction) ... ok
+test_design_api_roundtrip_and_invalid_inputs (test_design.DesignHttpTests.test_design_api_roundtrip_and_invalid_inputs) ... ok
+test_immutable_project_storage_and_run_snapshot (test_design.DesignTests.test_immutable_project_storage_and_run_snapshot) ... ok
+test_independent_rectangular_volume_and_mass_balance (test_design.DesignTests.test_independent_rectangular_volume_and_mass_balance) ... ok
+test_invalid_geometry_recipe_and_types (test_design.DesignTests.test_invalid_geometry_recipe_and_types) ... ok
+test_lithium_and_c_rate_are_distinct (test_design.DesignTests.test_lithium_and_c_rate_are_distinct) ... ok
+test_manual_length_scaling_and_fit_changes (test_design.DesignTests.test_manual_length_scaling_and_fit_changes) ... ok
+test_mass_volume_recipe_roundtrip_and_zero_si (test_design.DesignTests.test_mass_volume_recipe_roundtrip_and_zero_si) ... ok
+test_overlap_np_excludes_negative_overhang (test_design.DesignTests.test_overlap_np_excludes_negative_overhang) ... ok
+test_templates_and_area_adapter (test_design.DesignTests.test_templates_and_area_adapter) ... ok
+test_bad_input_and_cross_origin_rejected (test_simulation.HttpTests.test_bad_input_and_cross_origin_rejected) ... ok
+test_simulate_save_read_export_and_static (test_simulation.HttpTests.test_simulate_save_read_export_and_static) ... ok
+test_coulomb_counting_and_charge_sign (test_simulation.ModelTests.test_coulomb_counting_and_charge_sign) ... ok
+test_initial_outside_limit_stops_at_zero (test_simulation.ModelTests.test_initial_outside_limit_stops_at_zero) ... ok
+test_invalid_and_unbounded_input_rejected (test_simulation.ModelTests.test_invalid_and_unbounded_input_rejected) ... ok
+test_lossless_adiabatic_cell_and_rc_response (test_simulation.ModelTests.test_lossless_adiabatic_cell_and_rc_response) ... ok
+test_ohmic_adiabatic_heat_balance (test_simulation.ModelTests.test_ohmic_adiabatic_heat_balance) ... ok
+test_rest_preserves_charge_and_has_analytic_cooling (test_simulation.ModelTests.test_rest_preserves_charge_and_has_analytic_cooling) ... ok
+test_soc_boundary_not_overshot (test_simulation.ModelTests.test_soc_boundary_not_overshot) ... ok
+test_templates_finite_in_all_modes (test_simulation.ModelTests.test_templates_finite_in_all_modes) ... ok
+test_timestep_convergence (test_simulation.ModelTests.test_timestep_convergence) ... ok
+test_voltage_event_is_located_between_samples (test_simulation.ModelTests.test_voltage_event_is_located_between_samples) ... ok
+test_explicit_save_roundtrip_and_snapshot (test_simulation.StorageTests.test_explicit_save_roundtrip_and_snapshot) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 2.297s
+
+OK

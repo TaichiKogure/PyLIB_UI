@@ -75,6 +75,7 @@ function setInput(input) {
 }
 
 function syncInput() {
+    if (designing.config) syncDesignBinding();
     $("cell-title").textContent = value("cell_format").value;
     $("cell-size").textContent = `Ø${value("diameter_mm").value} × ${value("height_mm").value} mm`;
     $("soc-output").textContent = `${Math.round(Number(value("initial_soc").value) * 100)}%`;
@@ -90,6 +91,13 @@ function syncInput() {
 }
 
 function updateResultState() {
+    if (state.current.record_type === "physics") {
+        $("result-state").textContent = `${state.current.termination === "partial" ? "一部結果" : "保存済み"} · ${state.current.engine.label} · 実測未検証`;
+        $("result-state").className = "pill saved";
+        $("save").textContent = "✓ ジョブ結果は保存済み";
+        $("save").disabled = true;
+        return;
+    }
     if (state.current.record_type === "dataset") {
         const saved = state.savedIds.has(state.current.id);
         $("result-state").textContent = `${saved ? "保存済み" : "未保存プレビュー"} · ${sourceLabel(state.current)}`;
@@ -133,6 +141,11 @@ function busy(enabled, operation = "計算") {
 function showResult(run) {
     state.current = run;
     $("original").disabled = !run.original;
+    $("metric-soc-kind").textContent = "% · 推定状態";
+    if (run.record_type === "physics") {
+        showPhysics(run);
+        return;
+    }
     if (run.record_type === "dataset") {
         showDataset(run);
         return;
@@ -155,6 +168,7 @@ function showResult(run) {
     const limitations = element("ul");
     for (const note of run.limitations) limitations.append(element("li", note));
     $("snapshot").replaceChildren(element("p", `計算ID：${run.id} · ${run.engine.id} v${run.engine.version} · 合成／未校正`), grid, limitations);
+    if (run.design_snapshot) $("snapshot").append(element("pre", JSON.stringify({design_snapshot: run.design_snapshot}, null, 2)));
     renderChart();
 }
 
@@ -185,7 +199,7 @@ function renderChart() {
     const yFactor = variable === "soc" ? 100 : 1, xFactor = xKey === "time_s" ? 1 / 60 : xKey === "soc" ? 100 : 1;
     const labels = {
         voltage_v: "電圧 (V)",
-        soc: "SOC (%)",
+        soc: allSeries.some(r => r.record_type === "physics") ? "SOC / 基準容量による電荷帳簿 (%)" : "SOC (%)",
         temperature_c: "温度 (°C) · 測定位置は来歴参照",
         current_a: "電流 (A)"
     };
@@ -337,7 +351,9 @@ async function refreshHistory() {
             hour: "2-digit",
             minute: "2-digit"
         });
-        info.append(element("p", run.record_type === "dataset"
+        info.append(element("p", run.record_type === "physics"
+            ? `${run.engine.label} / ${run.input.parameter_set} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 実測未検証`
+            : run.record_type === "dataset"
             ? `${sourceLabel(run)} · ${run.quality.row_count}点／${run.quality.segment_count}区間 · ${run.specimen_id || "個体不明"} · ${date} JST`
             : `${run.input.cell_format} / ${run.input.chemistry} · ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · ${sourceLabel(run)}`));
         const open = element("button", "表示");
@@ -401,6 +417,8 @@ form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (state.busy || !form.reportValidity()) return;
     const input = {...readInput(), project_id: library.projectId}, version = ++state.viewVersion;
+    syncDesignBinding();
+    if (designing.binding) input.design_id = designing.binding.id;
     busy(true);
     message("シミュレーションを計算しています…", "busy");
     try {
@@ -421,9 +439,15 @@ $("reset").addEventListener("click", () => {
     message("入力を初期値に戻しました。表示中の結果は計算時の条件のままです。");
 });
 $("restore").addEventListener("click", () => {
+    if (state.current?.record_type === "physics") {
+        restorePhysics(state.current);
+        return;
+    }
     if (!state.current || state.current.record_type === "dataset") return;
     state.nameEdited = true;
     setInput(state.current.input);
+    designing.binding = state.current.design_snapshot || null;
+    syncDesignBinding();
     message("表示中の結果の入力を復元しました。変更後に再計算できます。");
 });
 $("save").addEventListener("click", async () => {
@@ -472,10 +496,12 @@ async function init() {
         });
         value("model").replaceChildren(...options);
         setInput(config.defaults);
+        await initDesign();
+        await initPhysics();
         await refreshHistory();
         await refreshComparisons();
         $("run").disabled = false;
-        message("準備完了。セルと試験条件を設定して、最初のカーブを計算してください。");
+        message("準備完了。円筒設計・物理計算・データ取込から作業を選べます。");
     } catch (error) {
         message(error.message || "サーバーに接続できません。", "error");
     }

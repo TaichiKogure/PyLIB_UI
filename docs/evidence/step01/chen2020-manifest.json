@@ -1,0 +1,43 @@
+{
+  "record": "https://zenodo.org/records/4032561",
+  "file": "LGM50_cell03.csv",
+  "download_url": "https://zenodo.org/api/records/4032561/files/LGM50_cell03.csv/content",
+  "retrieved_at": "2026-10-15T10:16:01.267192+00:00",
+  "title": "Experimental data for \"Development of Experimental Techniques for Parameterization of Multi-scale Lithium-ion Battery Models\"",
+  "creators": [
+    {
+      "name": "Chen, Chang-Hui",
+      "affiliation": "WMG, University of Warwick"
+    },
+    {
+      "name": "Brosa Planella, Ferran",
+      "affiliation": "WMG, University of Warwick",
+      "orcid": "0000-0001-6363-2812"
+    },
+    {
+      "name": "O'Regan, Kieran",
+      "affiliation": "School of Metallurgy and Materials, University of Birmingham",
+      "orcid": "0000-0002-5266-594X"
+    },
+    {
+      "name": "Gastol, Dominika",
+      "affiliation": "School of Metallurgy and Materials, University of Birmingham"
+    },
+    {
+      "name": "Widanage, W. Dhammika",
+      "affiliation": "WMG, University of Warwick"
+    },
+    {
+      "name": "Kendrick, Emma",
+      "affiliation": "School of Metallurgy and Materials, University of Birmingham",
+      "orcid": "0000-0002-4219-964X"
+    }
+  ],
+  "license": {
+    "id": "cc-by-4.0"
+  },
+  "upstream_checksum": "md5:a09cbd8eff0af55dfe9bc8728fa89908",
+  "sha256": "fcc13423786d6044f3ec41b1b278fb1d42ff55018666be743243f7c34b1b98cb",
+  "byte_count": 590794,
+  "conditions": "LG M50 cell03; original columns and row order retained; not a target end-face-collection cell validation"
+}

@@ -1,0 +1,468 @@
+{
+  "21700": {
+    "schema_version": "design-2.0",
+    "input": {
+      "name": "21700 巻回設計",
+      "cell_format": "21700",
+      "diameter_mm": 21,
+      "height_mm": 70,
+      "wall_mm": 0.25,
+      "lid_total_mm": 0.6,
+      "axial_reserve_mm": 4,
+      "radial_gap_mm": 0.2,
+      "core_diameter_mm": 3,
+      "winding_width_mm": 64,
+      "positive_width_mm": 60,
+      "negative_width_mm": 62,
+      "length_mode": "fit",
+      "length_mm": 1400,
+      "positive_thickness_um": 65,
+      "negative_thickness_um": 75,
+      "positive_foil_um": 15,
+      "negative_foil_um": 8,
+      "separator_um": 16,
+      "separator_porosity": 0.45,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "positive_material": "NMC811_demo",
+      "negative_additive": "Si_demo",
+      "fraction_basis": "mass",
+      "positive_active": 0.96,
+      "positive_binder": 0.02,
+      "positive_carbon": 0.02,
+      "negative_graphite": 0.96,
+      "negative_si": 0,
+      "negative_binder": 0.02,
+      "negative_carbon": 0.02,
+      "lithium_fraction_positive": 0.5,
+      "lithium_fraction_negative": 0.5,
+      "c_rate_capacity_mode": "design",
+      "rated_capacity_ah": 5,
+      "positive_terminal": "top",
+      "negative_terminal": "bottom",
+      "positive_contact_fraction": 1,
+      "negative_contact_fraction": 1,
+      "electrolyte_fill": 1,
+      "electrolyte_density_g_cm3": 1.2,
+      "hardware_mass_g": 3
+    },
+    "validation_status": "illustrative_unvalidated",
+    "materials": {
+      "carbon_demo": {
+        "label": "導電助剤",
+        "role": "inactive",
+        "density_g_cm3": 2.0,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "NMC811_demo": {
+        "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+        "role": "positive",
+        "density_g_cm3": 4.8,
+        "capacity_mah_g": 200,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "binder_demo": {
+        "label": "結着剤",
+        "role": "inactive",
+        "density_g_cm3": 1.8,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "Si_demo": {
+        "label": "Si（元素Si）",
+        "role": "negative_additive",
+        "density_g_cm3": 2.33,
+        "capacity_mah_g": 3000,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "graphite_demo": {
+        "label": "黒鉛",
+        "role": "negative",
+        "density_g_cm3": 2.26,
+        "capacity_mah_g": 350,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      }
+    },
+    "geometry": {
+      "pitch_mm": 0.335,
+      "length_mm": 926.0899358914211,
+      "max_length_mm": 926.0899358914211,
+      "inner_radius_mm": 1.5,
+      "outer_radius_mm": 10.05,
+      "turns": 25.522388059701495,
+      "envelope_cm3": 19.85536822551207,
+      "layer_volume_cm3": 19.0959744780811,
+      "uncoated_void_cm3": 0.7593937474309698,
+      "pore_volume_cm3": 5.776578584116328
+    },
+    "positive": {
+      "solid_density_g_cm3": 4.522613065326633,
+      "specific_capacity_mah_g": 192.0,
+      "components": [
+        {
+          "id": "NMC811_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9045226130653266
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.05025125628140703
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.045226130653266326
+        }
+      ],
+      "area_cm2": 1111.3079230697053,
+      "coating_volume_cm3": 7.223501499953085,
+      "pore_volume_cm3": 2.1670504499859256,
+      "mass_loading_mg_cm2": 20.577889447236178,
+      "dry_mass_g": 22.868371582766045,
+      "capacity_ah": 4.390727343891081,
+      "areal_capacity_mah_cm2": 3.9509547738693462
+    },
+    "negative": {
+      "solid_density_g_cm3": 2.242706242970869,
+      "specific_capacity_mah_g": 336.0,
+      "components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595
+        },
+        {
+          "id": "Si_demo",
+          "mass_fraction": 0,
+          "solid_volume_fraction": 0.0
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.024918958255231875
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.02242706242970869
+        }
+      ],
+      "area_cm2": 1148.351520505362,
+      "coating_volume_cm3": 8.612636403790216,
+      "pore_volume_cm3": 2.7560436492128693,
+      "mass_loading_mg_cm2": 11.43780183915143,
+      "dry_mass_g": 13.134617133228572,
+      "capacity_ah": 4.4132313567648,
+      "areal_capacity_mah_cm2": 3.8431014179548804
+    },
+    "negative_phase_count": 1,
+    "capacity": {
+      "positive_ah": 4.390727343891081,
+      "negative_total_ah": 4.4132313567648,
+      "negative_overlap_ah": 4.270869054933677,
+      "np_ratio": 0.9727019512782625,
+      "design_ah": 4.270869054933677,
+      "c_rate_reference_ah": 4.270869054933677
+    },
+    "lithium_inventory": {
+      "positive_ah_equivalent": 2.1953636719455405,
+      "negative_ah_equivalent": 2.2066156783824,
+      "total_mol_equivalent": 0.1642438836347821
+    },
+    "mass_g": {
+      "positive_dry": 22.868371582766045,
+      "negative_dry": 13.134617133228572,
+      "al_foil": 2.4004251138305635,
+      "cu_foil": 4.2484561027006125,
+      "separator_solid": 0.9805588415608109,
+      "electrolyte": 6.931894300939594,
+      "can_and_lids": 10.50980748699835,
+      "other_hardware": 3
+    },
+    "total_mass_g": 64.07413056202455,
+    "collector_connections": {
+      "positive": {
+        "foil": "Al",
+        "face": "top",
+        "contact_fraction": 1
+      },
+      "negative": {
+        "foil": "Cu",
+        "face": "bottom",
+        "contact_fraction": 1
+      },
+      "distribution_solved": false
+    },
+    "adapter_input": {
+      "electrode_height_m": 0.06,
+      "electrode_width_m": 0.9260899358914211,
+      "parallel_electrodes": 2,
+      "paired_area_m2": 0.11113079230697054,
+      "positive_thickness_m": 6.5e-05,
+      "negative_thickness_m": 7.5e-05,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "negative_phase_volume_fractions": [
+        0.6478047059342403
+      ],
+      "negative_particle_phases": "1",
+      "negative_active_components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595
+        }
+      ],
+      "solver_ready": false,
+      "reason": "Step3で材料パラメータ・初期化の整合検証が必要"
+    },
+    "warnings": [
+      "材料物性・容量・質量は仮定値による設計見積り。実測校正なし。",
+      "設計容量は半電池容量の小さい側。初期Li・利用率・終止電圧による実際の取出容量ではない。",
+      "巻回は面積保存の連続環状近似。端部・塗工開始終了・曲率差・溶接形状は省略。",
+      "上下端面集電は接続指定のみ。局所電流・接触抵抗・発熱・力学は未計算。",
+      "Li在庫は容量×初期充填率のAh等価帳簿。SEI・不可逆損失・電解液Liを含まない。",
+      "重なり領域のN/Pが1未満です。負極容量が設計容量を制限します。"
+    ]
+  },
+  "18650": {
+    "schema_version": "design-2.0",
+    "input": {
+      "name": "18650 巻回設計",
+      "cell_format": "18650",
+      "diameter_mm": 18,
+      "height_mm": 65,
+      "wall_mm": 0.25,
+      "lid_total_mm": 0.6,
+      "axial_reserve_mm": 4,
+      "radial_gap_mm": 0.2,
+      "core_diameter_mm": 3,
+      "winding_width_mm": 59,
+      "positive_width_mm": 55,
+      "negative_width_mm": 57,
+      "length_mode": "fit",
+      "length_mm": 1400,
+      "positive_thickness_um": 65,
+      "negative_thickness_um": 75,
+      "positive_foil_um": 15,
+      "negative_foil_um": 8,
+      "separator_um": 16,
+      "separator_porosity": 0.45,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "positive_material": "NMC811_demo",
+      "negative_additive": "Si_demo",
+      "fraction_basis": "mass",
+      "positive_active": 0.96,
+      "positive_binder": 0.02,
+      "positive_carbon": 0.02,
+      "negative_graphite": 0.96,
+      "negative_si": 0,
+      "negative_binder": 0.02,
+      "negative_carbon": 0.02,
+      "lithium_fraction_positive": 0.5,
+      "lithium_fraction_negative": 0.5,
+      "c_rate_capacity_mode": "design",
+      "rated_capacity_ah": 3,
+      "positive_terminal": "top",
+      "negative_terminal": "bottom",
+      "positive_contact_fraction": 1,
+      "negative_contact_fraction": 1,
+      "electrolyte_fill": 1,
+      "electrolyte_density_g_cm3": 1.2,
+      "hardware_mass_g": 3
+    },
+    "validation_status": "illustrative_unvalidated",
+    "materials": {
+      "carbon_demo": {
+        "label": "導電助剤",
+        "role": "inactive",
+        "density_g_cm3": 2.0,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "NMC811_demo": {
+        "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+        "role": "positive",
+        "density_g_cm3": 4.8,
+        "capacity_mah_g": 200,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "binder_demo": {
+        "label": "結着剤",
+        "role": "inactive",
+        "density_g_cm3": 1.8,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "Si_demo": {
+        "label": "Si（元素Si）",
+        "role": "negative_additive",
+        "density_g_cm3": 2.33,
+        "capacity_mah_g": 3000,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      },
+      "graphite_demo": {
+        "label": "黒鉛",
+        "role": "negative",
+        "density_g_cm3": 2.26,
+        "capacity_mah_g": 350,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。"
+      }
+    },
+    "geometry": {
+      "pitch_mm": 0.335,
+      "length_mm": 664.4468462342412,
+      "max_length_mm": 664.4468462342412,
+      "inner_radius_mm": 1.5,
+      "outer_radius_mm": 8.55,
+      "turns": 21.044776119402986,
+      "envelope_cm3": 13.132791915819778,
+      "layer_volume_cm3": 12.5879455019077,
+      "uncoated_void_cm3": 0.5448464139120777,
+      "pore_volume_cm3": 3.807679097029943
+    },
+    "positive": {
+      "solid_density_g_cm3": 4.522613065326633,
+      "specific_capacity_mah_g": 192.0,
+      "components": [
+        {
+          "id": "NMC811_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9045226130653266
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.05025125628140703
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.045226130653266326
+        }
+      ],
+      "area_cm2": 730.8915308576653,
+      "coating_volume_cm3": 4.750794950574825,
+      "pore_volume_cm3": 1.4252384851724476,
+      "mass_loading_mg_cm2": 20.577889447236178,
+      "dry_mass_g": 15.040205119910247,
+      "capacity_ah": 2.8877193830227674,
+      "areal_capacity_mah_cm2": 3.9509547738693462
+    },
+    "negative": {
+      "solid_density_g_cm3": 2.242706242970869,
+      "specific_capacity_mah_g": 336.0,
+      "components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595
+        },
+        {
+          "id": "Si_demo",
+          "mass_fraction": 0,
+          "solid_volume_fraction": 0.0
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.024918958255231875
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.02242706242970869
+        }
+      ],
+      "area_cm2": 757.469404707035,
+      "coating_volume_cm3": 5.681020535302762,
+      "pore_volume_cm3": 1.817926571296884,
+      "mass_loading_mg_cm2": 11.43780183915143,
+      "dry_mass_g": 8.663784950259064,
+      "capacity_ah": 2.9110317432870456,
+      "areal_capacity_mah_cm2": 3.8431014179548804
+    },
+    "negative_phase_count": 1,
+    "capacity": {
+      "positive_ah": 2.8877193830227674,
+      "negative_total_ah": 2.9110317432870456,
+      "negative_overlap_ah": 2.808890278610307,
+      "np_ratio": 0.9727019512782629,
+      "design_ah": 2.808890278610307,
+      "c_rate_reference_ah": 2.808890278610307
+    },
+    "lithium_inventory": {
+      "positive_ah_equivalent": 1.4438596915113837,
+      "negative_ah_equivalent": 1.4555158716435228,
+      "total_mol_equivalent": 0.10817967662044323
+    },
+    "mass_g": {
+      "positive_dry": 15.040205119910247,
+      "negative_dry": 8.663784950259064,
+      "al_foil": 1.5876957390767195,
+      "cu_foil": 2.8100254463461547,
+      "separator_solid": 0.648563908821858,
+      "electrolyte": 4.569214916435931,
+      "can_and_lids": 8.246189841821083,
+      "other_hardware": 3
+    },
+    "total_mass_g": 44.56567992267106,
+    "collector_connections": {
+      "positive": {
+        "foil": "Al",
+        "face": "top",
+        "contact_fraction": 1
+      },
+      "negative": {
+        "foil": "Cu",
+        "face": "bottom",
+        "contact_fraction": 1
+      },
+      "distribution_solved": false
+    },
+    "adapter_input": {
+      "electrode_height_m": 0.055,
+      "electrode_width_m": 0.6644468462342412,
+      "parallel_electrodes": 2,
+      "paired_area_m2": 0.07308915308576654,
+      "positive_thickness_m": 6.5e-05,
+      "negative_thickness_m": 7.5e-05,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "negative_phase_volume_fractions": [
+        0.6478047059342403
+      ],
+      "negative_particle_phases": "1",
+      "negative_active_components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595
+        }
+      ],
+      "solver_ready": false,
+      "reason": "Step3で材料パラメータ・初期化の整合検証が必要"
+    },
+    "warnings": [
+      "材料物性・容量・質量は仮定値による設計見積り。実測校正なし。",
+      "設計容量は半電池容量の小さい側。初期Li・利用率・終止電圧による実際の取出容量ではない。",
+      "巻回は面積保存の連続環状近似。端部・塗工開始終了・曲率差・溶接形状は省略。",
+      "上下端面集電は接続指定のみ。局所電流・接触抵抗・発熱・力学は未計算。",
+      "Li在庫は容量×初期充填率のAh等価帳簿。SEI・不可逆損失・電解液Liを含まない。",
+      "重なり領域のN/Pが1未満です。負極容量が設計容量を制限します。"
+    ]
+  }
+}

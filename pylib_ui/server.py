@@ -8,18 +8,22 @@ from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 
 from .datasets import table_preview
+from .design import MATERIALS, evaluate_design, templates
 from .models import MODEL_REGISTRY
 from .schema import SimulationInput
 from .service import SimulationService, export_csv
 from .storage import RunRepository
+from .jobs import PhysicsJobs
+from .physics import DEFAULTS as PHYSICS_DEFAULTS
 
 STATIC = Path(__file__).parent / "static"
 logger = logging.getLogger(__name__)
 
 
-def create_server(port=8765, data_dir=None):
+def create_server(port=8765, data_dir=None, research_python=None):
     repository = RunRepository(Path(data_dir or Path(__file__).resolve().parents[1] / "data") / "runs.sqlite3")
     service = SimulationService(repository)
+    jobs = None
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format, *args):
@@ -66,6 +70,8 @@ def create_server(port=8765, data_dir=None):
             assets = {"/": ("index.html", "text/html; charset=utf-8"),
                       "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                       "/library.js": ("library.js", "text/javascript; charset=utf-8"),
+                      "/design.js": ("design.js", "text/javascript; charset=utf-8"),
+                      "/physics.js": ("physics.js", "text/javascript; charset=utf-8"),
                       "/style.css": ("style.css", "text/css; charset=utf-8")}
             try:
                 if path in assets:
@@ -77,6 +83,14 @@ def create_server(port=8765, data_dir=None):
                                                       MODEL_REGISTRY.values()]})
                 if path == "/api/runs":
                     return self.send(200, repository.list(project_id))
+                if path == "/api/physics/config":
+                    return self.send(200, {"defaults": PHYSICS_DEFAULTS, "environment": jobs.availability})
+                if path == "/api/jobs":
+                    return self.send(200, repository.jobs(project_id))
+                if path == "/api/design/config":
+                    return self.send(200, {"templates": templates(), "materials": MATERIALS})
+                if path == "/api/designs":
+                    return self.send(200, repository.designs(project_id))
                 if path == "/api/projects":
                     return self.send(200, repository.projects())
                 if path == "/api/comparisons":
@@ -115,13 +129,15 @@ def create_server(port=8765, data_dir=None):
                 return self.reject_post(403, "ローカル画面から実行してください。")
             path = urlsplit(self.path).path
             if path not in {"/api/simulate", "/api/save", "/api/projects", "/api/comparisons", "/api/import/inspect",
-                            "/api/import/preview", "/api/import/demo"}:
+                            "/api/import/preview", "/api/import/demo", "/api/design/evaluate", "/api/designs",
+                            "/api/jobs", "/api/jobs/cancel"}:
                 return self.send(404, {"error": "APIが見つかりません。"})
             try:
                 if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
                     raise ValueError("application/json で送信してください。")
                 length = int(self.headers.get("Content-Length", "0"))
-                if not 0 < length <= (3 * 1024 * 1024 if path.startswith("/api/import/") else 65536):
+                if not 0 < length <= (
+                3 * 1024 * 1024 if path.startswith("/api/import/") else 262144 if path == "/api/jobs" else 65536):
                     raise ValueError("リクエストサイズが範囲外です。")
                 try:
                     data = json.loads(self.rfile.read(length))
@@ -131,6 +147,18 @@ def create_server(port=8765, data_dir=None):
                     raise ValueError("入力はオブジェクトで指定してください。")
                 if path == "/api/projects":
                     return self.send(200, repository.create_project(data.get("name")))
+                if path == "/api/jobs":
+                    if set(data) - {"project_id", "input"}:
+                        raise ValueError("ジョブの入力項目を確認してください。")
+                    return self.send(202, jobs.submit(data.get("input"), data.get("project_id", "default")))
+                if path == "/api/jobs/cancel":
+                    if set(data) - {"project_id", "id"}:
+                        raise ValueError("取消の入力項目を確認してください。")
+                    return self.send(200, jobs.cancel(data.get("id"), data.get("project_id", "default")))
+                if path == "/api/design/evaluate":
+                    return self.send(200, evaluate_design(data))
+                if path == "/api/designs":
+                    return self.send(200, repository.save_design(data))
                 if path == "/api/comparisons":
                     return self.send(200, repository.save_comparison(data))
                 if path == "/api/import/inspect":
@@ -139,7 +167,8 @@ def create_server(port=8765, data_dir=None):
                     return self.send(200, service.preview_import(data, demo=path.endswith("demo")))
                 if path == "/api/simulate":
                     project_id = data.pop("project_id", "default")
-                    return self.send(200, service.run(data, project_id))
+                    design_id = data.pop("design_id", None)
+                    return self.send(200, service.run(data, project_id, design_id))
                 if not isinstance(data, dict) or not isinstance(data.get("id"), str):
                     raise ValueError("保存する計算IDが必要です。")
                 return self.send(200, service.save(data["id"]))
@@ -151,9 +180,21 @@ def create_server(port=8765, data_dir=None):
                 logger.exception("Local simulation request failed")
                 return self.send(500, {"error": "処理に失敗しました。ローカル保存先とサーバー状態を確認してください。"})
 
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    class LocalServer(ThreadingHTTPServer):
+        def server_close(self):
+            if jobs is not None:
+                jobs.close()
+            super().server_close()
+
+    server = LocalServer(("127.0.0.1", port), Handler)
+    try:
+        jobs = PhysicsJobs(repository, research_python)
+    except Exception:
+        server.server_close()
+        raise
     server.daemon_threads = True
     server.service = service
+    server.jobs = jobs
     return server
 
 
@@ -162,9 +203,10 @@ def main():
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--data-dir", type=Path)
     parser.add_argument("--no-browser", action="store_true")
+    parser.add_argument("--research-python", type=Path, help="固定した研究用Python 3.13環境")
     args = parser.parse_args()
     logging.basicConfig(level=logging.WARNING)
-    server = create_server(args.port, args.data_dir)
+    server = create_server(args.port, args.data_dir, args.research_python)
     url = f"http://127.0.0.1:{server.server_port}"
     print(f"PyLIB UI: {url}\n終了: Ctrl+C", flush=True)
     if not args.no_browser:

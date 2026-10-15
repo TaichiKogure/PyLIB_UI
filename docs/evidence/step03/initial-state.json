@@ -1,0 +1,33 @@
+[
+  {
+    "case": "spme",
+    "initial_state": {
+      "requested_soc": 0.5,
+      "Total lithium in particles [mol]": 0.28396609689240004,
+      "Total lithium in electrolyte [mol]": 0.005367718200000006,
+      "X-averaged positive particle surface stoichiometry": 0.5589099496106884,
+      "X-averaged negative particle surface stoichiometry": 0.4684819184615273
+    },
+    "lithium_balance": {
+      "initial_mol": 0.2893338150924,
+      "final_mol": 0.28933381509239997,
+      "relative_change": -1.9185849816251204e-16
+    }
+  },
+  {
+    "case": "composite",
+    "initial_state": {
+      "requested_soc": 0.5,
+      "Total lithium in particles [mol]": 0.30242124375840007,
+      "Total lithium in electrolyte [mol]": 0.005367718200000006,
+      "X-averaged positive particle surface stoichiometry": 0.599770227804299,
+      "X-averaged negative primary particle surface stoichiometry": 0.39407043378300444,
+      "X-averaged negative secondary particle surface stoichiometry": 0.9392384844011911
+    },
+    "lithium_balance": {
+      "initial_mol": 0.30778896195840005,
+      "final_mol": 0.30778897622692997,
+      "relative_change": 4.6358159897499374e-08
+    }
+  }
+]

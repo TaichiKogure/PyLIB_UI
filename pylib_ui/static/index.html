@@ -7,20 +7,24 @@
     <link href="/style.css" rel="stylesheet">
     <script defer src="/app.js"></script>
     <script defer src="/library.js"></script>
+    <script defer src="/design.js"></script>
+    <script defer src="/physics.js"></script>
 </head>
 <body>
 <header class="topbar">
     <a class="brand" href="/"><span class="brand-icon">ϟ</span> PyLIB <span class="brand-sub">WORKBENCH</span></a>
-    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.2</span></span>
+    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.4</span></span>
 </header>
 <main>
     <div class="heading">
         <div><p class="eyebrow">CYLINDRICAL CELL / SIMULATION</p>
             <h1>セルの挙動を、ひと目で。</h1>
             <p class="intro">条件を変えて、充放電カーブを比較する。小さな実験から始めるLIBワークベンチ。</p></div>
-        <span class="pill">合成モデル · 未校正</span></div>
+        <span class="pill">研究用 · 実測未検証</span></div>
     <div class="steps">
-        <span><b>01</b> セルを設定</span><i>→</i><span><b>02</b> 試験条件を入力</span><i>→</i><span><b>03</b> 計算・カーブ確認</span><i>→</i><span><b>04</b> 保存して比較</span>
+        <a href="#design-panel"><b>01</b> 円筒セルを設計</a><i>→</i><a href="#physics-panel"><b>02</b>
+        SPMe・DFNの試験</a><i>→</i><a href="#result-title"><b>03</b> カーブ確認</a><i>→</i><a href="#history"><b>04</b>
+        保存して比較</a>
     </div>
     <div aria-live="polite" class="message" id="message" role="status">起動しています…</div>
     <div class="project-bar panel">
@@ -29,12 +33,133 @@
         <button id="create-project" type="button">作成</button>
         <a href="#import-panel">実測・表データを取り込む ↓</a>
     </div>
+    <section class="panel design-panel" id="design-panel">
+        <div class="section-title">
+            <div><p class="eyebrow">STEP 2 / CYLINDRICAL DESIGN</p>
+                <h2>円筒設計・材料レシピ</h2></div>
+            <span class="pill">設計見積り · 未校正</span></div>
+        <p>テンプレートを選ぶ → 寸法と配合を調整 → 収支を確認 → 保存して試験条件へ反映</p>
+        <div class="fields two"><label>テンプレート<select id="design-template">
+            <option value="21700">21700</option>
+            <option value="18650">18650</option>
+        </select></label>
+            <label>保存済み設計<select id="design-saved">
+                <option value="">保存済み設計を選択</option>
+            </select></label></div>
+        <button id="design-template-apply" type="button">テンプレートで入力を置換</button>
+        <div class="design-workspace">
+            <form id="design-form">
+                <div id="design-fields"></div>
+            </form>
+            <div class="design-output">
+                <p aria-live="polite" id="design-status" role="status">設計を準備しています…</p>
+                <div id="design-diagram"></div>
+                <div id="design-balance"></div>
+                <div class="design-actions">
+                    <button disabled id="design-save" type="button">設計を新しい版として保存</button>
+                    <button disabled id="design-apply" type="button">合成モデルの試験条件へ反映 ↓</button>
+                    <button disabled id="design-export" type="button">設計JSON</button>
+                </div>
+                <details>
+                    <summary>材料・相変換・計算アダプタ入力</summary>
+                    <pre id="design-detail"></pre>
+                </details>
+            </div>
+        </div>
+    </section>
+    <section class="panel design-panel" id="physics-panel">
+        <div class="section-title">
+            <div><p class="eyebrow">STEP 3 / ELECTROCHEMISTRY</p>
+                <h2>SPMe・DFNで充放電を計算</h2></div>
+            <span class="pill">文献物性 · 対象セル未検証</span></div>
+        <p>設計・物性を選ぶ → 試験を組む → ジョブを実行 → 保存されたカーブを比較</p>
+        <p id="physics-environment" role="status">別計算環境を確認しています…</p>
+        <form id="physics-form">
+            <div class="fields two">
+                <label>物理計算名<input id="physics-name" maxlength="100" required></label>
+                <label>計算モデル<select id="physics-model">
+                    <option value="SPMe">SPMe（通常）</option>
+                    <option value="DFN">DFN（詳細比較）</option>
+                </select></label>
+                <label>物性セット<select id="physics-parameter_set">
+                    <option value="Chen2020">Chen2020 · NMC811 / 黒鉛</option>
+                    <option value="Chen2020_composite">Chen2020_composite · NMC811 / 黒鉛＋Si</option>
+                </select></label>
+                <label>計算に使う設計<select id="physics-design">
+                    <option value="">文献セットの基準形状</option>
+                </select></label>
+            </div>
+            <p class="field-note">
+                保存済み設計を選ぶと寸法・空隙率・相分率を上書きします。設計の仮定密度と文献の反応・輸送物性を組み合わせた仮想セルです。LFP・NCA・SiOxは物性接続が未検証のため無効です。</p>
+            <div class="fields two">
+                <label>物理計算の初期SOC (0–1)<input id="physics-initial_soc" max="1" min="0" required step="any"
+                                                     type="number"></label>
+                <label>温度モデル<select id="physics-thermal">
+                    <option value="isothermal">等温（周囲温度に固定）</option>
+                    <option value="lumped">集中熱</option>
+                </select></label>
+                <label>物理計算の初期温度 (°C)<input id="physics-initial_temp_c" max="45" min="0" required
+                                                     step="any" type="number"></label>
+                <label>物理計算の周囲温度 (°C)<input id="physics-ambient_temp_c" max="45" min="0" required
+                                                     step="any" type="number"></label>
+                <label>物理計算の下限電圧 (V)<input id="physics-min_voltage_v" max="4" min="2" required step="any"
+                                                    type="number"></label>
+                <label>物理計算の上限電圧 (V)<input id="physics-max_voltage_v" max="4.3" min="2.5" required
+                                                    step="any" type="number"></label>
+            </div>
+            <label>試験の入力方法<select id="physics-protocol-mode">
+                <option value="steps">CC・CV・休止のステップ</option>
+                <option value="profile">電流プロファイル（時間と電流）</option>
+            </select></label>
+            <div id="physics-step-editor">
+                <div id="physics-steps"></div>
+                <button id="physics-add-step" type="button">＋ ステップを追加</button>
+            </div>
+            <div hidden id="physics-profile-editor"><label>電流プロファイル（各行：秒, A。0秒始まり・直線補間）<textarea
+                    id="physics-profile" rows="6">0,1
+30,1
+31,0
+40,0
+41,-1
+70,-1</textarea></label></div>
+            <p class="field-note">
+                電流は放電＋／充電−。CC終止は電圧、CV終止は電流の絶対値。時間は各ステップの上限で、終止条件に達すると次へ進みます。初期状態で終止済みのステップは黙ってスキップせず失敗として記録します。</p>
+            <details>
+                <summary>出力・数値精度・時間上限</summary>
+                <div class="fields two">
+                    <label>物理計算の出力間隔 (s)<input id="physics-dt_s" max="60" min="0.1" required step="any"
+                                                        type="number"></label>
+                    <label>空間メッシュ<select id="physics-mesh">
+                        <option value="coarse">粗（10点・探索用）</option>
+                        <option value="normal">標準（20点）</option>
+                        <option value="fine">細（40点）</option>
+                    </select></label>
+                    <label>相対許容誤差<input id="physics-rtol" max="0.001" min="0.00000001" required step="any"
+                                              type="number"></label>
+                    <label>絶対許容誤差<input id="physics-atol" max="0.001" min="0.00000001" required step="any"
+                                              type="number"></label>
+                    <label>ジョブの実時間上限 (s)<input id="physics-timeout_s" max="300" min="5" required
+                                                        step="any" type="number"></label>
+                    <label>熱伝達係数 (W/m²/K)<input id="physics-heat_transfer_w_m2_k" max="100" min="0" required
+                                                     step="any" type="number"></label>
+                </div>
+            </details>
+            <button class="primary" disabled id="physics-run" type="submit">▶ 物理計算ジョブを追加</button>
+            <p class="field-note">
+                計算は別プロセスで1件ずつ実行します。完了・一部結果は自動保存。取消・時間超過・失敗・再起動中断を区別します。合成モデルは下の欄から実行できます。</p>
+        </form>
+        <div class="section-title"><h2>物理計算ジョブ</h2>
+            <button id="physics-refresh" type="button">ジョブを更新</button>
+        </div>
+        <div aria-live="polite" id="physics-jobs"></div>
+    </section>
     <div class="workspace">
         <aside class="panel settings">
             <form id="simulation-form">
-                <div class="section-title"><h2><span>01</span> セル設定</h2>
+                <div class="section-title"><h2><span>01</span> 合成モデルのセル設定</h2>
                     <button class="text-button" id="reset" type="button">初期値に戻す</button>
                 </div>
+                <p class="field-note" id="design-link">設計未連携 · セル設定を直接入力できます。</p>
                 <div class="cell-preview">
                     <svg aria-label="円筒セルの模式図" role="img" viewBox="0 0 130 150">
                         <defs>
@@ -65,13 +190,13 @@
                     </select></label>
                 </div>
                 <label>基準容量 <span class="unit">Ah</span><input max="100" min="0.1" name="capacity_ah" required
-                                                                   step="0.1" type="number"></label>
-                <p class="field-note">Cレートの基準。寸法から容量は自動算定しません。</p>
+                                                                   step="any" type="number"></label>
+                <p class="field-note">Cレートの基準。上の設計から反映するか、直接入力してください。</p>
                 <div class="fields two"><label>外径 <span class="unit">mm</span><input max="50" min="10"
                                                                                        name="diameter_mm" required
-                                                                                       step="0.1"
+                                                                                       step="any"
                                                                                        type="number"></label><label>全高
-                    <span class="unit">mm</span><input max="150" min="20" name="height_mm" required step="0.1"
+                    <span class="unit">mm</span><input max="150" min="20" name="height_mm" required step="any"
                                                        type="number"></label></div>
                 <hr>
                 <div class="section-title"><h2><span>02</span> 試験条件</h2></div>
@@ -142,7 +267,8 @@
                     <div><span>端子エネルギー</span><strong id="metric-energy">—</strong><small>Wh · 放電＋／充電−</small>
                     </div>
                     <div><span>最高温度</span><strong id="metric-temp">—</strong><small>°C · セル平均</small></div>
-                    <div><span>最終SOC</span><strong id="metric-soc">—</strong><small>% · 推定状態</small></div>
+                    <div><span>最終SOC</span><strong id="metric-soc">—</strong><small id="metric-soc-kind">% ·
+                        推定状態</small></div>
                 </div>
                 <div class="chart-toolbar">
                     <div aria-label="表示する変数" class="tabs" role="group">
@@ -279,12 +405,12 @@
             <div class="model-note"><span class="note-icon">i</span>
                 <div><strong>まずは、軽量なモデルで条件の違いを観察。</strong>
                     <p>
-                        合成・未校正の等価回路モデルです。寸法は放熱面積に反映。全面集電の局所分布・析出・膨張・応力は未計算です。実測との照合やSPMe／DFNへの拡張は次の段階です。</p>
+                        合成モデルは操作確認用です。物理計算は上のSPMe／DFN欄から実行できます。全面集電の局所分布・析出・膨張・応力、対象セルの実測校正は後続の段階です。</p>
                 </div>
             </div>
         </section>
     </div>
-    <footer>PyLIB WORKBENCH <span>等価回路 1RC · 集中熱 · 合成データ</span></footer>
+    <footer>PyLIB WORKBENCH <span>SPMe / DFN · 合成モデル · データライブラリ</span></footer>
 </main>
 </body>
 </html>

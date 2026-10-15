@@ -1,0 +1,33 @@
+{
+  "case": "dfn_composite_thermal_hysteresis",
+  "enabled": false,
+  "model": "DFN",
+  "parameter_set": "Chen2020_composite",
+  "options": {
+    "particle phases": [
+      "2",
+      "1"
+    ],
+    "open-circuit potential": [
+      [
+        "single",
+        "current sigmoid"
+      ],
+      "single"
+    ],
+    "thermal": "lumped"
+  },
+  "initial_soc": 0.5,
+  "protocol": [
+    "Discharge at C/5 for 30 seconds",
+    "Rest for 10 seconds",
+    "Charge at C/5 for 30 seconds"
+  ],
+  "solver": "CasadiSolver",
+  "rtol": 1e-06,
+  "atol": 1e-06,
+  "mesh": "PyBaMM defaults",
+  "status": "disabled",
+  "reason": "KeyError: \"Parameter 'Negative electrode density [kg.m-3]' not found. 'Negative electrode density [kg.m-3]' not found. If you are using a composite model, you may need to use Primary: Negative electrode density [kg.m-3] instead. Otherwise, best matches are ['Primary: Negative electrode density [kg.m-3]', 'Positive electrode density [kg.m-3]', 'Secondary: Negative electrode density [kg.m-3]']\"",
+  "elapsed_s": 0.15218940000340808
+}
