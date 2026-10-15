@@ -30,6 +30,13 @@ const designGroups = [
         ["negative_graphite", "負極黒鉛"], ["negative_si", "負極Si / SiOx（0で黒鉛単相）"],
         ["negative_binder", "負極結着剤"], ["negative_carbon", "負極導電助剤"],
         ["positive_porosity", "正極空隙率 (0–1)"], ["negative_porosity", "負極空隙率 (0–1)"], ["separator_porosity", "セパレータ空隙率 (0–1)"]]],
+    ["活物質の比容量・利用率・形成損失", [
+        ["positive_capacity_mah_g", "正極可逆比容量 (mAh/g・0で材料既定値)"],
+        ["graphite_capacity_mah_g", "黒鉛可逆比容量 (mAh/g・0で350)"],
+        ["additive_capacity_mah_g", "Si / SiOx可逆比容量 (mAh/g・0で材料既定値)"],
+        ["positive_utilization", "正極の指定利用率 (0超〜1)"],
+        ["negative_utilization", "負極の指定利用率 (0超〜1)"],
+        ["negative_first_cycle_efficiency", "負極の初回効率 ICE (脱離/挿入・0.01〜1)"]]],
     ["初期Li帳簿・Cレート基準・質量", [
         ["lithium_fraction_positive", "正極初期Li充填率（仮定 0–1）"], ["lithium_fraction_negative", "負極初期Li充填率（仮定 0–1）"],
         ["c_rate_capacity_mode", "Cレート基準容量", {design: "設計容量を使用", rated: "指定した定格容量を使用"}],
@@ -38,7 +45,34 @@ const designGroups = [
     ["上下端面集電の接続", [
         ["positive_terminal", "正極Al箔 → 端板 → 正端子", {top: "上端面", bottom: "下端面"}],
         ["negative_terminal", "負極Cu箔 → 端板 → 負端子", {bottom: "下端面", top: "上端面"}],
-        ["positive_contact_fraction", "正極端面接触面積率 (0–1)"], ["negative_contact_fraction", "負極端面接触面積率 (0–1)"]]]
+        ["positive_contact_fraction", "正極端面接触面積率 (0–1)"], ["negative_contact_fraction", "負極端面接触面積率 (0–1)"],
+        ["positive_contact_asr_ohm_mm2", "正極の箔端面接触ASR (Ω·mm²)"],
+        ["negative_contact_asr_ohm_mm2", "負極の箔端面接触ASR (Ω·mm²)"],
+        ["terminal_resistance_mohm", "端板・端子等の直列抵抗 (mΩ)"],
+        ["film_asr_ohm_cm2", "正負合計の皮膜ASR (Ω·cm²・幾何面積基準)"]]],
+    ["電解液輸送・電子伝導・反応・拡散の仮定", [
+        ["electrolyte_conductivity_s_m", "バルク電解液導電率 κ (S/m)"],
+        ["positive_bruggeman", "正極Bruggeman指数 b (1〜5)"],
+        ["negative_bruggeman", "負極Bruggeman指数 b (1〜5)"],
+        ["separator_bruggeman", "セパレータBruggeman指数 b (1〜5)"],
+        ["positive_conductivity_s_m", "正極の有効電子伝導率 σ (S/m)"],
+        ["negative_conductivity_s_m", "負極の有効電子伝導率 σ (S/m)"],
+        ["positive_particle_radius_um", "正極の等価粒子半径 (µm)"],
+        ["negative_particle_radius_um", "負極の等価粒子半径 (µm)"],
+        ["positive_exchange_current_a_m2", "正極の交換電流密度 i₀ (A/m²・活物質表面基準)"],
+        ["negative_exchange_current_a_m2", "負極の交換電流密度 i₀ (A/m²・活物質表面基準)"],
+        ["positive_diffusivity_m2_s", "正極の固相拡散係数 D (m²/s)"],
+        ["negative_diffusivity_m2_s", "負極の固相拡散係数 D (m²/s)"]]],
+    ["性能見積りの評価点・平均熱収支", [
+        ["analysis_current_mode", "設計比較時の電流条件", {fixed_a: "同じ電流Aで比較", c_rate: "同じCレートで比較"}],
+        ["analysis_current_a", "評価放電電流 (A・0で微分抵抗)"],
+        ["analysis_c_rate", "評価Cレート (1/h)"],
+        ["analysis_ocv_v", "評価点のOCV (V・LFP等は手動調整)"],
+        ["analysis_cutoff_v", "評価下限電圧 (V)"],
+        ["analysis_temperature_c", "評価温度＝初期・周囲温度 (°C)"],
+        ["analysis_pulse_s", "一定損失を仮定するパルス時間 (s)"],
+        ["analysis_heat_capacity_j_kg_k", "セル質量基準の比熱 (J/kg/K)"],
+        ["analysis_heat_transfer_w_m2_k", "外表面の熱伝達係数 h (W/m²/K・0で断熱)"]]]
 ];
 
 function designInput() {
@@ -51,8 +85,12 @@ function designInput() {
 }
 
 function fillDesign(input) {
-    for (const [key, val] of Object.entries(input)) $("design-form").elements.namedItem(key).value = val;
+    for (const [key, val] of Object.entries({...designing.config.templates["21700"], ...input})) {
+        const control = $("design-form").elements.namedItem(key);
+        if (control) control.value = val;
+    }
     designChanged();
+    updateConfigurationSummary();
 }
 
 function designChanged() {
@@ -63,10 +101,12 @@ function designChanged() {
     $("design-saved").value = "";
     $("design-status").textContent = "変更あり · 収支を確認しています…";
     // Clear obsolete numbers immediately while validation is pending or fails.
-    for (const id of ["design-diagram", "design-balance", "design-detail"]) $(id).replaceChildren();
+    for (const id of ["design-diagram", "design-balance", "design-detail", "design-insights"]) $(id).replaceChildren();
     const f = $("design-form").elements;
     f.namedItem("length_mm").disabled = f.namedItem("length_mode").value === "fit";
     f.namedItem("rated_capacity_ah").disabled = f.namedItem("c_rate_capacity_mode").value === "design";
+    f.namedItem("analysis_current_a").disabled = f.namedItem("analysis_current_mode").value !== "fixed_a";
+    f.namedItem("analysis_c_rate").disabled = f.namedItem("analysis_current_mode").value !== "c_rate";
     clearTimeout(designing.timer);
     const revision = designing.revision;
     designing.timer = setTimeout(() => evaluateDesign(revision), 250);
@@ -166,6 +206,7 @@ function renderDesign(r) {
         ["正極 / 負極塗工面積（両面）", `${r.positive.area_cm2.toFixed(2)} / ${r.negative.area_cm2.toFixed(2)} cm²`],
         ["正極 / 負極片面面密度（固体全量）", `${r.positive.mass_loading_mg_cm2.toFixed(3)} / ${r.negative.mass_loading_mg_cm2.toFixed(3)} mg/cm²`],
         ["正極 / 負極全体容量", `${cap.positive_ah.toFixed(4)} / ${cap.negative_total_ah.toFixed(4)} Ah`],
+        ["正極 / 負極片面面積容量", `${r.positive.areal_capacity_mah_cm2.toFixed(3)} / ${r.negative.areal_capacity_mah_cm2.toFixed(3)} mAh/cm²`],
         ["重なり領域 N/P / 設計容量", `${cap.np_ratio.toFixed(4)} / ${cap.design_ah.toFixed(4)} Ah`],
         ["Cレート基準容量", `${cap.c_rate_reference_ah.toFixed(6)} Ah（${c.c_rate_capacity_mode === "design" ? "設計" : "指定定格"}）`],
         ["巻回体積 = 層体積 + 未塗工部空間", `${g.envelope_cm3.toFixed(4)} = ${g.layer_volume_cm3.toFixed(4)} + ${g.uncoated_void_cm3.toFixed(4)} cm³`],
@@ -186,8 +227,9 @@ function renderDesign(r) {
     $("design-detail").textContent = JSON.stringify({
         materials: r.materials, positive: r.positive, negative: r.negative,
         mass_g: r.mass_g, lithium_inventory: r.lithium_inventory, collector_connections: r.collector_connections,
-        adapter_input: r.adapter_input
+        adapter_input: r.adapter_input, analysis: r.analysis
     }, null, 2);
+    renderDesignInsights(r);
 }
 
 async function refreshDesigns() {
@@ -250,12 +292,16 @@ async function initDesign() {
                 input.step = "any";
                 input.min = "0";
                 input.max = "100000";
+                if (key === "analysis_temperature_c") input.min = "-20";
             }
             input.required = true;
             wrapper.append(input);
             grid.append(wrapper);
         }
         detail.append(grid);
+        if (title.startsWith("活物質")) detail.append(element("p", "比容量は可逆容量で、密度と独立に指定します。0は材料の仮定値を選ぶ指定です。利用率はレートから自動算出しません。比容量・利用率による設計容量の変更は、設計容量をCレート基準に選んだ場合、ソルバの公称基準容量にも影響します。ICEは独立した形成損失帳簿にのみ使用します。", "field-note"));
+        if (title.startsWith("電解液")) detail.append(element("p", "物性は評価温度・SOC相当の仮定値です。導電助剤の配合からσを自動推定せず、有効σを入力します。複合負極の粒子・反応値は均質な等価値として扱います。", "field-note"));
+        if (title.startsWith("上下端面")) detail.append(element("p", "接触面積は箔厚×巻回長×接触率です。端面円板全体の面積ではありません。接触率を下げても箔抵抗は自動補正しません。", "field-note"));
         $("design-fields").append(detail);
     }
     $("design-form").addEventListener("input", designChanged);
@@ -310,6 +356,7 @@ async function initDesign() {
         setInput(input);
         designing.binding = record;
         syncDesignBinding();
+        selectModelTab("synthetic");
         message("合成モデルへ寸法・Cレート基準容量・模式曲線を反映しました。物理計算にはSPMe・DFN欄で保存設計を選択してください。");
         $("simulation-form").scrollIntoView({block: "start"});
     });

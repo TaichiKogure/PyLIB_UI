@@ -137,7 +137,7 @@ class HttpTests(unittest.TestCase):
         return urlopen(request, timeout=10)
 
     def test_simulate_save_read_export_and_static(self):
-        for path in ["/", "/app.js", "/style.css", "/api/config"]:
+        for path in ["/", "/app.js", "/model-tabs.js", "/style.css", "/api/config"]:
             with self.request(path) as response:
                 self.assertEqual(response.status, 200)
         with self.request("/api/simulate", {"duration_min": 1}) as response:

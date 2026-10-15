@@ -4,14 +4,14 @@ import hashlib
 import json
 import math
 import os
-from pathlib import Path
 import time
+from pathlib import Path
 
 os.environ['PYBAMM_DISABLE_TELEMETRY'] = 'true'
 os.environ.setdefault('OMP_NUM_THREADS', '1')
 os.environ.setdefault('OPENBLAS_NUM_THREADS', '1')
 
-from .physics import PINNED_PYBAMM, PHYSICS_VERSION, MESHES, validate_request, validate_design
+from .physics import PINNED_PYBAMM, PHYSICS_VERSION, MESHES, DIAGNOSTICS, validate_request, validate_design
 
 
 def solve(request):
@@ -24,7 +24,8 @@ def solve(request):
     validate_design(c, design)
     started = time.perf_counter()
     composite = c['parameter_set'] == 'Chen2020_composite'
-    options = {'thermal': c['thermal'], 'calculate discharge energy': 'true'}
+    options = {'thermal': c['thermal'], 'calculate discharge energy': 'true',
+               'calculate heat source for isothermal models': 'true'}
     if composite:
         options.update(
             {'particle phases': ('2', '1'), 'open-circuit potential': (('single', 'current sigmoid'), 'single')})
@@ -138,6 +139,8 @@ def solve(request):
                     raise ValueError('nonfinite_result')
                 point[name] = float(func(values))
             points.append(point)
+            for name, (key, _label, _unit) in DIAGNOSTICS.items():
+                point[name] = scalar(sub, key, t)
         step_results.append(dict(index=index, start_s=t0, end_s=end, termination=str(sub.termination)))
     if not points:
         raise ValueError('empty_solution')
@@ -160,6 +163,10 @@ def solve(request):
     partial = len(subs) != len(steps) or any(
         s['termination'] != 'final time' and '[experiment]' not in s['termination'] for s in step_results)
     scalar_parameters = {k: float(v) for k, v in parameters.items() if isinstance(v, (int, float)) and math.isfinite(v)}
+    diagnostics = {name: dict(source_variable=key, label=label, unit=unit,
+                              initial=points[0][name], final=points[-1][name],
+                              minimum=min(p[name] for p in points), maximum=max(p[name] for p in points))
+                   for name, (key, label, unit) in DIAGNOSTICS.items()}
     descriptor = json.dumps(scalar_parameters, sort_keys=True, allow_nan=False)
     return dict(schema_version='3.0', record_type='physics', id=request['result_id'], project_id=request['project_id'],
                 created_at=request['created_at'], name=c['name'], source_type='simulation',
@@ -167,6 +174,7 @@ def solve(request):
                 engine=dict(id='pybamm_' + c['model'].lower(), version=pybamm.__version__,
                             label='PyBaMM ' + c['model']),
                 adapter_version=PHYSICS_VERSION, input=c, design_snapshot=design,
+                model_options=options,
                 parameter_provenance=dict(name=c['parameter_set'], package_version=pybamm.__version__,
                                           citations=citations,
                                           source='https://docs.pybamm.org/en/pybamm-v26.10.0.0/source/api/parameters/parameter_sets.html',
@@ -179,7 +187,10 @@ def solve(request):
                                elapsed_s=time.perf_counter() - started,
                                initialization='PyBaMM initial_soc / electrode SOH',
                                numeric_parameter_snapshot_stage='before initial_soc initialization; actual initial state is recorded separately'),
-                units=dict(time_s='s', voltage_v='V', current_a='A', soc='1', temperature_c='degC', capacity_ah='Ah',
+                diagnostic_summary=diagnostics,
+                diagnostic_basis='Native signed PyBaMM variables; extrema over exported sample times. Isothermal heat sources are calculated; temperature is fixed. Heat of mixing and external end-face contact losses are excluded.',
+                units=dict({name: value[2] for name, value in DIAGNOSTICS.items()}, time_s='s', voltage_v='V',
+                           current_a='A', soc='1', temperature_c='degC', capacity_ah='Ah',
                            energy_wh='Wh',
                            electrolyte_min_mol_m3='mol/m3', negative_surface_max_mol_m3='mol/m3', segment_id='1'),
                 sign_convention='current_a and energy_wh: discharge positive, charge negative; capacity_ah: absolute throughput',

@@ -103,7 +103,11 @@ function physicsCompatibility() {
     }
     $("physics-initial_temp_c").disabled = $("physics-thermal").value === "isothermal";
     $("physics-heat_transfer_w_m2_k").disabled = $("physics-thermal").value === "isothermal";
+    $("physics-thermal-note").textContent = $("physics-thermal").value === "isothermal"
+        ? "等温：初期温度・熱伝達係数は使用しません。周囲温度に固定します。"
+        : "集中熱：初期温度と熱伝達係数を使用し、発熱・周囲への放熱でセル温度を計算します。";
     refreshPhysicsDesigns();
+    syncModelNavigation();
 }
 
 function refreshPhysicsDesigns() {
@@ -133,6 +137,7 @@ function setPhysics(input) {
     if (profile) $("physics-profile").value = input.protocol[0].points.map(pair => pair.join(",")).join("\n");
     else for (const step of input.protocol) physicsStep(step);
     syncPhysicsEditor();
+    updateConfigurationSummary();
 }
 
 function syncPhysicsEditor() {
@@ -162,18 +167,28 @@ function showPhysics(run) {
         element("pre", JSON.stringify({
             input: run.input,
             numerical: run.numerical,
+            model_options: run.model_options,
             initial_state: run.initial_state,
             lithium_balance: run.lithium_balance,
             step_results: run.step_results,
             parameter_provenance: run.parameter_provenance,
             design_snapshot: run.design_snapshot
         }, null, 2)));
+    if (run.diagnostic_summary) {
+        const diagnostics = insightDetail("SPMe/DFNが計算した損失・発熱の内訳", insightTable(
+                ["変数", "単位", "初期", "最終", "表示点での最小", "表示点での最大"],
+                Object.values(run.diagnostic_summary).map(x => [x.label, x.unit, ...[x.initial, x.final, x.minimum, x.maximum].map(value => insightNumber(value, 6))])),
+            element("p", "電圧損失はソルバの符号付き値です。等温でも熱源は計算しますが温度は固定です。最大・最小は出力表示点に限ります。混合熱・外部端面接触発熱は含みません。設計画面の集中見積りとは物性・モデルが異なります。", "field-note"));
+        diagnostics.open = true;
+        $("snapshot").prepend(diagnostics);
+    }
     renderChart();
 }
 
 function restorePhysics(run) {
     try {
         setPhysics(run.input);
+        selectModelTab($("physics-model").value);
         message("物理計算時の条件を復元しました。再実行は新しいジョブとして保存されます。");
         $("physics-panel").scrollIntoView({block: "start"});
     } catch (error) {
@@ -261,6 +276,7 @@ async function initPhysics() {
     $("physics-environment").textContent = physical.config.environment.message;
     setPhysics(physical.config.defaults);
     $("physics-run").disabled = !physical.config.environment.available;
+    $("physics-model").addEventListener("change", physicsCompatibility);
     $("physics-parameter_set").addEventListener("change", physicsCompatibility);
     $("physics-thermal").addEventListener("change", physicsCompatibility);
     $("physics-protocol-mode").addEventListener("change", syncPhysicsEditor);

@@ -67,6 +67,37 @@ class DesignInput:
     electrolyte_fill: float = 1
     electrolyte_density_g_cm3: float = 1.2
     hardware_mass_g: float = 3
+    positive_capacity_mah_g: float = 0
+    graphite_capacity_mah_g: float = 0
+    additive_capacity_mah_g: float = 0
+    positive_utilization: float = 1
+    negative_utilization: float = 1
+    negative_first_cycle_efficiency: float = 1
+    analysis_current_mode: str = "fixed_a"
+    analysis_current_a: float = 5
+    analysis_c_rate: float = 1
+    analysis_ocv_v: float = 3.7
+    analysis_cutoff_v: float = 2.8
+    analysis_temperature_c: float = 25
+    electrolyte_conductivity_s_m: float = 1
+    positive_bruggeman: float = 1.5
+    negative_bruggeman: float = 1.5
+    separator_bruggeman: float = 1.5
+    positive_conductivity_s_m: float = 10
+    negative_conductivity_s_m: float = 100
+    positive_particle_radius_um: float = 5
+    negative_particle_radius_um: float = 5
+    positive_diffusivity_m2_s: float = 1e-14
+    negative_diffusivity_m2_s: float = 3e-14
+    positive_exchange_current_a_m2: float = 3
+    negative_exchange_current_a_m2: float = 3
+    positive_contact_asr_ohm_mm2: float = 0.005
+    negative_contact_asr_ohm_mm2: float = 0.005
+    terminal_resistance_mohm: float = 1
+    film_asr_ohm_cm2: float = 0
+    analysis_pulse_s: float = 60
+    analysis_heat_capacity_j_kg_k: float = 1000
+    analysis_heat_transfer_w_m2_k: float = 10
 
     @classmethod
     def from_dict(cls, data):
@@ -90,6 +121,7 @@ class DesignInput:
             "cell_format": {"18650", "21700"}, "length_mode": {"fit", "manual"},
             "fraction_basis": {"mass", "volume"}, "positive_material": {"NMC811_demo", "NCA_demo", "LFP_demo"},
             "negative_additive": {"Si_demo", "SiOx_demo"}, "c_rate_capacity_mode": {"design", "rated"},
+            "analysis_current_mode": {"fixed_a", "c_rate"},
             "positive_terminal": {"top", "bottom"}, "negative_terminal": {"top", "bottom"},
         }.items():
             if getattr(self, key) not in choices:
@@ -97,10 +129,14 @@ class DesignInput:
         for key, val in asdict(self).items():
             if isinstance(val, str):
                 continue
-            if "porosity" in key or key.startswith("lithium_fraction") or key in {
+            if key == "analysis_temperature_c":
+                if not -20 <= val <= 60:
+                    raise ValueError("設計見積りの温度は−20〜60°Cで指定してください。")
+            elif "porosity" in key or key.startswith("lithium_fraction") or key in {
                 "positive_active", "positive_binder", "positive_carbon", "negative_graphite", "negative_si",
                 "negative_binder", "negative_carbon", "electrolyte_fill", "positive_contact_fraction",
                 "negative_contact_fraction",
+                "positive_utilization", "negative_utilization", "negative_first_cycle_efficiency",
             }:
                 if not 0 <= val <= 1:
                     raise ValueError(f"{key} は0〜1で指定してください。")
@@ -128,6 +164,27 @@ class DesignInput:
             raise ValueError("中心空間・缶壁・径方向隙間がセル径を超過しています。")
         if self.positive_active <= 0 or self.negative_graphite + self.negative_si <= 0:
             raise ValueError("正負極に活物質が必要です。")
+        for key, low, high in (
+                ("negative_first_cycle_efficiency", .01, 1),
+                ("positive_utilization", .001, 1), ("negative_utilization", .001, 1),
+                ("electrolyte_conductivity_s_m", .001, 100),
+                ("positive_conductivity_s_m", .001, 100000), ("negative_conductivity_s_m", .001, 100000),
+                ("positive_bruggeman", 1, 5), ("negative_bruggeman", 1, 5), ("separator_bruggeman", 1, 5),
+                ("positive_particle_radius_um", .01, 1000), ("negative_particle_radius_um", .01, 1000),
+                ("positive_diffusivity_m2_s", 1e-20, 1e-8), ("negative_diffusivity_m2_s", 1e-20, 1e-8),
+                ("positive_exchange_current_a_m2", .000001, 100000),
+                ("negative_exchange_current_a_m2", .000001, 100000),
+                ("analysis_current_a", 0, 1000), ("analysis_c_rate", 0, 100),
+                ("analysis_ocv_v", 1, 5), ("analysis_cutoff_v", .1, 5),
+                ("analysis_pulse_s", 0, 3600), ("analysis_heat_capacity_j_kg_k", 1, 10000),
+                ("analysis_heat_transfer_w_m2_k", 0, 1000),
+                ("positive_capacity_mah_g", 0, 5000), ("graphite_capacity_mah_g", 0, 5000),
+                ("additive_capacity_mah_g", 0, 5000),
+        ):
+            if not low <= getattr(self, key) <= high:
+                raise ValueError(f"{key} は{low}〜{high}で指定してください。")
+        if self.analysis_cutoff_v >= self.analysis_ocv_v:
+            raise ValueError("評価点のOCVは下限電圧より大きくしてください。")
         for parts in ((self.positive_active, self.positive_binder, self.positive_carbon),
                       (self.negative_graphite, self.negative_si, self.negative_binder, self.negative_carbon)):
             if not math.isclose(sum(parts), 1, abs_tol=1e-9):
@@ -141,7 +198,7 @@ def templates():
     return {"21700": large, "18650": small}
 
 
-def _recipe(ids, fractions, basis):
+def _recipe(ids, fractions, basis, capacities):
     densities = [MATERIALS[i]["density_g_cm3"] for i in ids]
     if basis == "mass":
         mass = fractions
@@ -153,17 +210,24 @@ def _recipe(ids, fractions, basis):
         density = sum(f * d for f, d in zip(volume, densities))
         mass = [f * d / density for f, d in zip(volume, densities)]
     return {"solid_density_g_cm3": density, "specific_capacity_mah_g": sum(
-        f * MATERIALS[i]["capacity_mah_g"] for i, f in zip(ids, mass)),
+        f * capacities[i] for i, f in zip(ids, mass)),
             "components": [{"id": i, "mass_fraction": m, "solid_volume_fraction": v} for i, m, v in
-                           zip(ids, mass, volume)]}
+                           zip(ids, mass, volume)], "component_capacities_mah_g": {i: capacities[i] for i in ids}}
 
 
-def evaluate_design(data):
+def evaluate_design(data, *, include_sensitivity=True):
     c = DesignInput.from_dict(data)
+    capacities = {i: m["capacity_mah_g"] for i, m in MATERIALS.items()}
+    for material, override in ((c.positive_material, c.positive_capacity_mah_g),
+                               ("graphite_demo", c.graphite_capacity_mah_g),
+                               (c.negative_additive, c.additive_capacity_mah_g)):
+        if override > 0:
+            capacities[material] = override
     p = _recipe([c.positive_material, "binder_demo", "carbon_demo"],
-                [c.positive_active, c.positive_binder, c.positive_carbon], c.fraction_basis)
+                [c.positive_active, c.positive_binder, c.positive_carbon], c.fraction_basis, capacities)
     n = _recipe(["graphite_demo", c.negative_additive, "binder_demo", "carbon_demo"],
-                [c.negative_graphite, c.negative_si, c.negative_binder, c.negative_carbon], c.fraction_basis)
+                [c.negative_graphite, c.negative_si, c.negative_binder, c.negative_carbon], c.fraction_basis,
+                capacities)
     pitch = (
                         2 * c.positive_thickness_um + c.positive_foil_um + 2 * c.negative_thickness_um + c.negative_foil_um + 2 * c.separator_um) / 1000
     ri = c.core_diameter_mm / 2
@@ -183,11 +247,14 @@ def evaluate_design(data):
                          pore_volume_cm3=volume * porosity,
                          mass_loading_mg_cm2=thickness / 10 * (1 - porosity) * electrode["solid_density_g_cm3"])
         electrode["dry_mass_g"] = volume * (1 - porosity) * electrode["solid_density_g_cm3"]
+        for part in electrode["components"]:
+            part["mass_g"] = electrode["dry_mass_g"] * part["mass_fraction"]
+            part["capacity_ah"] = part["mass_g"] * capacities[part["id"]] / 1000
         electrode["capacity_ah"] = electrode["dry_mass_g"] * electrode["specific_capacity_mah_g"] / 1000
         electrode["areal_capacity_mah_cm2"] = electrode["mass_loading_mg_cm2"] * electrode[
             "specific_capacity_mah_g"] / 1000
     overlap_n_capacity = n["capacity_ah"] * c.positive_width_mm / c.negative_width_mm
-    nominal = min(p["capacity_ah"], overlap_n_capacity)
+    nominal = min(p["capacity_ah"] * c.positive_utilization, overlap_n_capacity * c.negative_utilization)
     foil_volume_p = length * c.winding_width_mm * c.positive_foil_um / 1e6
     foil_volume_n = length * c.winding_width_mm * c.negative_foil_um / 1e6
     separator_volume = 2 * length * c.winding_width_mm * c.separator_um / 1e6
@@ -205,17 +272,19 @@ def evaluate_design(data):
     if can_volume <= 0 or accounted > envelope * (1 + 1e-10):
         raise ValueError("缶・巻回構成の体積収支が成立しません。")
     warnings = ["材料物性・容量・質量は仮定値による設計見積り。実測校正なし。",
-                "設計容量は半電池容量の小さい側。初期Li・利用率・終止電圧による実際の取出容量ではない。",
+                "設計容量は半電池可逆容量×指定利用率の小さい側。初期Li・終止電圧・拡散による実際の取出容量ではない。",
                 "巻回は面積保存の連続環状近似。端部・塗工開始終了・曲率差・溶接形状は省略。",
-                "上下端面集電は接続指定のみ。局所電流・接触抵抗・発熱・力学は未計算。",
+                "端面抵抗と発熱は一様反応・連続端面の集中見積り。局所電流分布・溶接点・力学は未計算。",
                 "Li在庫は容量×初期充填率のAh等価帳簿。SEI・不可逆損失・電解液Liを含まない。"]
-    if overlap_n_capacity < p["capacity_ah"]:
-        warnings.append("重なり領域のN/Pが1未満です。負極容量が設計容量を制限します。")
+    if overlap_n_capacity * c.negative_utilization < p["capacity_ah"] * c.positive_utilization:
+        warnings.append("利用率込みの重なり領域N/Pが1未満です。負極容量が設計容量を制限します。")
     if c.electrolyte_fill < 1:
         warnings.append("孔隙の未充填あり。濡れ不足による性能変化は未計算。")
     active_n = [part for part in n["components"][:2] if part["mass_fraction"] > 0]
-    return {"schema_version": "design-2.0", "input": asdict(c), "validation_status": "illustrative_unvalidated",
-            "materials": deepcopy({i: MATERIALS[i] for i in
+    result = {"schema_version": "design-2.1", "input": asdict(c), "validation_status": "illustrative_unvalidated",
+              "materials": deepcopy({i: dict(MATERIALS[i], capacity_used_mah_g=capacities[i],
+                                             capacity_source="user_input_unvalidated" if capacities[i] != MATERIALS[i][
+                                                 "capacity_mah_g"] else "illustrative_default") for i in
                                    {c.positive_material, "graphite_demo", c.negative_additive, "binder_demo",
                                     "carbon_demo"}}),
             "geometry": {"pitch_mm": pitch, "length_mm": length, "max_length_mm": max_length,
@@ -225,6 +294,8 @@ def evaluate_design(data):
             "positive": p, "negative": n, "negative_phase_count": len(active_n),
             "capacity": {"positive_ah": p["capacity_ah"], "negative_total_ah": n["capacity_ah"],
                          "negative_overlap_ah": overlap_n_capacity, "np_ratio": overlap_n_capacity / p["capacity_ah"],
+                         "usable_np_ratio": overlap_n_capacity * c.negative_utilization / (
+                                     p["capacity_ah"] * c.positive_utilization),
                          "design_ah": nominal,
                          "c_rate_reference_ah": nominal if c.c_rate_capacity_mode == "design" else c.rated_capacity_ah},
             "lithium_inventory": {"positive_ah_equivalent": p["capacity_ah"] * c.lithium_fraction_positive,
@@ -249,3 +320,8 @@ def evaluate_design(data):
                               "negative_active_components": active_n,
                               "solver_ready": False, "reason": "Step3で材料パラメータ・初期化の整合検証が必要"},
             "warnings": warnings}
+    from .design_analysis import analyze_design, sensitivity
+    result["analysis"] = analyze_design(result)
+    if include_sensitivity:
+        result["analysis"]["sensitivity"] = sensitivity(result, evaluate_design)
+    return result

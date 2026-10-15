@@ -7,14 +7,15 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 
+from .cathodes import catalog as cathode_catalog, DEFAULTS as CATHODE_DEFAULTS
 from .datasets import table_preview
 from .design import MATERIALS, evaluate_design, templates
+from .jobs import PhysicsJobs
 from .models import MODEL_REGISTRY
+from .physics import DEFAULTS as PHYSICS_DEFAULTS
 from .schema import SimulationInput
 from .service import SimulationService, export_csv
 from .storage import RunRepository
-from .jobs import PhysicsJobs
-from .physics import DEFAULTS as PHYSICS_DEFAULTS
 
 STATIC = Path(__file__).parent / "static"
 logger = logging.getLogger(__name__)
@@ -71,7 +72,10 @@ def create_server(port=8765, data_dir=None, research_python=None):
                       "/app.js": ("app.js", "text/javascript; charset=utf-8"),
                       "/library.js": ("library.js", "text/javascript; charset=utf-8"),
                       "/design.js": ("design.js", "text/javascript; charset=utf-8"),
+                      "/design-insights.js": ("design-insights.js", "text/javascript; charset=utf-8"),
                       "/physics.js": ("physics.js", "text/javascript; charset=utf-8"),
+                      "/model-tabs.js": ("model-tabs.js", "text/javascript; charset=utf-8"),
+                      "/cathodes.js": ("cathodes.js", "text/javascript; charset=utf-8"),
                       "/style.css": ("style.css", "text/css; charset=utf-8")}
             try:
                 if path in assets:
@@ -85,6 +89,8 @@ def create_server(port=8765, data_dir=None, research_python=None):
                     return self.send(200, repository.list(project_id))
                 if path == "/api/physics/config":
                     return self.send(200, {"defaults": PHYSICS_DEFAULTS, "environment": jobs.availability})
+                if path == "/api/cathodes":
+                    return self.send(200, {"defaults": CATHODE_DEFAULTS, "catalog": cathode_catalog()})
                 if path == "/api/jobs":
                     return self.send(200, repository.jobs(project_id))
                 if path == "/api/design/config":
@@ -130,7 +136,7 @@ def create_server(port=8765, data_dir=None, research_python=None):
             path = urlsplit(self.path).path
             if path not in {"/api/simulate", "/api/save", "/api/projects", "/api/comparisons", "/api/import/inspect",
                             "/api/import/preview", "/api/import/demo", "/api/design/evaluate", "/api/designs",
-                            "/api/jobs", "/api/jobs/cancel"}:
+                            "/api/jobs", "/api/jobs/cancel", "/api/cathodes/simulate"}:
                 return self.send(404, {"error": "APIが見つかりません。"})
             try:
                 if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
@@ -169,6 +175,9 @@ def create_server(port=8765, data_dir=None, research_python=None):
                     project_id = data.pop("project_id", "default")
                     design_id = data.pop("design_id", None)
                     return self.send(200, service.run(data, project_id, design_id))
+                if path == "/api/cathodes/simulate":
+                    project_id = data.pop("project_id", "default")
+                    return self.send(200, service.run_reference(data, project_id))
                 if not isinstance(data, dict) or not isinstance(data.get("id"), str):
                     raise ValueError("保存する計算IDが必要です。")
                 return self.send(200, service.save(data["id"]))

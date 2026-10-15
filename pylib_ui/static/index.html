@@ -7,13 +7,15 @@
     <link href="/style.css" rel="stylesheet">
     <script defer src="/app.js"></script>
     <script defer src="/library.js"></script>
+    <script defer src="/design-insights.js"></script>
     <script defer src="/design.js"></script>
     <script defer src="/physics.js"></script>
+    <script defer src="/model-tabs.js"></script>
 </head>
 <body>
 <header class="topbar">
     <a class="brand" href="/"><span class="brand-icon">ϟ</span> PyLIB <span class="brand-sub">WORKBENCH</span></a>
-    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.4</span></span>
+    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.5</span></span>
 </header>
 <main>
     <div class="heading">
@@ -33,12 +35,107 @@
         <button id="create-project" type="button">作成</button>
         <a href="#import-panel">実測・表データを取り込む ↓</a>
     </div>
-    <section class="panel design-panel" id="design-panel">
+    <section aria-label="計算方式とパラメータ" class="panel model-navigation">
+        <h2>計算方式を選ぶ</h2>
+        <p class="field-note">方式を選ぶ → 専用の条件を設定 → 実行 → 下のCURVE
+            VIEWで結果を確認。切替だけでは計算・保存しません。</p>
+        <div aria-label="設定する計算方式" class="model-tabs" role="tablist">
+            <button aria-controls="physics-panel" aria-selected="true" data-model-tab="SPMe" id="tab-SPMe" role="tab"
+                    type="button">SPMe <small>物理計算・通常</small></button>
+            <button aria-controls="physics-panel" aria-selected="false" data-model-tab="DFN" id="tab-DFN" role="tab"
+                    tabindex="-1" type="button">DFN <small>物理計算・詳細</small></button>
+            <button aria-controls="synthetic-panel" aria-selected="false" data-model-tab="synthetic" id="tab-synthetic" role="tab"
+                    tabindex="-1" type="button">合成モデル <small>1RC＋集中熱</small></button>
+            <button aria-controls="design-panel" aria-selected="false" data-model-tab="design" id="tab-design" role="tab"
+                    tabindex="-1" type="button">共通の円筒設計 <small>保存して各方式へ</small></button>
+        </div>
+        <div aria-live="polite" class="configuration-summary" id="active-configuration">設定を準備しています…</div>
+        <p class="field-note">
+            SPMeとDFNは物性・設計・試験入力を共用します。合成モデルの入力は独立して保持し、同名の項目も自動コピーしません。</p>
+        <details id="parameter-guide">
+            <summary>共通で使える項目・方式専用の項目を見る</summary>
+            <div class="table-scroll parameter-table">
+                <table>
+                    <caption>○ 使用 / △ 条件付き・意味が異なる / — 使用しない（他方式の入力欄は参照しません）</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">項目</th>
+                        <th scope="col">SPMe</th>
+                        <th scope="col">DFN</th>
+                        <th scope="col">合成 1RC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">初期SOC・周囲温度・上下限電圧・出力間隔</th>
+                        <td>○ 物理計算欄</td>
+                        <td>○ 物理計算欄を共用</td>
+                        <td>○ 合成欄で独立設定（入力範囲も別）</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">初期温度・熱伝達係数</th>
+                        <td>△ 集中熱のみ。等温は周囲温度に固定</td>
+                        <td>△ 集中熱のみ。等温は周囲温度に固定</td>
+                        <td>○ 集中熱。熱容量も直接指定</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">電流・試験時間</th>
+                        <td>○ A・秒でCC/CV/休止、またはプロファイル</td>
+                        <td>○ SPMeと共用</td>
+                        <td>△ 容量×Cレート、分で単一CC/休止。CV不可</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">保存設計の寸法・基準容量</th>
+                        <td>△ 対応設計を選択。電極面積・体積・冷却面積・公称容量へ</td>
+                        <td>△ SPMeと同じ反映方法</td>
+                        <td>△ 「合成へ反映」で外径・全高・容量・模式曲線へ。寸法は放熱面積に使用</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">電極/箔/セパレータ厚・空隙率・活物質体積分率</th>
+                        <td>○ 保存設計を選択した場合</td>
+                        <td>○ 保存設計を選択した場合</td>
+                        <td>— 電極構造は解かない</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">物性セット・対応材料</th>
+                        <td>○ Chen2020：NMC811/黒鉛</td>
+                        <td>○ Chen2020、composite：NMC811/黒鉛＋Si（等温のみ）</td>
+                        <td>— 文献物性ではなくNMC/LFPの模式OCV</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">R₀・R₁・RC時定数・直接指定の熱容量</th>
+                        <td>— 文献物性から計算</td>
+                        <td>— 文献物性から計算</td>
+                        <td>○ 合成専用。SPMe/DFNへ転用しない</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">空間メッシュ・許容誤差・ジョブ時間上限</th>
+                        <td>○ 物理計算専用</td>
+                        <td>○ 物理計算専用</td>
+                        <td>— 出力間隔のみ指定</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">設計の初期Li充填率・端面接続/接触率</th>
+                        <td>— ソルバ初期化・局所集電には未接続</td>
+                        <td>— ソルバ初期化・局所集電には未接続</td>
+                        <td>— 応答に反映しない</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="field-note">
+                設計の比容量・利用率は容量帳簿とCレート基準容量に反映し、物理計算の反応・輸送・OCV関数は文献セットを保持します。設計画面の抵抗・ICE・κ・i₀・Dは物理計算の物性へ転用しません。LFP・NCA・SiOxの物理計算は未対応です。共通設計を編集しただけでは各方式の設定や保存結果は変わりません。</p>
+        </details>
+    </section>
+    <section aria-labelledby="tab-design" class="panel design-panel" hidden id="design-panel" role="tabpanel"
+             tabindex="0">
         <div class="section-title">
-            <div><p class="eyebrow">STEP 2 / CYLINDRICAL DESIGN</p>
+            <div><p class="eyebrow">DESIGN / CAPACITY · RESISTANCE · PERFORMANCE</p>
                 <h2>円筒設計・材料レシピ</h2></div>
             <span class="pill">設計見積り · 未校正</span></div>
-        <p>テンプレートを選ぶ → 寸法と配合を調整 → 収支を確認 → 保存して試験条件へ反映</p>
+        <p>寸法・活物質容量を設定 → 容量と抵抗を確認 → 設計変更の影響を比較 → 保存して各方式へ反映</p>
+        <p class="field-note">
+            共通なのは設計の保存データです。SPMe/DFNでは「計算に使う設計」から選択、合成モデルでは下の「合成モデルへ反映」を使います。反映範囲は方式ごとに異なります。</p>
         <div class="fields two"><label>テンプレート<select id="design-template">
             <option value="21700">21700</option>
             <option value="18650">18650</option>
@@ -57,7 +154,7 @@
                 <div id="design-balance"></div>
                 <div class="design-actions">
                     <button disabled id="design-save" type="button">設計を新しい版として保存</button>
-                    <button disabled id="design-apply" type="button">合成モデルの試験条件へ反映 ↓</button>
+                    <button disabled id="design-apply" type="button">合成モデルへ反映して開く</button>
                     <button disabled id="design-export" type="button">設計JSON</button>
                 </div>
                 <details>
@@ -66,14 +163,17 @@
                 </details>
             </div>
         </div>
+        <div class="design-insights" id="design-insights"></div>
     </section>
-    <section class="panel design-panel" id="physics-panel">
+    <section aria-labelledby="tab-SPMe" class="panel design-panel" id="physics-panel" role="tabpanel" tabindex="0">
         <div class="section-title">
             <div><p class="eyebrow">STEP 3 / ELECTROCHEMISTRY</p>
-                <h2>SPMe・DFNで充放電を計算</h2></div>
+                <h2 id="physics-title">SPMeで充放電を計算</h2></div>
             <span class="pill">文献物性 · 対象セル未検証</span></div>
         <p>設計・物性を選ぶ → 試験を組む → ジョブを実行 → 保存されたカーブを比較</p>
         <p id="physics-environment" role="status">別計算環境を確認しています…</p>
+        <p class="field-note">
+            このタブで有効：物性セット・保存設計・試験プロトコル・数値精度。合成モデルのR₀・R₁・時定数・直接入力の容量や熱容量は使用しません。</p>
         <form id="physics-form">
             <div class="fields two">
                 <label>物理計算名<input id="physics-name" maxlength="100" required></label>
@@ -89,6 +189,8 @@
                     <option value="">文献セットの基準形状</option>
                 </select></label>
             </div>
+            <p aria-live="polite" class="field-note" id="physics-thermal-note">
+                等温：初期温度・熱伝達係数は使用しません。周囲温度に固定します。</p>
             <p class="field-note">
                 保存済み設計を選ぶと寸法・空隙率・相分率を上書きします。設計の仮定密度と文献の反応・輸送物性を組み合わせた仮想セルです。LFP・NCA・SiOxは物性接続が未検証のため無効です。</p>
             <div class="fields two">
@@ -146,19 +248,23 @@
             </details>
             <button class="primary" disabled id="physics-run" type="submit">▶ 物理計算ジョブを追加</button>
             <p class="field-note">
-                計算は別プロセスで1件ずつ実行します。完了・一部結果は自動保存。取消・時間超過・失敗・再起動中断を区別します。合成モデルは下の欄から実行できます。</p>
+                計算は別プロセスで1件ずつ実行します。完了・一部結果は自動保存してCURVE
+                VIEWへ表示。入力の変更だけでは再計算しません。合成モデルは専用タブから実行します。</p>
         </form>
         <div class="section-title"><h2>物理計算ジョブ</h2>
             <button id="physics-refresh" type="button">ジョブを更新</button>
         </div>
         <div aria-live="polite" id="physics-jobs"></div>
     </section>
-    <div class="workspace">
-        <aside class="panel settings">
+    <div class="workspace" id="curve-workspace">
+        <aside aria-labelledby="tab-synthetic" class="panel settings" hidden id="synthetic-panel" role="tabpanel"
+               tabindex="0">
             <form id="simulation-form">
                 <div class="section-title"><h2><span>01</span> 合成モデルのセル設定</h2>
                     <button class="text-button" id="reset" type="button">初期値に戻す</button>
                 </div>
+                <p class="field-note">
+                    合成専用：NMC/LFPの模式OCV、容量×Cレート、R₀・R₁・RC時定数、熱容量。SPMe/DFNの物性・プロトコル・電極構造は使用しません。</p>
                 <p class="field-note" id="design-link">設計未連携 · セル設定を直接入力できます。</p>
                 <div class="cell-preview">
                     <svg aria-label="円筒セルの模式図" role="img" viewBox="0 0 130 150">
@@ -260,7 +366,12 @@
                     <div><p class="eyebrow">CURVE VIEW / RESULT &amp; IMPORT PREVIEW</p>
                         <h2 id="result-title">カーブを見てみましょう</h2></div>
                     <span class="pill muted" id="result-state">未実行</span></div>
-                <p class="result-meta" id="result-meta">左の条件を設定して「シミュレーションを実行」を押してください。</p>
+                <div aria-live="polite" class="configuration-summary" id="result-origin">
+                    表示中の結果：なし。上のタブで方式と条件を選んで実行してください。
+                </div>
+                <p class="result-notice" id="result-relationship" role="status">
+                    タブの設定と表示結果は別です。実行・保存一覧の表示・取込プレビューで結果が切り替わります。</p>
+                <p class="result-meta" id="result-meta">各方式の実行結果、または取込プレビューをここに表示します。</p>
                 <div class="metrics">
                     <div><span>通過容量</span><strong id="metric-capacity">—</strong><small>Ah ·
                         電流絶対値の積算</small></div>
@@ -287,6 +398,8 @@
                         <p>電圧・SOC・温度・電流を切り替えて確認できます。</p></div>
                 </div>
                 <div class="legend" id="legend"></div>
+                <p class="field-note" id="curve-meaning">
+                    電圧・SOC・温度・電流の意味は結果の方式に応じて表示します。比較線の出所は凡例で確認してください。</p>
                 <div class="result-actions">
                     <button disabled id="save" type="button">＋ 結果を保存</button>
                     <button disabled id="csv" type="button">CSV出力 ↓</button>
@@ -405,7 +518,7 @@
             <div class="model-note"><span class="note-icon">i</span>
                 <div><strong>まずは、軽量なモデルで条件の違いを観察。</strong>
                     <p>
-                        合成モデルは操作確認用です。物理計算は上のSPMe／DFN欄から実行できます。全面集電の局所分布・析出・膨張・応力、対象セルの実測校正は後続の段階です。</p>
+                        合成モデルは操作確認用です。物理計算はSPMe／DFNタブから実行できます。全面集電の局所分布・析出・膨張・応力、対象セルの実測校正は後続の段階です。</p>
                 </div>
             </div>
         </section>

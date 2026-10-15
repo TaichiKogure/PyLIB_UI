@@ -88,9 +88,18 @@ function syncInput() {
     }[mode]);
     $("current-preview").textContent = `電流：${current.toFixed(2)} A （放電＋／充電−）`;
     if (state.current) updateResultState();
+    updateConfigurationSummary();
 }
 
 function updateResultState() {
+    if (state.current.record_type === "reference_curve") {
+        const saved = state.savedIds.has(state.current.id);
+        $("result-state").textContent = `${saved ? "保存済み" : "未保存"} · 公開曲線の参照計算 · 実測未検証`;
+        $("result-state").className = `pill ${saved ? "saved" : ""}`;
+        $("save").textContent = saved ? "✓ 保存済み" : "＋ 結果と出典を保存";
+        $("save").disabled = state.busy || saved;
+        return;
+    }
     if (state.current.record_type === "physics") {
         $("result-state").textContent = `${state.current.termination === "partial" ? "一部結果" : "保存済み"} · ${state.current.engine.label} · 実測未検証`;
         $("result-state").className = "pill saved";
@@ -142,6 +151,10 @@ function showResult(run) {
     state.current = run;
     $("original").disabled = !run.original;
     $("metric-soc-kind").textContent = "% · 推定状態";
+    if (run.record_type === "reference_curve") {
+        showCathodeResult(run);
+        return;
+    }
     if (run.record_type === "physics") {
         showPhysics(run);
         return;
@@ -198,7 +211,9 @@ function renderChart() {
     }
     const yFactor = variable === "soc" ? 100 : 1, xFactor = xKey === "time_s" ? 1 / 60 : xKey === "soc" ? 100 : 1;
     const labels = {
-        voltage_v: "電圧 (V)",
+        voltage_v: allSeries.some(r => r.record_type === "reference_curve") ? "電圧 (V) · 対Li/セルの基準は凡例を確認" : "電圧 (V)",
+        positive_reference_v: "正極参照電圧 (V vs Li/Li⁺)",
+        negative_reference_v: "負極OCP (V vs Li/Li⁺)",
         soc: allSeries.some(r => r.record_type === "physics") ? "SOC / 基準容量による電荷帳簿 (%)" : "SOC (%)",
         temperature_c: "温度 (°C) · 測定位置は来歴参照",
         current_a: "電流 (A)"
@@ -353,6 +368,8 @@ async function refreshHistory() {
         });
         info.append(element("p", run.record_type === "physics"
             ? `${run.engine.label} / ${run.input.parameter_set} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 実測未検証`
+            : run.record_type === "reference_curve"
+            ? `${run.source_snapshot.positive.chemistry} / ${run.voltage_reference === "Li/Li+" ? "対Li基準" : "セル端子電圧"} / ${modes[run.input.mode]} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 参照計算`
             : run.record_type === "dataset"
             ? `${sourceLabel(run)} · ${run.quality.row_count}点／${run.quality.segment_count}区間 · ${run.specimen_id || "個体不明"} · ${date} JST`
             : `${run.input.cell_format} / ${run.input.chemistry} · ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · ${sourceLabel(run)}`));
@@ -439,6 +456,10 @@ $("reset").addEventListener("click", () => {
     message("入力を初期値に戻しました。表示中の結果は計算時の条件のままです。");
 });
 $("restore").addEventListener("click", () => {
+    if (state.current?.record_type === "reference_curve") {
+        restoreCathode(state.current);
+        return;
+    }
     if (state.current?.record_type === "physics") {
         restorePhysics(state.current);
         return;
@@ -448,6 +469,7 @@ $("restore").addEventListener("click", () => {
     setInput(state.current.input);
     designing.binding = state.current.design_snapshot || null;
     syncDesignBinding();
+    selectModelTab("synthetic");
     message("表示中の結果の入力を復元しました。変更後に再計算できます。");
 });
 $("save").addEventListener("click", async () => {
@@ -498,6 +520,7 @@ async function init() {
         setInput(config.defaults);
         await initDesign();
         await initPhysics();
+        await initCathodes();
         await refreshHistory();
         await refreshComparisons();
         $("run").disabled = false;

@@ -1,0 +1,4387 @@
+{
+  "21700": {
+    "schema_version": "design-2.1",
+    "input": {
+      "name": "21700 巻回設計",
+      "cell_format": "21700",
+      "diameter_mm": 21,
+      "height_mm": 70,
+      "wall_mm": 0.25,
+      "lid_total_mm": 0.6,
+      "axial_reserve_mm": 4,
+      "radial_gap_mm": 0.2,
+      "core_diameter_mm": 3,
+      "winding_width_mm": 64,
+      "positive_width_mm": 60,
+      "negative_width_mm": 62,
+      "length_mode": "fit",
+      "length_mm": 1400,
+      "positive_thickness_um": 65,
+      "negative_thickness_um": 75,
+      "positive_foil_um": 15,
+      "negative_foil_um": 8,
+      "separator_um": 16,
+      "separator_porosity": 0.45,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "positive_material": "NMC811_demo",
+      "negative_additive": "Si_demo",
+      "fraction_basis": "mass",
+      "positive_active": 0.96,
+      "positive_binder": 0.02,
+      "positive_carbon": 0.02,
+      "negative_graphite": 0.96,
+      "negative_si": 0,
+      "negative_binder": 0.02,
+      "negative_carbon": 0.02,
+      "lithium_fraction_positive": 0.5,
+      "lithium_fraction_negative": 0.5,
+      "c_rate_capacity_mode": "design",
+      "rated_capacity_ah": 5,
+      "positive_terminal": "top",
+      "negative_terminal": "bottom",
+      "positive_contact_fraction": 1,
+      "negative_contact_fraction": 1,
+      "electrolyte_fill": 1,
+      "electrolyte_density_g_cm3": 1.2,
+      "hardware_mass_g": 3,
+      "positive_capacity_mah_g": 0,
+      "graphite_capacity_mah_g": 0,
+      "additive_capacity_mah_g": 0,
+      "positive_utilization": 1,
+      "negative_utilization": 1,
+      "negative_first_cycle_efficiency": 1,
+      "analysis_current_mode": "fixed_a",
+      "analysis_current_a": 5,
+      "analysis_c_rate": 1,
+      "analysis_ocv_v": 3.7,
+      "analysis_cutoff_v": 2.8,
+      "analysis_temperature_c": 25,
+      "electrolyte_conductivity_s_m": 1,
+      "positive_bruggeman": 1.5,
+      "negative_bruggeman": 1.5,
+      "separator_bruggeman": 1.5,
+      "positive_conductivity_s_m": 10,
+      "negative_conductivity_s_m": 100,
+      "positive_particle_radius_um": 5,
+      "negative_particle_radius_um": 5,
+      "positive_diffusivity_m2_s": 1e-14,
+      "negative_diffusivity_m2_s": 3e-14,
+      "positive_exchange_current_a_m2": 3,
+      "negative_exchange_current_a_m2": 3,
+      "positive_contact_asr_ohm_mm2": 0.005,
+      "negative_contact_asr_ohm_mm2": 0.005,
+      "terminal_resistance_mohm": 1,
+      "film_asr_ohm_cm2": 0,
+      "analysis_pulse_s": 60,
+      "analysis_heat_capacity_j_kg_k": 1000,
+      "analysis_heat_transfer_w_m2_k": 10
+    },
+    "validation_status": "illustrative_unvalidated",
+    "materials": {
+      "binder_demo": {
+        "label": "結着剤",
+        "role": "inactive",
+        "density_g_cm3": 1.8,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 0,
+        "capacity_source": "illustrative_default"
+      },
+      "graphite_demo": {
+        "label": "黒鉛",
+        "role": "negative",
+        "density_g_cm3": 2.26,
+        "capacity_mah_g": 350,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 350,
+        "capacity_source": "illustrative_default"
+      },
+      "Si_demo": {
+        "label": "Si（元素Si）",
+        "role": "negative_additive",
+        "density_g_cm3": 2.33,
+        "capacity_mah_g": 3000,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 3000,
+        "capacity_source": "illustrative_default"
+      },
+      "carbon_demo": {
+        "label": "導電助剤",
+        "role": "inactive",
+        "density_g_cm3": 2.0,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 0,
+        "capacity_source": "illustrative_default"
+      },
+      "NMC811_demo": {
+        "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+        "role": "positive",
+        "density_g_cm3": 4.8,
+        "capacity_mah_g": 200,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 200,
+        "capacity_source": "illustrative_default"
+      }
+    },
+    "geometry": {
+      "pitch_mm": 0.335,
+      "length_mm": 926.0899358914211,
+      "max_length_mm": 926.0899358914211,
+      "inner_radius_mm": 1.5,
+      "outer_radius_mm": 10.05,
+      "turns": 25.522388059701495,
+      "envelope_cm3": 19.85536822551207,
+      "layer_volume_cm3": 19.0959744780811,
+      "uncoated_void_cm3": 0.7593937474309698,
+      "pore_volume_cm3": 5.776578584116328
+    },
+    "positive": {
+      "solid_density_g_cm3": 4.522613065326633,
+      "specific_capacity_mah_g": 192.0,
+      "components": [
+        {
+          "id": "NMC811_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9045226130653266,
+          "mass_g": 21.953636719455403,
+          "capacity_ah": 4.390727343891081
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.05025125628140703,
+          "mass_g": 0.4573674316553209,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.045226130653266326,
+          "mass_g": 0.4573674316553209,
+          "capacity_ah": 0.0
+        }
+      ],
+      "component_capacities_mah_g": {
+        "NMC811_demo": 200,
+        "binder_demo": 0,
+        "carbon_demo": 0
+      },
+      "area_cm2": 1111.3079230697053,
+      "coating_volume_cm3": 7.223501499953085,
+      "pore_volume_cm3": 2.1670504499859256,
+      "mass_loading_mg_cm2": 20.577889447236178,
+      "dry_mass_g": 22.868371582766045,
+      "capacity_ah": 4.390727343891081,
+      "areal_capacity_mah_cm2": 3.9509547738693462
+    },
+    "negative": {
+      "solid_density_g_cm3": 2.242706242970869,
+      "specific_capacity_mah_g": 336.0,
+      "components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595,
+          "mass_g": 12.609232447899428,
+          "capacity_ah": 4.4132313567648
+        },
+        {
+          "id": "Si_demo",
+          "mass_fraction": 0,
+          "solid_volume_fraction": 0.0,
+          "mass_g": 0.0,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.024918958255231875,
+          "mass_g": 0.2626923426645714,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.02242706242970869,
+          "mass_g": 0.2626923426645714,
+          "capacity_ah": 0.0
+        }
+      ],
+      "component_capacities_mah_g": {
+        "graphite_demo": 350,
+        "Si_demo": 3000,
+        "binder_demo": 0,
+        "carbon_demo": 0
+      },
+      "area_cm2": 1148.351520505362,
+      "coating_volume_cm3": 8.612636403790216,
+      "pore_volume_cm3": 2.7560436492128693,
+      "mass_loading_mg_cm2": 11.43780183915143,
+      "dry_mass_g": 13.134617133228572,
+      "capacity_ah": 4.4132313567648,
+      "areal_capacity_mah_cm2": 3.8431014179548804
+    },
+    "negative_phase_count": 1,
+    "capacity": {
+      "positive_ah": 4.390727343891081,
+      "negative_total_ah": 4.4132313567648,
+      "negative_overlap_ah": 4.270869054933677,
+      "np_ratio": 0.9727019512782625,
+      "usable_np_ratio": 0.9727019512782625,
+      "design_ah": 4.270869054933677,
+      "c_rate_reference_ah": 4.270869054933677
+    },
+    "lithium_inventory": {
+      "positive_ah_equivalent": 2.1953636719455405,
+      "negative_ah_equivalent": 2.2066156783824,
+      "total_mol_equivalent": 0.1642438836347821
+    },
+    "mass_g": {
+      "positive_dry": 22.868371582766045,
+      "negative_dry": 13.134617133228572,
+      "al_foil": 2.4004251138305635,
+      "cu_foil": 4.2484561027006125,
+      "separator_solid": 0.9805588415608109,
+      "electrolyte": 6.931894300939594,
+      "can_and_lids": 10.50980748699835,
+      "other_hardware": 3
+    },
+    "total_mass_g": 64.07413056202455,
+    "collector_connections": {
+      "positive": {
+        "foil": "Al",
+        "face": "top",
+        "contact_fraction": 1
+      },
+      "negative": {
+        "foil": "Cu",
+        "face": "bottom",
+        "contact_fraction": 1
+      },
+      "distribution_solved": false
+    },
+    "adapter_input": {
+      "electrode_height_m": 0.06,
+      "electrode_width_m": 0.9260899358914211,
+      "parallel_electrodes": 2,
+      "paired_area_m2": 0.11113079230697054,
+      "positive_thickness_m": 6.5e-05,
+      "negative_thickness_m": 7.5e-05,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "negative_phase_volume_fractions": [
+        0.6478047059342403
+      ],
+      "negative_particle_phases": "1",
+      "negative_active_components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595,
+          "mass_g": 12.609232447899428,
+          "capacity_ah": 4.4132313567648
+        }
+      ],
+      "solver_ready": false,
+      "reason": "Step3で材料パラメータ・初期化の整合検証が必要"
+    },
+    "warnings": [
+      "材料物性・容量・質量は仮定値による設計見積り。実測校正なし。",
+      "設計容量は半電池可逆容量×指定利用率の小さい側。初期Li・終止電圧・拡散による実際の取出容量ではない。",
+      "巻回は面積保存の連続環状近似。端部・塗工開始終了・曲率差・溶接形状は省略。",
+      "端面抵抗と発熱は一様反応・連続端面の集中見積り。局所電流分布・溶接点・力学は未計算。",
+      "Li在庫は容量×初期充填率のAh等価帳簿。SEI・不可逆損失・電解液Liを含まない。",
+      "利用率込みの重なり領域N/Pが1未満です。負極容量が設計容量を制限します。"
+    ],
+    "analysis": {
+      "version": "design-screening-1.0",
+      "status": "available",
+      "validation_status": "analytical_unvalidated",
+      "references": [
+        {
+          "id": "SiGraphite2016",
+          "authors": "Sternad, Forster & Wilkening",
+          "year": 2016,
+          "title": "The microstructure matters: breaking down the barriers with single crystalline silicon as negative electrode in Li-ion batteries",
+          "url": "https://doi.org/10.1038/srep31712",
+          "use": "LiC₆とLi₁₅Si₄の反応終点の確認。理論比容量は各反応式から再計算し、実用比容量とは区別。"
+        },
+        {
+          "id": "DFN1993",
+          "authors": "Doyle, Fuller & Newman",
+          "year": 1993,
+          "title": "Modeling of Galvanostatic Charge and Discharge of the Lithium/Polymer/Insertion Cell",
+          "url": "https://doi.org/10.1149/1.2221597",
+          "use": "多孔質電極の電荷輸送・反応分極の基礎。ここでの集中近似は原著DFNの再現ではない。"
+        },
+        {
+          "id": "Newman1995",
+          "authors": "Newman",
+          "year": 1995,
+          "title": "Optimization of Porosity and Thickness of a Battery Electrode by Means of a Reaction-Zone Model",
+          "url": "https://doi.org/10.1149/1.2043956",
+          "use": "活物質量と孔内輸送のトレードオフ。原著の最適値を本セルへ転用しない。"
+        },
+        {
+          "id": "Landesfeind2016",
+          "authors": "Landesfeind et al.",
+          "year": 2016,
+          "title": "Tortuosity Determination of Battery Electrodes and Separators by Impedance Spectroscopy",
+          "url": "https://doi.org/10.1149/2.1141607jes",
+          "use": "実電極の屈曲度はBruggeman近似と異なり得る。指数1.5は未校正の初期仮定。"
+        },
+        {
+          "id": "Tranter2020",
+          "authors": "Tranter, Timms, Shearing & Brett",
+          "year": 2020,
+          "title": "Communication—Prediction of Thermal Issues for Larger Format 4680 Cylindrical Cells and Their Mitigation with Enhanced Current Collection",
+          "url": "https://doi.org/10.1149/1945-7111/abd44f",
+          "use": "集電方式による電流経路・熱の違い。下記1/3係数は一様注入から独立に導出した理想近似。"
+        },
+        {
+          "id": "Bernardi1985",
+          "authors": "Bernardi, Pawlikowski & Newman",
+          "year": 1985,
+          "title": "A General Energy Balance for Battery Systems",
+          "url": "https://doi.org/10.1149/1.2113792",
+          "use": "熱収支の基礎。本見積りは不可逆損失Iηのみで、反応エントロピー・混合熱は含めない。"
+        },
+        {
+          "id": "Chen2020",
+          "authors": "Chen et al.",
+          "year": 2020,
+          "title": "Development of Experimental Techniques for Parameterization of Multi-scale Lithium-ion Battery Models",
+          "url": "https://doi.org/10.1149/1945-7111/ab9050",
+          "use": "幾何・容量・輸送・反応物性を別に測定する考え方。画面の仮定値を原著実測値とは扱わない。"
+        },
+        {
+          "id": "PyBaMMTransport",
+          "authors": "PyBaMM team",
+          "year": 2026,
+          "title": "Transport efficiency and the models for tortuosity factor",
+          "url": "https://docs.pybamm.org/en/latest/source/examples/notebooks/models/tortuosity_models.html",
+          "use": "輸送効率ε/τ、Bruggeman式ε^bの定義確認。latest文書の確認日2026-10-16。"
+        }
+      ],
+      "formulas": [
+        {
+          "id": "theoretical_capacity",
+          "expression": "q_theory = n F/(3.6 M)",
+          "units": "n: electrons/formula; M: g/mol → mAh/g",
+          "references": [
+            "SiGraphite2016"
+          ],
+          "assumption": "反応式による上限。正極は全1Li、黒鉛はLiC6、SiはLi15Si4。実用電圧窓・不可逆損失・劣化を含まない。SiOxはx未指定なので算出しない。"
+        },
+        {
+          "id": "capacity",
+          "expression": "Q = m_dry Σ(w_i q_i)/1000; q_areal = loading × Σ(w_i q_i)/1000",
+          "units": "g, mAh/g, mg/cm² → Ah, mAh/cm²",
+          "references": [
+            "Chen2020"
+          ],
+          "assumption": "配合を質量分率へ換算。両面面積=2×塗工幅×巻回長。負極は重なり面積に縮約。"
+        },
+        {
+          "id": "inventory",
+          "expression": "Qp,u=up Qp; Qn,u=un Qn,overlap; Qloss=Qn,u(1/ICE−1); Qbalance=max(0,min(Qp,u−Qloss,Qn,u))",
+          "units": "Ah",
+          "references": [],
+          "assumption": "可逆容量基準ICE=脱離/挿入。負極の指定利用窓全体を形成する独立のLi消費帳簿。正極がLiを供給、予備Liなし。OCV窓・初期Li充填率とは独立。"
+        },
+        {
+          "id": "transport",
+          "expression": "κeff=κ ε^b; τfactor=ε^(1−b); Re=L/(3κeff A); Rs=Ls/(κeff,s A); Rsolid=L/(3σeff A)",
+          "units": "S/m, m, m² → Ω",
+          "references": [
+            "DFN1993",
+            "Landesfeind2016",
+            "PyBaMMTransport"
+          ],
+          "assumption": "完全含浸、一様反応。電極は線形電流分布の損失積分で1/3、セパレータは全電流。σは指定の有効値。濃度分極は省略。"
+        },
+        {
+          "id": "kinetics",
+          "expression": "as=3εactive/r; I0=i0 as L A; ηct=(2RT/F) asinh(I/(2I0)); Rct=ηct/I",
+          "units": "m, A/m²(active surface), K → V, Ω",
+          "references": [
+            "DFN1993"
+          ],
+          "assumption": "対称Butler–Volmer、単一等価粒子、指定評価点のi0。I=0ではRT/(F I0)。複合負極も指定i0・半径の均質近似。"
+        },
+        {
+          "id": "collector",
+          "expression": "Rfoil,edge=ρ H/(3t ℓ); Rfoil,long=ρ ℓ/(3t H); Aedge=t ℓ; Rcontact=ASR/(f Aedge)",
+          "units": "ρ: Ωm; H,t,ℓ: m; contact ASR: Ωmm²; Aedge: mm²",
+          "references": [
+            "Tranter2020"
+          ],
+          "assumption": "各極の連続した片端面・一様注入。H=塗工幅、未塗工リード長0。箔は両塗工面共通で2倍しない。Al 2.82e−8 / Cu 1.68e−8 Ωmは室温の工学仮定。長手集電は理想比較のみで合計しない。接触率は接触項のみ変更。"
+        },
+        {
+          "id": "performance",
+          "expression": "ΔV=I Rohmic+Σηct; V=Uref−ΔV; P=IV; Qdot=IΔV; Enom=Qbalance Uref; td=r²/Ds",
+          "units": "A, Ω, V → V, W, Wh; m, m²/s → s",
+          "references": [
+            "Bernardi1985",
+            "Newman1995"
+          ],
+          "assumption": "固定評価点の放電見積り。帳簿エネルギーは放電曲線の積分ではない。拡散時間を容量減衰係数に置換しない。"
+        },
+        {
+          "id": "thermal",
+          "expression": "ΔT=Qdot/(h Aext) × (1−exp(−h Aext tpulse/Cth)); Cth=m cp; h=0: ΔT=Qdot tpulse/Cth",
+          "units": "W, W/K, J/K, s → K",
+          "references": [
+            "Bernardi1985"
+          ],
+          "assumption": "初期温度=周囲温度、一定損失・一定物性の平均温度近似。濃度分極・可逆熱・局所温度を省略。"
+        }
+      ],
+      "capacity": {
+        "positive_usable_ah": 4.390727343891081,
+        "negative_usable_overlap_ah": 4.270869054933677,
+        "limiting_electrode": "negative",
+        "formation_loss_ah": 0.0,
+        "inventory_limited_ah": 4.270869054933677,
+        "nominal_energy_wh": 15.802215503254606,
+        "nominal_specific_energy_wh_kg": 246.62395516951835,
+        "nominal_energy_density_wh_l": 651.7656518681836,
+        "materials": [
+          {
+            "side": "positive",
+            "material_id": "NMC811_demo",
+            "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+            "reversible_capacity_mah_g": 200,
+            "theoretical_capacity_mah_g": 275.5090890107334,
+            "reaction": "LiMO₂ → MO₂ + Li⁺ + e⁻",
+            "mass_g": 21.953636719455403,
+            "contribution_ah": 4.390727343891081
+          },
+          {
+            "side": "negative",
+            "material_id": "graphite_demo",
+            "label": "黒鉛",
+            "reversible_capacity_mah_g": 350,
+            "theoretical_capacity_mah_g": 371.901883612861,
+            "reaction": "6C + Li⁺ + e⁻ ↔ LiC₆（炭素質量基準）",
+            "mass_g": 12.609232447899428,
+            "contribution_ah": 4.4132313567648
+          }
+        ]
+      },
+      "provenance": {
+        "property_status": "user_assumptions_not_literature_calibrated",
+        "specific_capacities_mah_g": {
+          "positive": 200,
+          "graphite": 350,
+          "additive": 3000
+        },
+        "applied_to_pybamm": false,
+        "checked_on": "2026-10-16"
+      },
+      "limitations": [
+        "文献は式と設計論の根拠。入力物性は仮定またはユーザー指定で、文献の実測校正値ではありません。",
+        "指定SOC相当のOCV・温度における静的近似。測定DCIR・EIS・寿命・析出開始を予測するものではありません。",
+        "i0・κ・σ・Dは指定温度での入力と解釈。温度による自動補正や濃度依存はありません。",
+        "SPMe/DFNの反応・輸送・OCV関数は文献セットを保持。比容量と利用率は設計容量を基準に選んだ場合に公称Cレート基準容量へ影響。ICE・集中抵抗・指定κ/i0/Dはソルバへ反映しません。"
+      ],
+      "warnings": [],
+      "resistance": {
+        "total_mohm": 10.740264715051913,
+        "ohmic_mohm": 5.050233760936964,
+        "kinetic_secant_mohm": 5.690030954114949,
+        "components": [
+          {
+            "id": "positive_electrolyte",
+            "label": "正極孔内イオン輸送",
+            "resistance_mohm": 1.186522038374201,
+            "voltage_drop_v": 0.005932610191871005,
+            "heat_w": 0.029663050959355022,
+            "family": "ohmic",
+            "references": [
+              "DFN1993",
+              "PyBaMMTransport"
+            ]
+          },
+          {
+            "id": "positive_solid",
+            "label": "正極固相電子伝導",
+            "resistance_mohm": 0.019496546561836803,
+            "voltage_drop_v": 9.748273280918402e-05,
+            "heat_w": 0.00048741366404592005,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "positive_kinetics",
+            "label": "正極反応分極（指定電流の割線値）",
+            "resistance_mohm": 3.0747516186489876,
+            "voltage_drop_v": 0.015373758093244937,
+            "heat_w": 0.07686879046622469,
+            "family": "kinetic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "positive_foil",
+            "label": "正極連続端面集電箔",
+            "resistance_mohm": 0.0406008083478497,
+            "voltage_drop_v": 0.00020300404173924851,
+            "heat_w": 0.0010150202086962425,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "positive_contact",
+            "label": "正極箔端面接触",
+            "resistance_mohm": 0.3599362442185257,
+            "voltage_drop_v": 0.0017996812210926286,
+            "heat_w": 0.008998406105463142,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "negative_electrolyte",
+            "label": "負極孔内イオン輸送",
+            "resistance_mohm": 1.2427410111412927,
+            "voltage_drop_v": 0.006213705055706464,
+            "heat_w": 0.031068525278532315,
+            "family": "ohmic",
+            "references": [
+              "DFN1993",
+              "PyBaMMTransport"
+            ]
+          },
+          {
+            "id": "negative_solid",
+            "label": "負極固相電子伝導",
+            "resistance_mohm": 0.002249601526365785,
+            "voltage_drop_v": 1.1248007631828925e-05,
+            "heat_w": 5.624003815914463e-05,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "negative_kinetics",
+            "label": "負極反応分極（指定電流の割線値）",
+            "resistance_mohm": 2.6152793354659614,
+            "voltage_drop_v": 0.013076396677329807,
+            "heat_w": 0.06538198338664904,
+            "family": "kinetic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "negative_foil",
+            "label": "負極連続端面集電箔",
+            "resistance_mohm": 0.04686369899725204,
+            "voltage_drop_v": 0.00023431849498626022,
+            "heat_w": 0.001171592474931301,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "negative_contact",
+            "label": "負極箔端面接触",
+            "resistance_mohm": 0.6748804579097357,
+            "voltage_drop_v": 0.0033744022895486787,
+            "heat_w": 0.016872011447743394,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "separator",
+            "label": "セパレータのイオン輸送",
+            "resistance_mohm": 0.47694335385990455,
+            "voltage_drop_v": 0.002384716769299523,
+            "heat_w": 0.011923583846497613,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "film",
+            "label": "指定皮膜ASR（正負合計・幾何面積基準）",
+            "resistance_mohm": 0.0,
+            "voltage_drop_v": 0.0,
+            "heat_w": 0.0,
+            "family": "ohmic",
+            "references": []
+          },
+          {
+            "id": "terminal",
+            "label": "端板・端子等の指定直列抵抗",
+            "resistance_mohm": 1.0,
+            "voltage_drop_v": 0.005,
+            "heat_w": 0.025,
+            "family": "ohmic",
+            "references": []
+          }
+        ],
+        "collectors": {
+          "positive": {
+            "foil_edge_area_mm2": 13.891349038371315,
+            "effective_contact_area_mm2": 13.891349038371315,
+            "foil_resistivity_ohm_m": 2.82e-08,
+            "ideal_longitudinal_reference_mohm": 9.672494885977066
+          },
+          "negative": {
+            "foil_edge_area_mm2": 7.408719487131368,
+            "effective_contact_area_mm2": 7.408719487131368,
+            "foil_resistivity_ohm_m": 1.68e-08,
+            "ideal_longitudinal_reference_mohm": 10.455854114903143
+          }
+        },
+        "transport": {
+          "positive": {
+            "effective_conductivity_s_m": 0.1643167672515498,
+            "tortuosity_factor": 1.8257418583505538
+          },
+          "negative": {
+            "effective_conductivity_s_m": 0.18101933598375616,
+            "tortuosity_factor": 1.7677669529663689
+          },
+          "separator": {
+            "effective_conductivity_s_m": 0.3018691769624716,
+            "tortuosity_factor": 1.4907119849998598
+          }
+        }
+      },
+      "performance": {
+        "current_a": 5,
+        "reference_c_rate": 1.1707219153029371,
+        "voltage_drop_v": 0.053701323575259564,
+        "terminal_voltage_v": 3.6462986764247405,
+        "operating_power_w": 18.231493382123702,
+        "irreversible_heat_w": 0.2685066178762978,
+        "average_temperature_rise_k": 0.24528397098405144,
+        "temperature_after_pulse_c": 25.24528397098405,
+        "voltage_headroom_v": 0.8462986764247407,
+        "cutoff_reached": false,
+        "capacity_accounting_duration_s": 3075.0257195522477,
+        "diffusion": {
+          "positive": {
+            "particle_diffusion_time_s": 2499.9999999999995,
+            "active_surface_area_m2": 2.7442045899319254,
+            "exchange_current_total_a": 8.232613769795776,
+            "diffusion_to_discharge_time_ratio": 0.813001330071484
+          },
+          "negative": {
+            "particle_diffusion_time_s": 833.3333333333331,
+            "active_surface_area_m2": 3.2395972603795284,
+            "exchange_current_total_a": 9.718791781138586,
+            "diffusion_to_discharge_time_ratio": 0.27100044335716134
+          }
+        }
+      },
+      "sensitivity": {
+        "method": "one_at_a_time_10_percent",
+        "baseline": {
+          "design_ah": 4.270869054933677,
+          "np_ratio": 0.9727019512782625,
+          "inventory_limited_ah": 4.270869054933677,
+          "specific_energy_wh_kg": 246.62395516951835,
+          "resistance_mohm": 10.740264715051913,
+          "current_a": 5,
+          "terminal_voltage_v": 3.6462986764247405,
+          "heat_w": 0.2685066178762978,
+          "winding_length_mm": 926.0899358914211
+        },
+        "rows": [
+          {
+            "parameter": "positive_capacity_mah_g",
+            "label": "正極比容量",
+            "factor": 0.9,
+            "baseline_value": 200,
+            "value": 180.0,
+            "status": "available",
+            "metrics": {
+              "design_ah": 3.951654609501972,
+              "np_ratio": 1.0807799458647365,
+              "inventory_limited_ah": 3.951654609501972,
+              "specific_energy_wh_kg": 228.19072107430114,
+              "resistance_mohm": 10.740264715051913,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462986764247405,
+              "heat_w": 0.2685066178762978,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": -0.3192144454317054,
+              "np_ratio": 0.10807799458647394,
+              "inventory_limited_ah": -0.3192144454317054,
+              "specific_energy_wh_kg": -18.433234095217216,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_capacity_mah_g",
+            "label": "正極比容量",
+            "factor": 1.1,
+            "baseline_value": 200,
+            "value": 220.00000000000003,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.8842745011620569,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 10.740264715051913,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462986764247405,
+              "heat_w": 0.2685066178762978,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": -0.08842745011620567,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "graphite_capacity_mah_g",
+            "label": "黒鉛比容量",
+            "factor": 0.9,
+            "baseline_value": 350,
+            "value": 315.0,
+            "status": "available",
+            "metrics": {
+              "design_ah": 3.8437821494403095,
+              "np_ratio": 0.8754317561504362,
+              "inventory_limited_ah": 3.8437821494403095,
+              "specific_energy_wh_kg": 221.9615596525665,
+              "resistance_mohm": 10.740264715051913,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462986764247405,
+              "heat_w": 0.2685066178762978,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": -0.4270869054933679,
+              "np_ratio": -0.09727019512782631,
+              "inventory_limited_ah": -0.4270869054933679,
+              "specific_energy_wh_kg": -24.662395516951847,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "graphite_capacity_mah_g",
+            "label": "黒鉛比容量",
+            "factor": 1.1,
+            "baseline_value": 350,
+            "value": 385.00000000000006,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.069972146406089,
+              "inventory_limited_ah": 4.390727343891081,
+              "specific_energy_wh_kg": 253.54524563811242,
+              "resistance_mohm": 10.740264715051913,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462986764247405,
+              "heat_w": 0.2685066178762978,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.11985828895740358,
+              "np_ratio": 0.09727019512782642,
+              "inventory_limited_ah": 0.11985828895740358,
+              "specific_energy_wh_kg": 6.921290468594066,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_thickness_um",
+            "label": "正極片面厚",
+            "factor": 0.9,
+            "baseline_value": 65,
+            "value": 58.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.1111934601961515,
+              "np_ratio": 1.0807799458647365,
+              "inventory_limited_ah": 4.1111934601961515,
+              "specific_energy_wh_kg": 239.67879237788446,
+              "resistance_mohm": 10.570146141200311,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6471492692939984,
+              "heat_w": 0.2642536535300078,
+              "winding_length_mm": 963.4786600112611
+            },
+            "delta": {
+              "design_ah": -0.1596755947375259,
+              "np_ratio": 0.10807799458647394,
+              "inventory_limited_ah": -0.1596755947375259,
+              "specific_energy_wh_kg": -6.945162791633891,
+              "resistance_mohm": -0.17011857385160134,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0008505928692579268,
+              "heat_w": -0.004252964346290022,
+              "winding_length_mm": 37.38872411984005
+            }
+          },
+          {
+            "parameter": "positive_thickness_um",
+            "label": "正極片面厚",
+            "factor": 1.1,
+            "baseline_value": 65,
+            "value": 71.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.1113250959850065,
+              "np_ratio": 0.8842745011620572,
+              "inventory_limited_ah": 4.1113250959850065,
+              "specific_energy_wh_kg": 235.3436710562752,
+              "resistance_mohm": 10.955443413587695,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645222782932062,
+              "heat_w": 0.27388608533969233,
+              "winding_length_mm": 891.4946221943279
+            },
+            "delta": {
+              "design_ah": -0.1595439589486709,
+              "np_ratio": -0.08842745011620534,
+              "inventory_limited_ah": -0.1595439589486709,
+              "specific_energy_wh_kg": -11.280284113243141,
+              "resistance_mohm": 0.21517869853578198,
+              "current_a": 0,
+              "terminal_voltage_v": -0.00107589349267867,
+              "heat_w": 0.005379467463394516,
+              "winding_length_mm": -34.59531369709316
+            }
+          },
+          {
+            "parameter": "negative_thickness_um",
+            "label": "負極片面厚",
+            "factor": 0.9,
+            "baseline_value": 75,
+            "value": 67.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.023959437695326,
+              "np_ratio": 0.8754317561504366,
+              "inventory_limited_ah": 4.023959437695326,
+              "specific_energy_wh_kg": 230.0361953044598,
+              "resistance_mohm": 10.46281964973937,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6476859017513035,
+              "heat_w": 0.26157049124348425,
+              "winding_length_mm": 969.5004016363315
+            },
+            "delta": {
+              "design_ah": -0.2469096172383516,
+              "np_ratio": -0.09727019512782598,
+              "inventory_limited_ah": -0.2469096172383516,
+              "specific_energy_wh_kg": -16.58775986505856,
+              "resistance_mohm": -0.2774450653125431,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0013872253265629908,
+              "heat_w": -0.006936126632813566,
+              "winding_length_mm": 43.410465744910425
+            }
+          },
+          {
+            "parameter": "negative_thickness_um",
+            "label": "負極片面厚",
+            "factor": 1.1,
+            "baseline_value": 75,
+            "value": 82.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.202553314867178,
+              "np_ratio": 1.069972146406089,
+              "inventory_limited_ah": 4.202553314867178,
+              "specific_energy_wh_kg": 244.94720970847925,
+              "resistance_mohm": 11.05641499529536,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6447179250235235,
+              "heat_w": 0.27641037488238396,
+              "winding_length_mm": 886.4003672103603
+            },
+            "delta": {
+              "design_ah": -0.06831574006649976,
+              "np_ratio": 0.09727019512782642,
+              "inventory_limited_ah": -0.06831574006649976,
+              "specific_energy_wh_kg": -1.6767454610391042,
+              "resistance_mohm": 0.3161502802434466,
+              "current_a": 0,
+              "terminal_voltage_v": -0.00158075140121694,
+              "heat_w": 0.007903757006086143,
+              "winding_length_mm": -39.68956868106079
+            }
+          },
+          {
+            "parameter": "positive_porosity",
+            "label": "正極空隙率",
+            "factor": 0.9,
+            "baseline_value": 0.3,
+            "value": 0.27,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9327278984860053,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 243.88333909201376,
+              "resistance_mohm": 10.820483468209702,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6458975826589515,
+              "heat_w": 0.2705120867052425,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": -0.039974052792257186,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": -2.7406160775045976,
+              "resistance_mohm": 0.08021875315778892,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0004010937657890068,
+              "heat_w": 0.002005468828944701,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_porosity",
+            "label": "正極空隙率",
+            "factor": 1.1,
+            "baseline_value": 0.3,
+            "value": 0.33,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.202553314867178,
+              "np_ratio": 1.0162557699922146,
+              "inventory_limited_ah": 4.202553314867178,
+              "specific_energy_wh_kg": 245.43709711212213,
+              "resistance_mohm": 10.71565515592097,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6464217242203953,
+              "heat_w": 0.2678913788980243,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": -0.06831574006649976,
+              "np_ratio": 0.04355381871395203,
+              "inventory_limited_ah": -0.06831574006649976,
+              "specific_energy_wh_kg": -1.186858057396222,
+              "resistance_mohm": -0.024609559130942316,
+              "current_a": 0,
+              "terminal_voltage_v": 0.00012304779565486257,
+              "heat_w": -0.0006152389782735357,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_porosity",
+            "label": "負極空隙率",
+            "factor": 0.9,
+            "baseline_value": 0.32,
+            "value": 0.28800000000000003,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.0184761607501809,
+              "inventory_limited_ah": 4.390727343891081,
+              "specific_energy_wh_kg": 252.4131650437432,
+              "resistance_mohm": 10.837813384972446,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645810933075138,
+              "heat_w": 0.27094533462431114,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.11985828895740358,
+              "np_ratio": 0.04577420947191835,
+              "inventory_limited_ah": 0.11985828895740358,
+              "specific_energy_wh_kg": 5.789209874224838,
+              "resistance_mohm": 0.09754866992053302,
+              "current_a": 0,
+              "terminal_voltage_v": -0.00048774334960244303,
+              "heat_w": 0.0024387167480133254,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_porosity",
+            "label": "負極空隙率",
+            "factor": 1.1,
+            "baseline_value": 0.32,
+            "value": 0.35200000000000004,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.069886981760328,
+              "np_ratio": 0.9269277418063443,
+              "inventory_limited_ah": 4.069886981760328,
+              "specific_energy_wh_kg": 236.0769340950523,
+              "resistance_mohm": 10.700947719070331,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6464952614046484,
+              "heat_w": 0.26752369297675826,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": -0.20098207317334982,
+              "np_ratio": -0.04577420947191824,
+              "inventory_limited_ah": -0.20098207317334982,
+              "specific_energy_wh_kg": -10.547021074466045,
+              "resistance_mohm": -0.039316995981581115,
+              "current_a": 0,
+              "terminal_voltage_v": 0.00019658497990793222,
+              "heat_w": -0.00098292489953955,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_foil_um",
+            "label": "Al箔厚",
+            "factor": 0.9,
+            "baseline_value": 15,
+            "value": 13.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.290078361027833,
+              "np_ratio": 0.9727019512782628,
+              "inventory_limited_ah": 4.290078361027833,
+              "specific_energy_wh_kg": 247.7861748654392,
+              "resistance_mohm": 10.741595314775774,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462920234261214,
+              "heat_w": 0.26853988286939434,
+              "winding_length_mm": 930.2552579419072
+            },
+            "delta": {
+              "design_ah": 0.019209306094155387,
+              "np_ratio": 2.220446049250313e-16,
+              "inventory_limited_ah": 0.019209306094155387,
+              "specific_energy_wh_kg": 1.1622196959208395,
+              "resistance_mohm": 0.00133059972386107,
+              "current_a": 0,
+              "terminal_voltage_v": -6.652998619127715e-06,
+              "heat_w": 3.326499309652675e-05,
+              "winding_length_mm": 4.165322050486111
+            }
+          },
+          {
+            "parameter": "positive_foil_um",
+            "label": "Al箔厚",
+            "factor": 1.1,
+            "baseline_value": 15,
+            "value": 16.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.251831005654626,
+              "np_ratio": 0.9727019512782626,
+              "inventory_limited_ah": 4.251831005654626,
+              "specific_energy_wh_kg": 245.47258715732872,
+              "resistance_mohm": 10.746655219427707,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462667239028614,
+              "heat_w": 0.2686663804856927,
+              "winding_length_mm": 921.9617489557982
+            },
+            "delta": {
+              "design_ah": -0.019038049279051172,
+              "np_ratio": 1.1102230246251565e-16,
+              "inventory_limited_ah": -0.019038049279051172,
+              "specific_energy_wh_kg": -1.1513680121896357,
+              "resistance_mohm": 0.006390504375794137,
+              "current_a": 0,
+              "terminal_voltage_v": -3.195252187904174e-05,
+              "heat_w": 0.00015976260939487563,
+              "winding_length_mm": -4.128186935622921
+            }
+          },
+          {
+            "parameter": "negative_foil_um",
+            "label": "Cu箔厚",
+            "factor": 0.9,
+            "baseline_value": 8,
+            "value": 7.2,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.281092559553507,
+              "np_ratio": 0.9727019512782626,
+              "inventory_limited_ah": 4.281092559553507,
+              "specific_energy_wh_kg": 248.39602399476348,
+              "resistance_mohm": 10.79734842899675,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6460132578550164,
+              "heat_w": 0.2699337107249188,
+              "winding_length_mm": 928.3067879222804
+            },
+            "delta": {
+              "design_ah": 0.010223504619829349,
+              "np_ratio": 1.1102230246251565e-16,
+              "inventory_limited_ah": 0.010223504619829349,
+              "specific_energy_wh_kg": 1.7720688252451282,
+              "resistance_mohm": 0.05708371394483791,
+              "current_a": 0,
+              "terminal_voltage_v": -0.00028541856972408297,
+              "heat_w": 0.00142709284862097,
+              "winding_length_mm": 2.216852030859286
+            }
+          },
+          {
+            "parameter": "negative_foil_um",
+            "label": "Cu箔厚",
+            "factor": 1.1,
+            "baseline_value": 8,
+            "value": 8.8,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.260694262664629,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 4.260694262664629,
+              "specific_energy_wh_kg": 244.87699128780153,
+              "resistance_mohm": 10.697411151596528,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6465129442420174,
+              "heat_w": 0.2674352787899132,
+              "winding_length_mm": 923.8836465861408
+            },
+            "delta": {
+              "design_ah": -0.010174792269048716,
+              "np_ratio": 3.3306690738754696e-16,
+              "inventory_limited_ah": -0.010174792269048716,
+              "specific_energy_wh_kg": -1.7469638817168232,
+              "resistance_mohm": -0.0428535634553846,
+              "current_a": 0,
+              "terminal_voltage_v": 0.00021426781727695854,
+              "heat_w": -0.0010713390863846262,
+              "winding_length_mm": -2.2062893052802792
+            }
+          },
+          {
+            "parameter": "separator_um",
+            "label": "セパレータ厚",
+            "factor": 0.9,
+            "baseline_value": 16,
+            "value": 14.4,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.312058871015015,
+              "np_ratio": 0.9727019512782626,
+              "inventory_limited_ah": 4.312058871015015,
+              "specific_energy_wh_kg": 247.8988590595323,
+              "resistance_mohm": 10.601337652094013,
+              "current_a": 5,
+              "terminal_voltage_v": 3.64699331173953,
+              "heat_w": 0.26503344130235035,
+              "winding_length_mm": 935.0214843991142
+            },
+            "delta": {
+              "design_ah": 0.04118981608133776,
+              "np_ratio": 1.1102230246251565e-16,
+              "inventory_limited_ah": 0.04118981608133776,
+              "specific_energy_wh_kg": 1.2749038900139453,
+              "resistance_mohm": -0.13892706295789914,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0006946353147894158,
+              "heat_w": -0.0034731765739474674,
+              "winding_length_mm": 8.931548507693151
+            }
+          },
+          {
+            "parameter": "separator_um",
+            "label": "セパレータ厚",
+            "factor": 1.1,
+            "baseline_value": 16,
+            "value": 17.6,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.2304587031424665,
+              "np_ratio": 0.9727019512782628,
+              "inventory_limited_ah": 4.2304587031424665,
+              "specific_energy_wh_kg": 245.36209743580542,
+              "resistance_mohm": 10.880065450074186,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645599672749629,
+              "heat_w": 0.27200163625185464,
+              "winding_length_mm": 917.3274054512895
+            },
+            "delta": {
+              "design_ah": -0.040410351791210886,
+              "np_ratio": 2.220446049250313e-16,
+              "inventory_limited_ah": -0.040410351791210886,
+              "specific_energy_wh_kg": -1.2618577337129295,
+              "resistance_mohm": 0.13980073502227341,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0006990036751113315,
+              "heat_w": 0.0034950183755568243,
+              "winding_length_mm": -8.762530440131627
+            }
+          },
+          {
+            "parameter": "electrolyte_conductivity_s_m",
+            "label": "電解液導電率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9727019512782625,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 11.063176537649179,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6446841173117543,
+              "heat_w": 0.2765794134412295,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.32291182259726625,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0016145591129861359,
+              "heat_w": 0.008072795564931678,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "electrolyte_conductivity_s_m",
+            "label": "電解液導電率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9727019512782625,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 10.476064132926878,
+              "current_a": 5,
+              "terminal_voltage_v": 3.647619679335366,
+              "heat_w": 0.26190160332317197,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": -0.26420058212503506,
+              "current_a": 0,
+              "terminal_voltage_v": 0.001321002910625424,
+              "heat_w": -0.006605014553125843,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_contact_fraction",
+            "label": "正極接触率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9727019512782625,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 10.780257631076193,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646098711844619,
+              "heat_w": 0.26950644077690483,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.039992916024280234,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0001999645801213923,
+              "heat_w": 0.000999822900607017,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_contact_fraction",
+            "label": "正極接触率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "invalid",
+            "reason": "positive_contact_fraction は0〜1で指定してください。"
+          },
+          {
+            "parameter": "negative_contact_fraction",
+            "label": "負極接触率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9727019512782625,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 10.815251432597439,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645923742837013,
+              "heat_w": 0.2703812858149359,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.0749867175455261,
+              "current_a": 0,
+              "terminal_voltage_v": -0.000374933587727444,
+              "heat_w": 0.0018746679386381082,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_contact_fraction",
+            "label": "負極接触率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "invalid",
+            "reason": "negative_contact_fraction は0〜1で指定してください。"
+          },
+          {
+            "parameter": "negative_particle_radius_um",
+            "label": "負極粒子半径",
+            "factor": 0.9,
+            "baseline_value": 5,
+            "value": 4.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9727019512782625,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 10.483467119197634,
+              "current_a": 5,
+              "terminal_voltage_v": 3.647582664404012,
+              "heat_w": 0.26208667797994084,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": -0.2567975958542785,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0012839879792716502,
+              "heat_w": -0.006419939896356974,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_particle_radius_um",
+            "label": "負極粒子半径",
+            "factor": 1.1,
+            "baseline_value": 5,
+            "value": 5.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.270869054933677,
+              "np_ratio": 0.9727019512782625,
+              "inventory_limited_ah": 4.270869054933677,
+              "specific_energy_wh_kg": 246.62395516951835,
+              "resistance_mohm": 10.995474018259795,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645022629908701,
+              "heat_w": 0.2748868504564949,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.2552093032078826,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0012760465160392975,
+              "heat_w": 0.006380232580197098,
+              "winding_length_mm": 0.0
+            }
+          }
+        ],
+        "comparison_basis": "固定Aまたは固定Cレートは入力に従う。fitでは毎回巻回長を再計算。±10%は各1項目のみ変更。範囲外は省略せず理由表示。"
+      }
+    }
+  },
+  "18650": {
+    "schema_version": "design-2.1",
+    "input": {
+      "name": "21700 巻回設計",
+      "cell_format": "21700",
+      "diameter_mm": 18,
+      "height_mm": 65,
+      "wall_mm": 0.25,
+      "lid_total_mm": 0.6,
+      "axial_reserve_mm": 4,
+      "radial_gap_mm": 0.2,
+      "core_diameter_mm": 3,
+      "winding_width_mm": 59,
+      "positive_width_mm": 55,
+      "negative_width_mm": 57,
+      "length_mode": "fit",
+      "length_mm": 1400,
+      "positive_thickness_um": 65,
+      "negative_thickness_um": 75,
+      "positive_foil_um": 15,
+      "negative_foil_um": 8,
+      "separator_um": 16,
+      "separator_porosity": 0.45,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "positive_material": "NMC811_demo",
+      "negative_additive": "Si_demo",
+      "fraction_basis": "mass",
+      "positive_active": 0.96,
+      "positive_binder": 0.02,
+      "positive_carbon": 0.02,
+      "negative_graphite": 0.96,
+      "negative_si": 0,
+      "negative_binder": 0.02,
+      "negative_carbon": 0.02,
+      "lithium_fraction_positive": 0.5,
+      "lithium_fraction_negative": 0.5,
+      "c_rate_capacity_mode": "design",
+      "rated_capacity_ah": 5,
+      "positive_terminal": "top",
+      "negative_terminal": "bottom",
+      "positive_contact_fraction": 1,
+      "negative_contact_fraction": 1,
+      "electrolyte_fill": 1,
+      "electrolyte_density_g_cm3": 1.2,
+      "hardware_mass_g": 3,
+      "positive_capacity_mah_g": 0,
+      "graphite_capacity_mah_g": 0,
+      "additive_capacity_mah_g": 0,
+      "positive_utilization": 1,
+      "negative_utilization": 1,
+      "negative_first_cycle_efficiency": 1,
+      "analysis_current_mode": "fixed_a",
+      "analysis_current_a": 5,
+      "analysis_c_rate": 1,
+      "analysis_ocv_v": 3.7,
+      "analysis_cutoff_v": 2.8,
+      "analysis_temperature_c": 25,
+      "electrolyte_conductivity_s_m": 1,
+      "positive_bruggeman": 1.5,
+      "negative_bruggeman": 1.5,
+      "separator_bruggeman": 1.5,
+      "positive_conductivity_s_m": 10,
+      "negative_conductivity_s_m": 100,
+      "positive_particle_radius_um": 5,
+      "negative_particle_radius_um": 5,
+      "positive_diffusivity_m2_s": 1e-14,
+      "negative_diffusivity_m2_s": 3e-14,
+      "positive_exchange_current_a_m2": 3,
+      "negative_exchange_current_a_m2": 3,
+      "positive_contact_asr_ohm_mm2": 0.005,
+      "negative_contact_asr_ohm_mm2": 0.005,
+      "terminal_resistance_mohm": 1,
+      "film_asr_ohm_cm2": 0,
+      "analysis_pulse_s": 60,
+      "analysis_heat_capacity_j_kg_k": 1000,
+      "analysis_heat_transfer_w_m2_k": 10
+    },
+    "validation_status": "illustrative_unvalidated",
+    "materials": {
+      "binder_demo": {
+        "label": "結着剤",
+        "role": "inactive",
+        "density_g_cm3": 1.8,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 0,
+        "capacity_source": "illustrative_default"
+      },
+      "graphite_demo": {
+        "label": "黒鉛",
+        "role": "negative",
+        "density_g_cm3": 2.26,
+        "capacity_mah_g": 350,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 350,
+        "capacity_source": "illustrative_default"
+      },
+      "Si_demo": {
+        "label": "Si（元素Si）",
+        "role": "negative_additive",
+        "density_g_cm3": 2.33,
+        "capacity_mah_g": 3000,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 3000,
+        "capacity_source": "illustrative_default"
+      },
+      "carbon_demo": {
+        "label": "導電助剤",
+        "role": "inactive",
+        "density_g_cm3": 2.0,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 0,
+        "capacity_source": "illustrative_default"
+      },
+      "NMC811_demo": {
+        "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+        "role": "positive",
+        "density_g_cm3": 4.8,
+        "capacity_mah_g": 200,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 200,
+        "capacity_source": "illustrative_default"
+      }
+    },
+    "geometry": {
+      "pitch_mm": 0.335,
+      "length_mm": 664.4468462342412,
+      "max_length_mm": 664.4468462342412,
+      "inner_radius_mm": 1.5,
+      "outer_radius_mm": 8.55,
+      "turns": 21.044776119402986,
+      "envelope_cm3": 13.132791915819778,
+      "layer_volume_cm3": 12.5879455019077,
+      "uncoated_void_cm3": 0.5448464139120777,
+      "pore_volume_cm3": 3.807679097029943
+    },
+    "positive": {
+      "solid_density_g_cm3": 4.522613065326633,
+      "specific_capacity_mah_g": 192.0,
+      "components": [
+        {
+          "id": "NMC811_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9045226130653266,
+          "mass_g": 14.438596915113838,
+          "capacity_ah": 2.8877193830227674
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.05025125628140703,
+          "mass_g": 0.30080410239820493,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.045226130653266326,
+          "mass_g": 0.30080410239820493,
+          "capacity_ah": 0.0
+        }
+      ],
+      "component_capacities_mah_g": {
+        "NMC811_demo": 200,
+        "binder_demo": 0,
+        "carbon_demo": 0
+      },
+      "area_cm2": 730.8915308576653,
+      "coating_volume_cm3": 4.750794950574825,
+      "pore_volume_cm3": 1.4252384851724476,
+      "mass_loading_mg_cm2": 20.577889447236178,
+      "dry_mass_g": 15.040205119910247,
+      "capacity_ah": 2.8877193830227674,
+      "areal_capacity_mah_cm2": 3.9509547738693462
+    },
+    "negative": {
+      "solid_density_g_cm3": 2.242706242970869,
+      "specific_capacity_mah_g": 336.0,
+      "components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595,
+          "mass_g": 8.317233552248702,
+          "capacity_ah": 2.9110317432870456
+        },
+        {
+          "id": "Si_demo",
+          "mass_fraction": 0,
+          "solid_volume_fraction": 0.0,
+          "mass_g": 0.0,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.024918958255231875,
+          "mass_g": 0.17327569900518128,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.02242706242970869,
+          "mass_g": 0.17327569900518128,
+          "capacity_ah": 0.0
+        }
+      ],
+      "component_capacities_mah_g": {
+        "graphite_demo": 350,
+        "Si_demo": 3000,
+        "binder_demo": 0,
+        "carbon_demo": 0
+      },
+      "area_cm2": 757.469404707035,
+      "coating_volume_cm3": 5.681020535302762,
+      "pore_volume_cm3": 1.817926571296884,
+      "mass_loading_mg_cm2": 11.43780183915143,
+      "dry_mass_g": 8.663784950259064,
+      "capacity_ah": 2.9110317432870456,
+      "areal_capacity_mah_cm2": 3.8431014179548804
+    },
+    "negative_phase_count": 1,
+    "capacity": {
+      "positive_ah": 2.8877193830227674,
+      "negative_total_ah": 2.9110317432870456,
+      "negative_overlap_ah": 2.808890278610307,
+      "np_ratio": 0.9727019512782629,
+      "usable_np_ratio": 0.9727019512782629,
+      "design_ah": 2.808890278610307,
+      "c_rate_reference_ah": 2.808890278610307
+    },
+    "lithium_inventory": {
+      "positive_ah_equivalent": 1.4438596915113837,
+      "negative_ah_equivalent": 1.4555158716435228,
+      "total_mol_equivalent": 0.10817967662044323
+    },
+    "mass_g": {
+      "positive_dry": 15.040205119910247,
+      "negative_dry": 8.663784950259064,
+      "al_foil": 1.5876957390767195,
+      "cu_foil": 2.8100254463461547,
+      "separator_solid": 0.648563908821858,
+      "electrolyte": 4.569214916435931,
+      "can_and_lids": 8.246189841821083,
+      "other_hardware": 3
+    },
+    "total_mass_g": 44.56567992267106,
+    "collector_connections": {
+      "positive": {
+        "foil": "Al",
+        "face": "top",
+        "contact_fraction": 1
+      },
+      "negative": {
+        "foil": "Cu",
+        "face": "bottom",
+        "contact_fraction": 1
+      },
+      "distribution_solved": false
+    },
+    "adapter_input": {
+      "electrode_height_m": 0.055,
+      "electrode_width_m": 0.6644468462342412,
+      "parallel_electrodes": 2,
+      "paired_area_m2": 0.07308915308576654,
+      "positive_thickness_m": 6.5e-05,
+      "negative_thickness_m": 7.5e-05,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "negative_phase_volume_fractions": [
+        0.6478047059342403
+      ],
+      "negative_particle_phases": "1",
+      "negative_active_components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9526539793150595,
+          "mass_g": 8.317233552248702,
+          "capacity_ah": 2.9110317432870456
+        }
+      ],
+      "solver_ready": false,
+      "reason": "Step3で材料パラメータ・初期化の整合検証が必要"
+    },
+    "warnings": [
+      "材料物性・容量・質量は仮定値による設計見積り。実測校正なし。",
+      "設計容量は半電池可逆容量×指定利用率の小さい側。初期Li・終止電圧・拡散による実際の取出容量ではない。",
+      "巻回は面積保存の連続環状近似。端部・塗工開始終了・曲率差・溶接形状は省略。",
+      "端面抵抗と発熱は一様反応・連続端面の集中見積り。局所電流分布・溶接点・力学は未計算。",
+      "Li在庫は容量×初期充填率のAh等価帳簿。SEI・不可逆損失・電解液Liを含まない。",
+      "利用率込みの重なり領域N/Pが1未満です。負極容量が設計容量を制限します。"
+    ],
+    "analysis": {
+      "version": "design-screening-1.0",
+      "status": "available",
+      "validation_status": "analytical_unvalidated",
+      "references": [
+        {
+          "id": "SiGraphite2016",
+          "authors": "Sternad, Forster & Wilkening",
+          "year": 2016,
+          "title": "The microstructure matters: breaking down the barriers with single crystalline silicon as negative electrode in Li-ion batteries",
+          "url": "https://doi.org/10.1038/srep31712",
+          "use": "LiC₆とLi₁₅Si₄の反応終点の確認。理論比容量は各反応式から再計算し、実用比容量とは区別。"
+        },
+        {
+          "id": "DFN1993",
+          "authors": "Doyle, Fuller & Newman",
+          "year": 1993,
+          "title": "Modeling of Galvanostatic Charge and Discharge of the Lithium/Polymer/Insertion Cell",
+          "url": "https://doi.org/10.1149/1.2221597",
+          "use": "多孔質電極の電荷輸送・反応分極の基礎。ここでの集中近似は原著DFNの再現ではない。"
+        },
+        {
+          "id": "Newman1995",
+          "authors": "Newman",
+          "year": 1995,
+          "title": "Optimization of Porosity and Thickness of a Battery Electrode by Means of a Reaction-Zone Model",
+          "url": "https://doi.org/10.1149/1.2043956",
+          "use": "活物質量と孔内輸送のトレードオフ。原著の最適値を本セルへ転用しない。"
+        },
+        {
+          "id": "Landesfeind2016",
+          "authors": "Landesfeind et al.",
+          "year": 2016,
+          "title": "Tortuosity Determination of Battery Electrodes and Separators by Impedance Spectroscopy",
+          "url": "https://doi.org/10.1149/2.1141607jes",
+          "use": "実電極の屈曲度はBruggeman近似と異なり得る。指数1.5は未校正の初期仮定。"
+        },
+        {
+          "id": "Tranter2020",
+          "authors": "Tranter, Timms, Shearing & Brett",
+          "year": 2020,
+          "title": "Communication—Prediction of Thermal Issues for Larger Format 4680 Cylindrical Cells and Their Mitigation with Enhanced Current Collection",
+          "url": "https://doi.org/10.1149/1945-7111/abd44f",
+          "use": "集電方式による電流経路・熱の違い。下記1/3係数は一様注入から独立に導出した理想近似。"
+        },
+        {
+          "id": "Bernardi1985",
+          "authors": "Bernardi, Pawlikowski & Newman",
+          "year": 1985,
+          "title": "A General Energy Balance for Battery Systems",
+          "url": "https://doi.org/10.1149/1.2113792",
+          "use": "熱収支の基礎。本見積りは不可逆損失Iηのみで、反応エントロピー・混合熱は含めない。"
+        },
+        {
+          "id": "Chen2020",
+          "authors": "Chen et al.",
+          "year": 2020,
+          "title": "Development of Experimental Techniques for Parameterization of Multi-scale Lithium-ion Battery Models",
+          "url": "https://doi.org/10.1149/1945-7111/ab9050",
+          "use": "幾何・容量・輸送・反応物性を別に測定する考え方。画面の仮定値を原著実測値とは扱わない。"
+        },
+        {
+          "id": "PyBaMMTransport",
+          "authors": "PyBaMM team",
+          "year": 2026,
+          "title": "Transport efficiency and the models for tortuosity factor",
+          "url": "https://docs.pybamm.org/en/latest/source/examples/notebooks/models/tortuosity_models.html",
+          "use": "輸送効率ε/τ、Bruggeman式ε^bの定義確認。latest文書の確認日2026-10-16。"
+        }
+      ],
+      "formulas": [
+        {
+          "id": "theoretical_capacity",
+          "expression": "q_theory = n F/(3.6 M)",
+          "units": "n: electrons/formula; M: g/mol → mAh/g",
+          "references": [
+            "SiGraphite2016"
+          ],
+          "assumption": "反応式による上限。正極は全1Li、黒鉛はLiC6、SiはLi15Si4。実用電圧窓・不可逆損失・劣化を含まない。SiOxはx未指定なので算出しない。"
+        },
+        {
+          "id": "capacity",
+          "expression": "Q = m_dry Σ(w_i q_i)/1000; q_areal = loading × Σ(w_i q_i)/1000",
+          "units": "g, mAh/g, mg/cm² → Ah, mAh/cm²",
+          "references": [
+            "Chen2020"
+          ],
+          "assumption": "配合を質量分率へ換算。両面面積=2×塗工幅×巻回長。負極は重なり面積に縮約。"
+        },
+        {
+          "id": "inventory",
+          "expression": "Qp,u=up Qp; Qn,u=un Qn,overlap; Qloss=Qn,u(1/ICE−1); Qbalance=max(0,min(Qp,u−Qloss,Qn,u))",
+          "units": "Ah",
+          "references": [],
+          "assumption": "可逆容量基準ICE=脱離/挿入。負極の指定利用窓全体を形成する独立のLi消費帳簿。正極がLiを供給、予備Liなし。OCV窓・初期Li充填率とは独立。"
+        },
+        {
+          "id": "transport",
+          "expression": "κeff=κ ε^b; τfactor=ε^(1−b); Re=L/(3κeff A); Rs=Ls/(κeff,s A); Rsolid=L/(3σeff A)",
+          "units": "S/m, m, m² → Ω",
+          "references": [
+            "DFN1993",
+            "Landesfeind2016",
+            "PyBaMMTransport"
+          ],
+          "assumption": "完全含浸、一様反応。電極は線形電流分布の損失積分で1/3、セパレータは全電流。σは指定の有効値。濃度分極は省略。"
+        },
+        {
+          "id": "kinetics",
+          "expression": "as=3εactive/r; I0=i0 as L A; ηct=(2RT/F) asinh(I/(2I0)); Rct=ηct/I",
+          "units": "m, A/m²(active surface), K → V, Ω",
+          "references": [
+            "DFN1993"
+          ],
+          "assumption": "対称Butler–Volmer、単一等価粒子、指定評価点のi0。I=0ではRT/(F I0)。複合負極も指定i0・半径の均質近似。"
+        },
+        {
+          "id": "collector",
+          "expression": "Rfoil,edge=ρ H/(3t ℓ); Rfoil,long=ρ ℓ/(3t H); Aedge=t ℓ; Rcontact=ASR/(f Aedge)",
+          "units": "ρ: Ωm; H,t,ℓ: m; contact ASR: Ωmm²; Aedge: mm²",
+          "references": [
+            "Tranter2020"
+          ],
+          "assumption": "各極の連続した片端面・一様注入。H=塗工幅、未塗工リード長0。箔は両塗工面共通で2倍しない。Al 2.82e−8 / Cu 1.68e−8 Ωmは室温の工学仮定。長手集電は理想比較のみで合計しない。接触率は接触項のみ変更。"
+        },
+        {
+          "id": "performance",
+          "expression": "ΔV=I Rohmic+Σηct; V=Uref−ΔV; P=IV; Qdot=IΔV; Enom=Qbalance Uref; td=r²/Ds",
+          "units": "A, Ω, V → V, W, Wh; m, m²/s → s",
+          "references": [
+            "Bernardi1985",
+            "Newman1995"
+          ],
+          "assumption": "固定評価点の放電見積り。帳簿エネルギーは放電曲線の積分ではない。拡散時間を容量減衰係数に置換しない。"
+        },
+        {
+          "id": "thermal",
+          "expression": "ΔT=Qdot/(h Aext) × (1−exp(−h Aext tpulse/Cth)); Cth=m cp; h=0: ΔT=Qdot tpulse/Cth",
+          "units": "W, W/K, J/K, s → K",
+          "references": [
+            "Bernardi1985"
+          ],
+          "assumption": "初期温度=周囲温度、一定損失・一定物性の平均温度近似。濃度分極・可逆熱・局所温度を省略。"
+        }
+      ],
+      "capacity": {
+        "positive_usable_ah": 2.8877193830227674,
+        "negative_usable_overlap_ah": 2.808890278610307,
+        "limiting_electrode": "negative",
+        "formation_loss_ah": 0.0,
+        "inventory_limited_ah": 2.808890278610307,
+        "nominal_energy_wh": 10.392894030858137,
+        "nominal_specific_energy_wh_kg": 233.2039822772042,
+        "nominal_energy_density_wh_l": 628.33065832529,
+        "materials": [
+          {
+            "side": "positive",
+            "material_id": "NMC811_demo",
+            "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+            "reversible_capacity_mah_g": 200,
+            "theoretical_capacity_mah_g": 275.5090890107334,
+            "reaction": "LiMO₂ → MO₂ + Li⁺ + e⁻",
+            "mass_g": 14.438596915113838,
+            "contribution_ah": 2.8877193830227674
+          },
+          {
+            "side": "negative",
+            "material_id": "graphite_demo",
+            "label": "黒鉛",
+            "reversible_capacity_mah_g": 350,
+            "theoretical_capacity_mah_g": 371.901883612861,
+            "reaction": "6C + Li⁺ + e⁻ ↔ LiC₆（炭素質量基準）",
+            "mass_g": 8.317233552248702,
+            "contribution_ah": 2.9110317432870456
+          }
+        ]
+      },
+      "provenance": {
+        "property_status": "user_assumptions_not_literature_calibrated",
+        "specific_capacities_mah_g": {
+          "positive": 200,
+          "graphite": 350,
+          "additive": 3000
+        },
+        "applied_to_pybamm": false,
+        "checked_on": "2026-10-16"
+      },
+      "limitations": [
+        "文献は式と設計論の根拠。入力物性は仮定またはユーザー指定で、文献の実測校正値ではありません。",
+        "指定SOC相当のOCV・温度における静的近似。測定DCIR・EIS・寿命・析出開始を予測するものではありません。",
+        "i0・κ・σ・Dは指定温度での入力と解釈。温度による自動補正や濃度依存はありません。",
+        "SPMe/DFNの反応・輸送・OCV関数は文献セットを保持。比容量と利用率は設計容量を基準に選んだ場合に公称Cレート基準容量へ影響。ICE・集中抵抗・指定κ/i0/Dはソルバへ反映しません。"
+      ],
+      "warnings": [],
+      "resistance": {
+        "total_mohm": 15.520605281258137,
+        "ohmic_mohm": 7.006126331307208,
+        "kinetic_secant_mohm": 8.514478949950927,
+        "components": [
+          {
+            "id": "positive_electrolyte",
+            "label": "正極孔内イオン輸送",
+            "resistance_mohm": 1.8040862241142188,
+            "voltage_drop_v": 0.009020431120571094,
+            "heat_w": 0.04510215560285547,
+            "family": "ohmic",
+            "references": [
+              "DFN1993",
+              "PyBaMMTransport"
+            ]
+          },
+          {
+            "id": "positive_solid",
+            "label": "正極固相電子伝導",
+            "resistance_mohm": 0.02964416161895034,
+            "voltage_drop_v": 0.00014822080809475172,
+            "heat_w": 0.0007411040404737586,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "positive_kinetics",
+            "label": "正極反応分極（指定電流の割線値）",
+            "resistance_mohm": 4.590942607572507,
+            "voltage_drop_v": 0.022954713037862534,
+            "heat_w": 0.11477356518931267,
+            "family": "kinetic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "positive_foil",
+            "label": "正極連続端面集電箔",
+            "resistance_mohm": 0.05187272219291405,
+            "voltage_drop_v": 0.00025936361096457025,
+            "heat_w": 0.0012968180548228513,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "positive_contact",
+            "label": "正極箔端面接触",
+            "resistance_mohm": 0.5016704273976212,
+            "voltage_drop_v": 0.0025083521369881063,
+            "heat_w": 0.012541760684940532,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "negative_electrolyte",
+            "label": "負極孔内イオン輸送",
+            "resistance_mohm": 1.889566199220232,
+            "voltage_drop_v": 0.00944783099610116,
+            "heat_w": 0.0472391549805058,
+            "family": "ohmic",
+            "references": [
+              "DFN1993",
+              "PyBaMMTransport"
+            ]
+          },
+          {
+            "id": "negative_solid",
+            "label": "負極固相電子伝導",
+            "resistance_mohm": 0.003420480186801963,
+            "voltage_drop_v": 1.7102400934009815e-05,
+            "heat_w": 8.551200467004907e-05,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "negative_kinetics",
+            "label": "負極反応分極（指定電流の割線値）",
+            "resistance_mohm": 3.9235363423784206,
+            "voltage_drop_v": 0.019617681711892106,
+            "heat_w": 0.09808840855946052,
+            "family": "kinetic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "negative_foil",
+            "label": "負極連続端面集電箔",
+            "resistance_mohm": 0.06004995015949527,
+            "voltage_drop_v": 0.0003002497507974763,
+            "heat_w": 0.0015012487539873816,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "negative_contact",
+            "label": "負極箔端面接触",
+            "resistance_mohm": 0.94063205137054,
+            "voltage_drop_v": 0.004703160256852699,
+            "heat_w": 0.023515801284263498,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "separator",
+            "label": "セパレータのイオン輸送",
+            "resistance_mohm": 0.7251841150464349,
+            "voltage_drop_v": 0.0036259205752321743,
+            "heat_w": 0.01812960287616087,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "film",
+            "label": "指定皮膜ASR（正負合計・幾何面積基準）",
+            "resistance_mohm": 0.0,
+            "voltage_drop_v": 0.0,
+            "heat_w": 0.0,
+            "family": "ohmic",
+            "references": []
+          },
+          {
+            "id": "terminal",
+            "label": "端板・端子等の指定直列抵抗",
+            "resistance_mohm": 1.0,
+            "voltage_drop_v": 0.005,
+            "heat_w": 0.025,
+            "family": "ohmic",
+            "references": []
+          }
+        ],
+        "collectors": {
+          "positive": {
+            "foil_edge_area_mm2": 9.966702693513618,
+            "effective_contact_area_mm2": 9.966702693513618,
+            "foil_resistivity_ohm_m": 2.82e-08,
+            "ideal_longitudinal_reference_mohm": 7.570667096487113
+          },
+          "negative": {
+            "foil_edge_area_mm2": 5.31557476987393,
+            "effective_contact_area_mm2": 5.31557476987393,
+            "foil_resistivity_ohm_m": 1.68e-08,
+            "ideal_longitudinal_reference_mohm": 8.159873550245068
+          }
+        },
+        "transport": {
+          "positive": {
+            "effective_conductivity_s_m": 0.1643167672515498,
+            "tortuosity_factor": 1.8257418583505538
+          },
+          "negative": {
+            "effective_conductivity_s_m": 0.18101933598375616,
+            "tortuosity_factor": 1.7677669529663689
+          },
+          "separator": {
+            "effective_conductivity_s_m": 0.3018691769624716,
+            "tortuosity_factor": 1.4907119849998598
+          }
+        }
+      },
+      "performance": {
+        "current_a": 5,
+        "reference_c_rate": 1.7800624104383813,
+        "voltage_drop_v": 0.07760302640629069,
+        "terminal_voltage_v": 3.6223969735937094,
+        "operating_power_w": 18.11198486796855,
+        "irreversible_heat_w": 0.38801513203145344,
+        "average_temperature_rise_k": 0.5079524671243932,
+        "temperature_after_pulse_c": 25.507952467124394,
+        "voltage_headroom_v": 0.8223969735937096,
+        "cutoff_reached": false,
+        "capacity_accounting_duration_s": 2022.401000599421,
+        "diffusion": {
+          "positive": {
+            "particle_diffusion_time_s": 2499.9999999999995,
+            "active_surface_area_m2": 1.8048246143892295,
+            "exchange_current_total_a": 5.414473843167689,
+            "diffusion_to_discharge_time_ratio": 1.2361544516933203
+          },
+          "negative": {
+            "particle_diffusion_time_s": 833.3333333333331,
+            "active_surface_area_m2": 2.1306373794768447,
+            "exchange_current_total_a": 6.391912138430535,
+            "diffusion_to_discharge_time_ratio": 0.4120514838977734
+          }
+        }
+      },
+      "sensitivity": {
+        "method": "one_at_a_time_10_percent",
+        "baseline": {
+          "design_ah": 2.808890278610307,
+          "np_ratio": 0.9727019512782629,
+          "inventory_limited_ah": 2.808890278610307,
+          "specific_energy_wh_kg": 233.2039822772042,
+          "resistance_mohm": 15.520605281258137,
+          "current_a": 5,
+          "terminal_voltage_v": 3.6223969735937094,
+          "heat_w": 0.38801513203145344,
+          "winding_length_mm": 664.4468462342412
+        },
+        "rows": [
+          {
+            "parameter": "positive_capacity_mah_g",
+            "label": "正極比容量",
+            "factor": 0.9,
+            "baseline_value": 200,
+            "value": 180.0,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.5989474447204906,
+              "np_ratio": 1.0807799458647365,
+              "inventory_limited_ah": 2.5989474447204906,
+              "specific_energy_wh_kg": 215.7737874111059,
+              "resistance_mohm": 15.520605281258137,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6223969735937094,
+              "heat_w": 0.38801513203145344,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": -0.2099428338898166,
+              "np_ratio": 0.1080779945864736,
+              "inventory_limited_ah": -0.2099428338898166,
+              "specific_energy_wh_kg": -17.430194866098304,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_capacity_mah_g",
+            "label": "正極比容量",
+            "factor": 1.1,
+            "baseline_value": 200,
+            "value": 220.00000000000003,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.8842745011620571,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 15.520605281258137,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6223969735937094,
+              "heat_w": 0.38801513203145344,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": -0.08842745011620579,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "graphite_capacity_mah_g",
+            "label": "黒鉛比容量",
+            "factor": 0.9,
+            "baseline_value": 350,
+            "value": 315.0,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.5280012507492757,
+              "np_ratio": 0.8754317561504363,
+              "inventory_limited_ah": 2.5280012507492757,
+              "specific_energy_wh_kg": 209.88358404948372,
+              "resistance_mohm": 15.520605281258137,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6223969735937094,
+              "heat_w": 0.38801513203145344,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": -0.2808890278610314,
+              "np_ratio": -0.09727019512782653,
+              "inventory_limited_ah": -0.2808890278610314,
+              "specific_energy_wh_kg": -23.32039822772049,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "graphite_capacity_mah_g",
+            "label": "黒鉛比容量",
+            "factor": 1.1,
+            "baseline_value": 350,
+            "value": 385.00000000000006,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.8877193830227674,
+              "np_ratio": 1.0699721464060892,
+              "inventory_limited_ah": 2.8877193830227674,
+              "specific_energy_wh_kg": 239.74865267900654,
+              "resistance_mohm": 15.520605281258137,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6223969735937094,
+              "heat_w": 0.38801513203145344,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.07882910441246027,
+              "np_ratio": 0.09727019512782631,
+              "inventory_limited_ah": 0.07882910441246027,
+              "specific_energy_wh_kg": 6.544670401802335,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_thickness_um",
+            "label": "正極片面厚",
+            "factor": 0.9,
+            "baseline_value": 65,
+            "value": 58.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.7038738943520633,
+              "np_ratio": 1.0807799458647365,
+              "inventory_limited_ah": 2.7038738943520633,
+              "specific_energy_wh_kg": 226.50533855342175,
+              "resistance_mohm": 15.256792147719008,
+              "current_a": 5,
+              "terminal_voltage_v": 3.623716039261405,
+              "heat_w": 0.38141980369297523,
+              "winding_length_mm": 691.2723400263069
+            },
+            "delta": {
+              "design_ah": -0.10501638425824389,
+              "np_ratio": 0.1080779945864736,
+              "inventory_limited_ah": -0.10501638425824389,
+              "specific_energy_wh_kg": -6.698643723782453,
+              "resistance_mohm": -0.26381313353912894,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0013190656676957957,
+              "heat_w": -0.006595328338478201,
+              "winding_length_mm": 26.825493792065686
+            }
+          },
+          {
+            "parameter": "positive_thickness_um",
+            "label": "正極片面厚",
+            "factor": 1.1,
+            "baseline_value": 65,
+            "value": 71.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.7039604693518755,
+              "np_ratio": 0.8842745011620569,
+              "inventory_limited_ah": 2.7039604693518755,
+              "specific_energy_wh_kg": 222.65486208932265,
+              "resistance_mohm": 15.848232420517311,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6207588378974136,
+              "heat_w": 0.3962058105129328,
+              "winding_length_mm": 639.625556001353
+            },
+            "delta": {
+              "design_ah": -0.10492980925843165,
+              "np_ratio": -0.08842745011620601,
+              "inventory_limited_ah": -0.10492980925843165,
+              "specific_energy_wh_kg": -10.549120187881556,
+              "resistance_mohm": 0.3276271392591745,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0016381356962957838,
+              "heat_w": 0.008190678481479363,
+              "winding_length_mm": -24.82129023288826
+            }
+          },
+          {
+            "parameter": "negative_thickness_um",
+            "label": "負極片面厚",
+            "factor": 0.9,
+            "baseline_value": 75,
+            "value": 67.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.6465013093781495,
+              "np_ratio": 0.875431756150437,
+              "inventory_limited_ah": 2.6465013093781495,
+              "specific_energy_wh_kg": 217.63911695869604,
+              "resistance_mohm": 15.105946460277513,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6244702676986127,
+              "heat_w": 0.3776486615069379,
+              "winding_length_mm": 695.5927921514714
+            },
+            "delta": {
+              "design_ah": -0.16238896923215762,
+              "np_ratio": -0.09727019512782586,
+              "inventory_limited_ah": -0.16238896923215762,
+              "specific_energy_wh_kg": -15.564865318508168,
+              "resistance_mohm": -0.41465882098062323,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0020732941049033116,
+              "heat_w": -0.010366470524515559,
+              "winding_length_mm": 31.145945917230165
+            }
+          },
+          {
+            "parameter": "negative_thickness_um",
+            "label": "負極片面厚",
+            "factor": 1.1,
+            "baseline_value": 75,
+            "value": 82.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.7639599808932203,
+              "np_ratio": 1.0699721464060892,
+              "inventory_limited_ah": 2.7639599808932203,
+              "specific_energy_wh_kg": 231.49921744671067,
+              "resistance_mohm": 15.990895719440488,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6200455214027976,
+              "heat_w": 0.3997723929860122,
+              "winding_length_mm": 635.9705528242024
+            },
+            "delta": {
+              "design_ah": -0.0449302977170869,
+              "np_ratio": 0.09727019512782631,
+              "inventory_limited_ah": -0.0449302977170869,
+              "specific_energy_wh_kg": -1.7047648304935308,
+              "resistance_mohm": 0.47029043818235117,
+              "current_a": 0,
+              "terminal_voltage_v": -0.002351452190911818,
+              "heat_w": 0.011757260954558757,
+              "winding_length_mm": -28.476293410038807
+            }
+          },
+          {
+            "parameter": "positive_porosity",
+            "label": "正極空隙率",
+            "factor": 0.9,
+            "baseline_value": 0.3,
+            "value": 0.27,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9327278984860053,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 230.75202838105514,
+              "resistance_mohm": 15.651809272900518,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6217409536354976,
+              "heat_w": 0.39129523182251297,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": -0.03997405279225752,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": -2.451953896149064,
+              "resistance_mohm": 0.13120399164238172,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0006560199582117399,
+              "heat_w": 0.003280099791059532,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_porosity",
+            "label": "正極空隙率",
+            "factor": 1.1,
+            "baseline_value": 0.3,
+            "value": 0.33,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.7639599808932203,
+              "np_ratio": 1.016255769992215,
+              "inventory_limited_ah": 2.7639599808932203,
+              "specific_energy_wh_kg": 231.938269224484,
+              "resistance_mohm": 15.47240885171696,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6226379557414154,
+              "heat_w": 0.386810221292924,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": -0.0449302977170869,
+              "np_ratio": 0.04355381871395214,
+              "inventory_limited_ah": -0.0449302977170869,
+              "specific_energy_wh_kg": -1.2657130527202014,
+              "resistance_mohm": -0.048196429541176755,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0002409821477060703,
+              "heat_w": -0.0012049107385294633,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_porosity",
+            "label": "負極空隙率",
+            "factor": 0.9,
+            "baseline_value": 0.32,
+            "value": 0.28800000000000003,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.8877193830227674,
+              "np_ratio": 1.018476160750181,
+              "inventory_limited_ah": 2.8877193830227674,
+              "specific_energy_wh_kg": 238.7332211773022,
+              "resistance_mohm": 15.675385322065187,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6216230733896744,
+              "heat_w": 0.3918846330516297,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.07882910441246027,
+              "np_ratio": 0.04577420947191824,
+              "inventory_limited_ah": 0.07882910441246027,
+              "specific_energy_wh_kg": 5.529238900097994,
+              "resistance_mohm": 0.15478004080705077,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0007739002040350051,
+              "heat_w": 0.003869501020176247,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_porosity",
+            "label": "負極空隙率",
+            "factor": 1.1,
+            "baseline_value": 0.32,
+            "value": 0.35200000000000004,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.676707206675704,
+              "np_ratio": 0.9269277418063444,
+              "inventory_limited_ah": 2.676707206675704,
+              "specific_energy_wh_kg": 223.17894995759,
+              "resistance_mohm": 15.453133294272225,
+              "current_a": 5,
+              "terminal_voltage_v": 3.622734333528639,
+              "heat_w": 0.38632833235680564,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": -0.1321830719346031,
+              "np_ratio": -0.04577420947191846,
+              "inventory_limited_ah": -0.1321830719346031,
+              "specific_energy_wh_kg": -10.025032319614212,
+              "resistance_mohm": -0.06747198698591106,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0003373599349294487,
+              "heat_w": -0.0016867996746477987,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_foil_um",
+            "label": "Al箔厚",
+            "factor": 0.9,
+            "baseline_value": 15,
+            "value": 13.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.8215239680193482,
+              "np_ratio": 0.9727019512782628,
+              "inventory_limited_ah": 2.8215239680193482,
+              "specific_energy_wh_kg": 234.3034575332667,
+              "resistance_mohm": 15.518877441107017,
+              "current_a": 5,
+              "terminal_voltage_v": 3.622405612794465,
+              "heat_w": 0.38797193602767543,
+              "winding_length_mm": 667.4353627840204
+            },
+            "delta": {
+              "design_ah": 0.012633689409041082,
+              "np_ratio": -1.1102230246251565e-16,
+              "inventory_limited_ah": 0.012633689409041082,
+              "specific_energy_wh_kg": 1.0994752560625045,
+              "resistance_mohm": -0.0017278401511191532,
+              "current_a": 0,
+              "terminal_voltage_v": 8.63920075566682e-06,
+              "heat_w": -4.3196003778001035e-05,
+              "winding_length_mm": 2.988516549779206
+            }
+          },
+          {
+            "parameter": "positive_foil_um",
+            "label": "Al箔厚",
+            "factor": 1.1,
+            "baseline_value": 15,
+            "value": 16.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.7963692223906476,
+              "np_ratio": 0.9727019512782628,
+              "inventory_limited_ah": 2.7963692223906476,
+              "specific_energy_wh_kg": 232.1147774610582,
+              "resistance_mohm": 15.53298995805555,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6223350502097222,
+              "heat_w": 0.3883247489513887,
+              "winding_length_mm": 661.4849732198242
+            },
+            "delta": {
+              "design_ah": -0.012521056219659599,
+              "np_ratio": -1.1102230246251565e-16,
+              "inventory_limited_ah": -0.012521056219659599,
+              "specific_energy_wh_kg": -1.0892048161460082,
+              "resistance_mohm": 0.012384676797413618,
+              "current_a": 0,
+              "terminal_voltage_v": -6.192338398713915e-05,
+              "heat_w": 0.00030961691993525164,
+              "winding_length_mm": -2.9618730144170513
+            }
+          },
+          {
+            "parameter": "negative_foil_um",
+            "label": "Cu箔厚",
+            "factor": 0.9,
+            "baseline_value": 8,
+            "value": 7.2,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.8156141332568914,
+              "np_ratio": 0.972701951278263,
+              "inventory_limited_ah": 2.8156141332568914,
+              "specific_energy_wh_kg": 234.82615821921107,
+              "resistance_mohm": 15.59795257900239,
+              "current_a": 5,
+              "terminal_voltage_v": 3.622010237104988,
+              "heat_w": 0.3899488144750597,
+              "winding_length_mm": 666.0373832689133
+            },
+            "delta": {
+              "design_ah": 0.006723854646584204,
+              "np_ratio": 1.1102230246251565e-16,
+              "inventory_limited_ah": 0.006723854646584204,
+              "specific_energy_wh_kg": 1.6221759420068622,
+              "resistance_mohm": 0.07734729774425375,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0003867364887213398,
+              "heat_w": 0.001933682443606255,
+              "winding_length_mm": 1.5905370346721384
+            }
+          },
+          {
+            "parameter": "negative_foil_um",
+            "label": "Cu箔厚",
+            "factor": 1.1,
+            "baseline_value": 8,
+            "value": 8.8,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.802198461389081,
+              "np_ratio": 0.9727019512782634,
+              "inventory_limited_ah": 2.802198461389081,
+              "specific_energy_wh_kg": 231.60406451516022,
+              "resistance_mohm": 15.462983866455172,
+              "current_a": 5,
+              "terminal_voltage_v": 3.622685080667724,
+              "heat_w": 0.38657459666137933,
+              "winding_length_mm": 662.8638876964587
+            },
+            "delta": {
+              "design_ah": -0.006691817221226248,
+              "np_ratio": 5.551115123125783e-16,
+              "inventory_limited_ah": -0.006691817221226248,
+              "specific_energy_wh_kg": -1.5999177620439866,
+              "resistance_mohm": -0.057621414802964566,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0002881070740148317,
+              "heat_w": -0.001440535370074103,
+              "winding_length_mm": -1.5829585377824742
+            }
+          },
+          {
+            "parameter": "separator_um",
+            "label": "セパレータ厚",
+            "factor": 0.9,
+            "baseline_value": 16,
+            "value": 14.4,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.8359802391032347,
+              "np_ratio": 0.9727019512782632,
+              "inventory_limited_ah": 2.8359802391032347,
+              "specific_energy_wh_kg": 234.46678679692758,
+              "resistance_mohm": 15.314440492823763,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6234277975358813,
+              "heat_w": 0.3828610123205941,
+              "winding_length_mm": 670.8550135276397
+            },
+            "delta": {
+              "design_ah": 0.027089960492927556,
+              "np_ratio": 3.3306690738754696e-16,
+              "inventory_limited_ah": 0.027089960492927556,
+              "specific_energy_wh_kg": 1.2628045197233746,
+              "resistance_mohm": -0.20616478843437314,
+              "current_a": 0,
+              "terminal_voltage_v": 0.00103082394217191,
+              "heat_w": -0.005154119710859328,
+              "winding_length_mm": 6.408167293398492
+            }
+          },
+          {
+            "parameter": "separator_um",
+            "label": "セパレータ厚",
+            "factor": 1.1,
+            "baseline_value": 16,
+            "value": 17.6,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.7823129607760286,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.7823129607760286,
+              "specific_energy_wh_kg": 231.95470745688033,
+              "resistance_mohm": 15.728041101012133,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6213597944949396,
+              "heat_w": 0.39320102752530334,
+              "winding_length_mm": 658.1599452645501
+            },
+            "delta": {
+              "design_ah": -0.026577317834278524,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": -0.026577317834278524,
+              "specific_energy_wh_kg": -1.2492748203238762,
+              "resistance_mohm": 0.2074358197539965,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0010371790987697693,
+              "heat_w": 0.005185895493849901,
+              "winding_length_mm": -6.286900969691146
+            }
+          },
+          {
+            "parameter": "electrolyte_conductivity_s_m",
+            "label": "電解液導電率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 16.011587118856013,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6199420644057203,
+              "heat_w": 0.40028967797140036,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.49098183759787695,
+              "current_a": 0,
+              "terminal_voltage_v": -0.002454909187989074,
+              "heat_w": 0.012274545939946924,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "electrolyte_conductivity_s_m",
+            "label": "電解液導電率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 15.118892868678055,
+              "current_a": 5,
+              "terminal_voltage_v": 3.62440553565661,
+              "heat_w": 0.3779723217169514,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": -0.40171241258008195,
+              "current_a": 0,
+              "terminal_voltage_v": 0.002008562062900676,
+              "heat_w": -0.010042810314502049,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_contact_fraction",
+            "label": "正極接触率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 15.576346439857872,
+              "current_a": 5,
+              "terminal_voltage_v": 3.622118267800711,
+              "heat_w": 0.3894086609964468,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.055741158599735385,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0002787057929984904,
+              "heat_w": 0.0013935289649933402,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_contact_fraction",
+            "label": "正極接触率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "invalid",
+            "reason": "positive_contact_fraction は0〜1で指定してください。"
+          },
+          {
+            "parameter": "negative_contact_fraction",
+            "label": "負極接触率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 15.625119953632641,
+              "current_a": 5,
+              "terminal_voltage_v": 3.621874400231837,
+              "heat_w": 0.390627998840816,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.10451467237450451,
+              "current_a": 0,
+              "terminal_voltage_v": -0.000522573361872336,
+              "heat_w": 0.0026128668093625684,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_contact_fraction",
+            "label": "負極接触率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "invalid",
+            "reason": "negative_contact_fraction は0〜1で指定してください。"
+          },
+          {
+            "parameter": "negative_particle_radius_um",
+            "label": "負極粒子半径",
+            "factor": 0.9,
+            "baseline_value": 5,
+            "value": 4.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 15.143832960628387,
+              "current_a": 5,
+              "terminal_voltage_v": 3.624280835196858,
+              "heat_w": 0.3785958240157097,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": -0.3767723206297493,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0018838616031486843,
+              "heat_w": -0.009419308015743755,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_particle_radius_um",
+            "label": "負極粒子半径",
+            "factor": 1.1,
+            "baseline_value": 5,
+            "value": 5.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 2.808890278610307,
+              "np_ratio": 0.9727019512782629,
+              "inventory_limited_ah": 2.808890278610307,
+              "specific_energy_wh_kg": 233.2039822772042,
+              "resistance_mohm": 15.8924147719857,
+              "current_a": 5,
+              "terminal_voltage_v": 3.620537926140072,
+              "heat_w": 0.3973103692996426,
+              "winding_length_mm": 664.4468462342412
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.3718094907275642,
+              "current_a": 0,
+              "terminal_voltage_v": -0.001859047453637519,
+              "heat_w": 0.00929523726818915,
+              "winding_length_mm": 0.0
+            }
+          }
+        ],
+        "comparison_basis": "固定Aまたは固定Cレートは入力に従う。fitでは毎回巻回長を再計算。±10%は各1項目のみ変更。範囲外は省略せず理由表示。"
+      }
+    }
+  },
+  "si10-ice90": {
+    "schema_version": "design-2.1",
+    "input": {
+      "name": "21700 巻回設計",
+      "cell_format": "21700",
+      "diameter_mm": 21,
+      "height_mm": 70,
+      "wall_mm": 0.25,
+      "lid_total_mm": 0.6,
+      "axial_reserve_mm": 4,
+      "radial_gap_mm": 0.2,
+      "core_diameter_mm": 3,
+      "winding_width_mm": 64,
+      "positive_width_mm": 60,
+      "negative_width_mm": 62,
+      "length_mode": "fit",
+      "length_mm": 1400,
+      "positive_thickness_um": 65,
+      "negative_thickness_um": 75,
+      "positive_foil_um": 15,
+      "negative_foil_um": 8,
+      "separator_um": 16,
+      "separator_porosity": 0.45,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "positive_material": "NMC811_demo",
+      "negative_additive": "Si_demo",
+      "fraction_basis": "mass",
+      "positive_active": 0.96,
+      "positive_binder": 0.02,
+      "positive_carbon": 0.02,
+      "negative_graphite": 0.86,
+      "negative_si": 0.1,
+      "negative_binder": 0.02,
+      "negative_carbon": 0.02,
+      "lithium_fraction_positive": 0.5,
+      "lithium_fraction_negative": 0.5,
+      "c_rate_capacity_mode": "design",
+      "rated_capacity_ah": 5,
+      "positive_terminal": "top",
+      "negative_terminal": "bottom",
+      "positive_contact_fraction": 1,
+      "negative_contact_fraction": 1,
+      "electrolyte_fill": 1,
+      "electrolyte_density_g_cm3": 1.2,
+      "hardware_mass_g": 3,
+      "positive_capacity_mah_g": 0,
+      "graphite_capacity_mah_g": 0,
+      "additive_capacity_mah_g": 0,
+      "positive_utilization": 1,
+      "negative_utilization": 1,
+      "negative_first_cycle_efficiency": 0.9,
+      "analysis_current_mode": "fixed_a",
+      "analysis_current_a": 5,
+      "analysis_c_rate": 1,
+      "analysis_ocv_v": 3.7,
+      "analysis_cutoff_v": 2.8,
+      "analysis_temperature_c": 25,
+      "electrolyte_conductivity_s_m": 1,
+      "positive_bruggeman": 1.5,
+      "negative_bruggeman": 1.5,
+      "separator_bruggeman": 1.5,
+      "positive_conductivity_s_m": 10,
+      "negative_conductivity_s_m": 100,
+      "positive_particle_radius_um": 5,
+      "negative_particle_radius_um": 5,
+      "positive_diffusivity_m2_s": 1e-14,
+      "negative_diffusivity_m2_s": 3e-14,
+      "positive_exchange_current_a_m2": 3,
+      "negative_exchange_current_a_m2": 3,
+      "positive_contact_asr_ohm_mm2": 0.005,
+      "negative_contact_asr_ohm_mm2": 0.005,
+      "terminal_resistance_mohm": 1,
+      "film_asr_ohm_cm2": 0,
+      "analysis_pulse_s": 60,
+      "analysis_heat_capacity_j_kg_k": 1000,
+      "analysis_heat_transfer_w_m2_k": 10
+    },
+    "validation_status": "illustrative_unvalidated",
+    "materials": {
+      "binder_demo": {
+        "label": "結着剤",
+        "role": "inactive",
+        "density_g_cm3": 1.8,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 0,
+        "capacity_source": "illustrative_default"
+      },
+      "graphite_demo": {
+        "label": "黒鉛",
+        "role": "negative",
+        "density_g_cm3": 2.26,
+        "capacity_mah_g": 350,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 350,
+        "capacity_source": "illustrative_default"
+      },
+      "Si_demo": {
+        "label": "Si（元素Si）",
+        "role": "negative_additive",
+        "density_g_cm3": 2.33,
+        "capacity_mah_g": 3000,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 3000,
+        "capacity_source": "illustrative_default"
+      },
+      "carbon_demo": {
+        "label": "導電助剤",
+        "role": "inactive",
+        "density_g_cm3": 2.0,
+        "capacity_mah_g": 0,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 0,
+        "capacity_source": "illustrative_default"
+      },
+      "NMC811_demo": {
+        "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+        "role": "positive",
+        "density_g_cm3": 4.8,
+        "capacity_mah_g": 200,
+        "status": "illustrative_unvalidated",
+        "source": "PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。",
+        "capacity_used_mah_g": 200,
+        "capacity_source": "illustrative_default"
+      }
+    },
+    "geometry": {
+      "pitch_mm": 0.335,
+      "length_mm": 926.0899358914211,
+      "max_length_mm": 926.0899358914211,
+      "inner_radius_mm": 1.5,
+      "outer_radius_mm": 10.05,
+      "turns": 25.522388059701495,
+      "envelope_cm3": 19.85536822551207,
+      "layer_volume_cm3": 19.0959744780811,
+      "uncoated_void_cm3": 0.7593937474309698,
+      "pore_volume_cm3": 5.776578584116328
+    },
+    "positive": {
+      "solid_density_g_cm3": 4.522613065326633,
+      "specific_capacity_mah_g": 192.0,
+      "components": [
+        {
+          "id": "NMC811_demo",
+          "mass_fraction": 0.96,
+          "solid_volume_fraction": 0.9045226130653266,
+          "mass_g": 21.953636719455403,
+          "capacity_ah": 4.390727343891081
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.05025125628140703,
+          "mass_g": 0.4573674316553209,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.045226130653266326,
+          "mass_g": 0.4573674316553209,
+          "capacity_ah": 0.0
+        }
+      ],
+      "component_capacities_mah_g": {
+        "NMC811_demo": 200,
+        "binder_demo": 0,
+        "carbon_demo": 0
+      },
+      "area_cm2": 1111.3079230697053,
+      "coating_volume_cm3": 7.223501499953085,
+      "pore_volume_cm3": 2.1670504499859256,
+      "mass_loading_mg_cm2": 20.577889447236178,
+      "dry_mass_g": 22.868371582766045,
+      "capacity_ah": 4.390727343891081,
+      "areal_capacity_mah_cm2": 3.9509547738693462
+    },
+    "negative": {
+      "solid_density_g_cm3": 2.249412422274519,
+      "specific_capacity_mah_g": 601.0,
+      "components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.86,
+          "solid_volume_fraction": 0.8559710987416311,
+          "mass_g": 11.329547545140333,
+          "capacity_ah": 3.9653416407991164
+        },
+        {
+          "id": "Si_demo",
+          "mass_fraction": 0.1,
+          "solid_volume_fraction": 0.09654130567701798,
+          "mass_g": 1.3173892494349226,
+          "capacity_ah": 3.9521677483047677
+        },
+        {
+          "id": "binder_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.024993471358605766,
+          "mass_g": 0.2634778498869845,
+          "capacity_ah": 0.0
+        },
+        {
+          "id": "carbon_demo",
+          "mass_fraction": 0.02,
+          "solid_volume_fraction": 0.022494124222745188,
+          "mass_g": 0.2634778498869845,
+          "capacity_ah": 0.0
+        }
+      ],
+      "component_capacities_mah_g": {
+        "graphite_demo": 350,
+        "Si_demo": 3000,
+        "binder_demo": 0,
+        "carbon_demo": 0
+      },
+      "area_cm2": 1148.351520505362,
+      "coating_volume_cm3": 8.612636403790216,
+      "pore_volume_cm3": 2.7560436492128693,
+      "mass_loading_mg_cm2": 11.472003353600046,
+      "dry_mass_g": 13.173892494349225,
+      "capacity_ah": 7.917509389103884,
+      "areal_capacity_mah_cm2": 6.894674015513628
+    },
+    "negative_phase_count": 2,
+    "capacity": {
+      "positive_ah": 4.390727343891081,
+      "negative_total_ah": 7.917509389103884,
+      "negative_overlap_ah": 7.662105860423114,
+      "np_ratio": 1.7450652842480816,
+      "usable_np_ratio": 1.7450652842480816,
+      "design_ah": 4.390727343891081,
+      "c_rate_reference_ah": 4.390727343891081
+    },
+    "lithium_inventory": {
+      "positive_ah_equivalent": 2.1953636719455405,
+      "negative_ah_equivalent": 3.958754694551942,
+      "total_mol_equivalent": 0.2296185920968454
+    },
+    "mass_g": {
+      "positive_dry": 22.868371582766045,
+      "negative_dry": 13.173892494349225,
+      "al_foil": 2.4004251138305635,
+      "cu_foil": 4.2484561027006125,
+      "separator_solid": 0.9805588415608109,
+      "electrolyte": 6.931894300939594,
+      "can_and_lids": 10.50980748699835,
+      "other_hardware": 3
+    },
+    "total_mass_g": 64.1134059231452,
+    "collector_connections": {
+      "positive": {
+        "foil": "Al",
+        "face": "top",
+        "contact_fraction": 1
+      },
+      "negative": {
+        "foil": "Cu",
+        "face": "bottom",
+        "contact_fraction": 1
+      },
+      "distribution_solved": false
+    },
+    "adapter_input": {
+      "electrode_height_m": 0.06,
+      "electrode_width_m": 0.9260899358914211,
+      "parallel_electrodes": 2,
+      "paired_area_m2": 0.11113079230697054,
+      "positive_thickness_m": 6.5e-05,
+      "negative_thickness_m": 7.5e-05,
+      "positive_porosity": 0.3,
+      "negative_porosity": 0.32,
+      "negative_phase_volume_fractions": [
+        0.5820603471443091,
+        0.06564808786037221
+      ],
+      "negative_particle_phases": "2",
+      "negative_active_components": [
+        {
+          "id": "graphite_demo",
+          "mass_fraction": 0.86,
+          "solid_volume_fraction": 0.8559710987416311,
+          "mass_g": 11.329547545140333,
+          "capacity_ah": 3.9653416407991164
+        },
+        {
+          "id": "Si_demo",
+          "mass_fraction": 0.1,
+          "solid_volume_fraction": 0.09654130567701798,
+          "mass_g": 1.3173892494349226,
+          "capacity_ah": 3.9521677483047677
+        }
+      ],
+      "solver_ready": false,
+      "reason": "Step3で材料パラメータ・初期化の整合検証が必要"
+    },
+    "warnings": [
+      "材料物性・容量・質量は仮定値による設計見積り。実測校正なし。",
+      "設計容量は半電池可逆容量×指定利用率の小さい側。初期Li・終止電圧・拡散による実際の取出容量ではない。",
+      "巻回は面積保存の連続環状近似。端部・塗工開始終了・曲率差・溶接形状は省略。",
+      "端面抵抗と発熱は一様反応・連続端面の集中見積り。局所電流分布・溶接点・力学は未計算。",
+      "Li在庫は容量×初期充填率のAh等価帳簿。SEI・不可逆損失・電解液Liを含まない。"
+    ],
+    "analysis": {
+      "version": "design-screening-1.0",
+      "status": "available",
+      "validation_status": "analytical_unvalidated",
+      "references": [
+        {
+          "id": "SiGraphite2016",
+          "authors": "Sternad, Forster & Wilkening",
+          "year": 2016,
+          "title": "The microstructure matters: breaking down the barriers with single crystalline silicon as negative electrode in Li-ion batteries",
+          "url": "https://doi.org/10.1038/srep31712",
+          "use": "LiC₆とLi₁₅Si₄の反応終点の確認。理論比容量は各反応式から再計算し、実用比容量とは区別。"
+        },
+        {
+          "id": "DFN1993",
+          "authors": "Doyle, Fuller & Newman",
+          "year": 1993,
+          "title": "Modeling of Galvanostatic Charge and Discharge of the Lithium/Polymer/Insertion Cell",
+          "url": "https://doi.org/10.1149/1.2221597",
+          "use": "多孔質電極の電荷輸送・反応分極の基礎。ここでの集中近似は原著DFNの再現ではない。"
+        },
+        {
+          "id": "Newman1995",
+          "authors": "Newman",
+          "year": 1995,
+          "title": "Optimization of Porosity and Thickness of a Battery Electrode by Means of a Reaction-Zone Model",
+          "url": "https://doi.org/10.1149/1.2043956",
+          "use": "活物質量と孔内輸送のトレードオフ。原著の最適値を本セルへ転用しない。"
+        },
+        {
+          "id": "Landesfeind2016",
+          "authors": "Landesfeind et al.",
+          "year": 2016,
+          "title": "Tortuosity Determination of Battery Electrodes and Separators by Impedance Spectroscopy",
+          "url": "https://doi.org/10.1149/2.1141607jes",
+          "use": "実電極の屈曲度はBruggeman近似と異なり得る。指数1.5は未校正の初期仮定。"
+        },
+        {
+          "id": "Tranter2020",
+          "authors": "Tranter, Timms, Shearing & Brett",
+          "year": 2020,
+          "title": "Communication—Prediction of Thermal Issues for Larger Format 4680 Cylindrical Cells and Their Mitigation with Enhanced Current Collection",
+          "url": "https://doi.org/10.1149/1945-7111/abd44f",
+          "use": "集電方式による電流経路・熱の違い。下記1/3係数は一様注入から独立に導出した理想近似。"
+        },
+        {
+          "id": "Bernardi1985",
+          "authors": "Bernardi, Pawlikowski & Newman",
+          "year": 1985,
+          "title": "A General Energy Balance for Battery Systems",
+          "url": "https://doi.org/10.1149/1.2113792",
+          "use": "熱収支の基礎。本見積りは不可逆損失Iηのみで、反応エントロピー・混合熱は含めない。"
+        },
+        {
+          "id": "Chen2020",
+          "authors": "Chen et al.",
+          "year": 2020,
+          "title": "Development of Experimental Techniques for Parameterization of Multi-scale Lithium-ion Battery Models",
+          "url": "https://doi.org/10.1149/1945-7111/ab9050",
+          "use": "幾何・容量・輸送・反応物性を別に測定する考え方。画面の仮定値を原著実測値とは扱わない。"
+        },
+        {
+          "id": "PyBaMMTransport",
+          "authors": "PyBaMM team",
+          "year": 2026,
+          "title": "Transport efficiency and the models for tortuosity factor",
+          "url": "https://docs.pybamm.org/en/latest/source/examples/notebooks/models/tortuosity_models.html",
+          "use": "輸送効率ε/τ、Bruggeman式ε^bの定義確認。latest文書の確認日2026-10-16。"
+        }
+      ],
+      "formulas": [
+        {
+          "id": "theoretical_capacity",
+          "expression": "q_theory = n F/(3.6 M)",
+          "units": "n: electrons/formula; M: g/mol → mAh/g",
+          "references": [
+            "SiGraphite2016"
+          ],
+          "assumption": "反応式による上限。正極は全1Li、黒鉛はLiC6、SiはLi15Si4。実用電圧窓・不可逆損失・劣化を含まない。SiOxはx未指定なので算出しない。"
+        },
+        {
+          "id": "capacity",
+          "expression": "Q = m_dry Σ(w_i q_i)/1000; q_areal = loading × Σ(w_i q_i)/1000",
+          "units": "g, mAh/g, mg/cm² → Ah, mAh/cm²",
+          "references": [
+            "Chen2020"
+          ],
+          "assumption": "配合を質量分率へ換算。両面面積=2×塗工幅×巻回長。負極は重なり面積に縮約。"
+        },
+        {
+          "id": "inventory",
+          "expression": "Qp,u=up Qp; Qn,u=un Qn,overlap; Qloss=Qn,u(1/ICE−1); Qbalance=max(0,min(Qp,u−Qloss,Qn,u))",
+          "units": "Ah",
+          "references": [],
+          "assumption": "可逆容量基準ICE=脱離/挿入。負極の指定利用窓全体を形成する独立のLi消費帳簿。正極がLiを供給、予備Liなし。OCV窓・初期Li充填率とは独立。"
+        },
+        {
+          "id": "transport",
+          "expression": "κeff=κ ε^b; τfactor=ε^(1−b); Re=L/(3κeff A); Rs=Ls/(κeff,s A); Rsolid=L/(3σeff A)",
+          "units": "S/m, m, m² → Ω",
+          "references": [
+            "DFN1993",
+            "Landesfeind2016",
+            "PyBaMMTransport"
+          ],
+          "assumption": "完全含浸、一様反応。電極は線形電流分布の損失積分で1/3、セパレータは全電流。σは指定の有効値。濃度分極は省略。"
+        },
+        {
+          "id": "kinetics",
+          "expression": "as=3εactive/r; I0=i0 as L A; ηct=(2RT/F) asinh(I/(2I0)); Rct=ηct/I",
+          "units": "m, A/m²(active surface), K → V, Ω",
+          "references": [
+            "DFN1993"
+          ],
+          "assumption": "対称Butler–Volmer、単一等価粒子、指定評価点のi0。I=0ではRT/(F I0)。複合負極も指定i0・半径の均質近似。"
+        },
+        {
+          "id": "collector",
+          "expression": "Rfoil,edge=ρ H/(3t ℓ); Rfoil,long=ρ ℓ/(3t H); Aedge=t ℓ; Rcontact=ASR/(f Aedge)",
+          "units": "ρ: Ωm; H,t,ℓ: m; contact ASR: Ωmm²; Aedge: mm²",
+          "references": [
+            "Tranter2020"
+          ],
+          "assumption": "各極の連続した片端面・一様注入。H=塗工幅、未塗工リード長0。箔は両塗工面共通で2倍しない。Al 2.82e−8 / Cu 1.68e−8 Ωmは室温の工学仮定。長手集電は理想比較のみで合計しない。接触率は接触項のみ変更。"
+        },
+        {
+          "id": "performance",
+          "expression": "ΔV=I Rohmic+Σηct; V=Uref−ΔV; P=IV; Qdot=IΔV; Enom=Qbalance Uref; td=r²/Ds",
+          "units": "A, Ω, V → V, W, Wh; m, m²/s → s",
+          "references": [
+            "Bernardi1985",
+            "Newman1995"
+          ],
+          "assumption": "固定評価点の放電見積り。帳簿エネルギーは放電曲線の積分ではない。拡散時間を容量減衰係数に置換しない。"
+        },
+        {
+          "id": "thermal",
+          "expression": "ΔT=Qdot/(h Aext) × (1−exp(−h Aext tpulse/Cth)); Cth=m cp; h=0: ΔT=Qdot tpulse/Cth",
+          "units": "W, W/K, J/K, s → K",
+          "references": [
+            "Bernardi1985"
+          ],
+          "assumption": "初期温度=周囲温度、一定損失・一定物性の平均温度近似。濃度分極・可逆熱・局所温度を省略。"
+        }
+      ],
+      "capacity": {
+        "positive_usable_ah": 4.390727343891081,
+        "negative_usable_overlap_ah": 7.662105860423114,
+        "limiting_electrode": "positive",
+        "formation_loss_ah": 0.8513450956025685,
+        "inventory_limited_ah": 3.5393822482885122,
+        "nominal_energy_wh": 13.095714318667495,
+        "nominal_specific_energy_wh_kg": 204.25859662432768,
+        "nominal_energy_density_wh_l": 540.1354498568822,
+        "materials": [
+          {
+            "side": "positive",
+            "material_id": "NMC811_demo",
+            "label": "NCX / LiNi0.8Mn0.1Co0.1O2",
+            "reversible_capacity_mah_g": 200,
+            "theoretical_capacity_mah_g": 275.5090890107334,
+            "reaction": "LiMO₂ → MO₂ + Li⁺ + e⁻",
+            "mass_g": 21.953636719455403,
+            "contribution_ah": 4.390727343891081
+          },
+          {
+            "side": "negative",
+            "material_id": "graphite_demo",
+            "label": "黒鉛",
+            "reversible_capacity_mah_g": 350,
+            "theoretical_capacity_mah_g": 371.901883612861,
+            "reaction": "6C + Li⁺ + e⁻ ↔ LiC₆（炭素質量基準）",
+            "mass_g": 11.329547545140333,
+            "contribution_ah": 3.9653416407991164
+          },
+          {
+            "side": "negative",
+            "material_id": "Si_demo",
+            "label": "Si（元素Si）",
+            "reversible_capacity_mah_g": 3000,
+            "theoretical_capacity_mah_g": 3578.6204127351493,
+            "reaction": "Si + 3.75Li⁺ + 3.75e⁻ ↔ Li₃.₇₅Si（Si質量基準）",
+            "mass_g": 1.3173892494349226,
+            "contribution_ah": 3.9521677483047677
+          }
+        ]
+      },
+      "provenance": {
+        "property_status": "user_assumptions_not_literature_calibrated",
+        "specific_capacities_mah_g": {
+          "positive": 200,
+          "graphite": 350,
+          "additive": 3000
+        },
+        "applied_to_pybamm": false,
+        "checked_on": "2026-10-16"
+      },
+      "limitations": [
+        "文献は式と設計論の根拠。入力物性は仮定またはユーザー指定で、文献の実測校正値ではありません。",
+        "指定SOC相当のOCV・温度における静的近似。測定DCIR・EIS・寿命・析出開始を予測するものではありません。",
+        "i0・κ・σ・Dは指定温度での入力と解釈。温度による自動補正や濃度依存はありません。",
+        "SPMe/DFNの反応・輸送・OCV関数は文献セットを保持。比容量と利用率は設計容量を基準に選んだ場合に公称Cレート基準容量へ影響。ICE・集中抵抗・指定κ/i0/Dはソルバへ反映しません。"
+      ],
+      "warnings": [
+        "ICEによるLi損失は形成窓全体の仮定帳簿です。初期Li充填率から算出した在庫とは結合していません。",
+        "複合負極の反応・拡散は単一等価粒子の指定値です。黒鉛とSi/SiOxの相別反応は解きません。"
+      ],
+      "resistance": {
+        "total_mohm": 10.74064525125545,
+        "ohmic_mohm": 5.050233760936964,
+        "kinetic_secant_mohm": 5.690411490318487,
+        "components": [
+          {
+            "id": "positive_electrolyte",
+            "label": "正極孔内イオン輸送",
+            "resistance_mohm": 1.186522038374201,
+            "voltage_drop_v": 0.005932610191871005,
+            "heat_w": 0.029663050959355022,
+            "family": "ohmic",
+            "references": [
+              "DFN1993",
+              "PyBaMMTransport"
+            ]
+          },
+          {
+            "id": "positive_solid",
+            "label": "正極固相電子伝導",
+            "resistance_mohm": 0.019496546561836803,
+            "voltage_drop_v": 9.748273280918402e-05,
+            "heat_w": 0.00048741366404592005,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "positive_kinetics",
+            "label": "正極反応分極（指定電流の割線値）",
+            "resistance_mohm": 3.0747516186489876,
+            "voltage_drop_v": 0.015373758093244937,
+            "heat_w": 0.07686879046622469,
+            "family": "kinetic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "positive_foil",
+            "label": "正極連続端面集電箔",
+            "resistance_mohm": 0.0406008083478497,
+            "voltage_drop_v": 0.00020300404173924851,
+            "heat_w": 0.0010150202086962425,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "positive_contact",
+            "label": "正極箔端面接触",
+            "resistance_mohm": 0.3599362442185257,
+            "voltage_drop_v": 0.0017996812210926286,
+            "heat_w": 0.008998406105463142,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "negative_electrolyte",
+            "label": "負極孔内イオン輸送",
+            "resistance_mohm": 1.2427410111412927,
+            "voltage_drop_v": 0.006213705055706464,
+            "heat_w": 0.031068525278532315,
+            "family": "ohmic",
+            "references": [
+              "DFN1993",
+              "PyBaMMTransport"
+            ]
+          },
+          {
+            "id": "negative_solid",
+            "label": "負極固相電子伝導",
+            "resistance_mohm": 0.002249601526365785,
+            "voltage_drop_v": 1.1248007631828925e-05,
+            "heat_w": 5.624003815914463e-05,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "negative_kinetics",
+            "label": "負極反応分極（指定電流の割線値）",
+            "resistance_mohm": 2.615659871669499,
+            "voltage_drop_v": 0.013078299358347497,
+            "heat_w": 0.06539149679173749,
+            "family": "kinetic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "negative_foil",
+            "label": "負極連続端面集電箔",
+            "resistance_mohm": 0.04686369899725204,
+            "voltage_drop_v": 0.00023431849498626022,
+            "heat_w": 0.001171592474931301,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "negative_contact",
+            "label": "負極箔端面接触",
+            "resistance_mohm": 0.6748804579097357,
+            "voltage_drop_v": 0.0033744022895486787,
+            "heat_w": 0.016872011447743394,
+            "family": "ohmic",
+            "references": [
+              "Tranter2020"
+            ]
+          },
+          {
+            "id": "separator",
+            "label": "セパレータのイオン輸送",
+            "resistance_mohm": 0.47694335385990455,
+            "voltage_drop_v": 0.002384716769299523,
+            "heat_w": 0.011923583846497613,
+            "family": "ohmic",
+            "references": [
+              "DFN1993"
+            ]
+          },
+          {
+            "id": "film",
+            "label": "指定皮膜ASR（正負合計・幾何面積基準）",
+            "resistance_mohm": 0.0,
+            "voltage_drop_v": 0.0,
+            "heat_w": 0.0,
+            "family": "ohmic",
+            "references": []
+          },
+          {
+            "id": "terminal",
+            "label": "端板・端子等の指定直列抵抗",
+            "resistance_mohm": 1.0,
+            "voltage_drop_v": 0.005,
+            "heat_w": 0.025,
+            "family": "ohmic",
+            "references": []
+          }
+        ],
+        "collectors": {
+          "positive": {
+            "foil_edge_area_mm2": 13.891349038371315,
+            "effective_contact_area_mm2": 13.891349038371315,
+            "foil_resistivity_ohm_m": 2.82e-08,
+            "ideal_longitudinal_reference_mohm": 9.672494885977066
+          },
+          "negative": {
+            "foil_edge_area_mm2": 7.408719487131368,
+            "effective_contact_area_mm2": 7.408719487131368,
+            "foil_resistivity_ohm_m": 1.68e-08,
+            "ideal_longitudinal_reference_mohm": 10.455854114903143
+          }
+        },
+        "transport": {
+          "positive": {
+            "effective_conductivity_s_m": 0.1643167672515498,
+            "tortuosity_factor": 1.8257418583505538
+          },
+          "negative": {
+            "effective_conductivity_s_m": 0.18101933598375616,
+            "tortuosity_factor": 1.7677669529663689
+          },
+          "separator": {
+            "effective_conductivity_s_m": 0.3018691769624716,
+            "tortuosity_factor": 1.4907119849998598
+          }
+        }
+      },
+      "performance": {
+        "current_a": 5,
+        "reference_c_rate": 1.1387634914193918,
+        "voltage_drop_v": 0.053703226256277256,
+        "terminal_voltage_v": 3.646296773743723,
+        "operating_power_w": 18.231483868718612,
+        "irreversible_heat_w": 0.2685161312813863,
+        "average_temperature_rise_k": 0.24514610051530705,
+        "temperature_after_pulse_c": 25.245146100515306,
+        "voltage_headroom_v": 0.846296773743723,
+        "cutoff_reached": false,
+        "capacity_accounting_duration_s": 2548.3552187677287,
+        "diffusion": {
+          "positive": {
+            "particle_diffusion_time_s": 2499.9999999999995,
+            "active_surface_area_m2": 2.7442045899319254,
+            "exchange_current_total_a": 8.232613769795776,
+            "diffusion_to_discharge_time_ratio": 0.9810249299581117
+          },
+          "negative": {
+            "particle_diffusion_time_s": 833.3333333333331,
+            "active_surface_area_m2": 3.2391158204690176,
+            "exchange_current_total_a": 9.717347461407053,
+            "diffusion_to_discharge_time_ratio": 0.32700830998603725
+          }
+        }
+      },
+      "sensitivity": {
+        "method": "one_at_a_time_10_percent",
+        "baseline": {
+          "design_ah": 4.390727343891081,
+          "np_ratio": 1.7450652842480816,
+          "inventory_limited_ah": 3.5393822482885122,
+          "specific_energy_wh_kg": 204.25859662432768,
+          "resistance_mohm": 10.74064525125545,
+          "current_a": 5,
+          "terminal_voltage_v": 3.646296773743723,
+          "heat_w": 0.2685161312813863,
+          "winding_length_mm": 926.0899358914211
+        },
+        "rows": [
+          {
+            "parameter": "positive_capacity_mah_g",
+            "label": "正極比容量",
+            "factor": 0.9,
+            "baseline_value": 200,
+            "value": 180.0,
+            "status": "available",
+            "metrics": {
+              "design_ah": 3.951654609501972,
+              "np_ratio": 1.9389614269423134,
+              "inventory_limited_ah": 3.1003095138994032,
+              "specific_energy_wh_kg": 178.91960404004465,
+              "resistance_mohm": 10.74064525125545,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646296773743723,
+              "heat_w": 0.2685161312813863,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": -0.439072734389109,
+              "np_ratio": 0.19389614269423183,
+              "inventory_limited_ah": -0.439072734389109,
+              "specific_energy_wh_kg": -25.338992584283034,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_capacity_mah_g",
+            "label": "正極比容量",
+            "factor": 1.1,
+            "baseline_value": 200,
+            "value": 220.00000000000003,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.829800078280189,
+              "np_ratio": 1.5864229856800742,
+              "inventory_limited_ah": 3.9784549826776203,
+              "specific_energy_wh_kg": 229.59758920861063,
+              "resistance_mohm": 10.74064525125545,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646296773743723,
+              "heat_w": 0.2685161312813863,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.4390727343891081,
+              "np_ratio": -0.15864229856800738,
+              "inventory_limited_ah": 0.4390727343891081,
+              "specific_energy_wh_kg": 25.33899258428295,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "graphite_capacity_mah_g",
+            "label": "黒鉛比容量",
+            "factor": 0.9,
+            "baseline_value": 350,
+            "value": 315.0,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.6576668398955572,
+              "inventory_limited_ah": 3.5820203304476426,
+              "specific_energy_wh_kg": 206.719250550246,
+              "resistance_mohm": 10.74064525125545,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646296773743723,
+              "heat_w": 0.2685161312813863,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": -0.08739844435252442,
+              "inventory_limited_ah": 0.04263808215913034,
+              "specific_energy_wh_kg": 2.460653925918308,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "graphite_capacity_mah_g",
+            "label": "黒鉛比容量",
+            "factor": 1.1,
+            "baseline_value": 350,
+            "value": 385.00000000000006,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.8324637286006062,
+              "inventory_limited_ah": 3.496744166129382,
+              "specific_energy_wh_kg": 201.79794269840934,
+              "resistance_mohm": 10.74064525125545,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646296773743723,
+              "heat_w": 0.2685161312813863,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.08739844435252464,
+              "inventory_limited_ah": -0.04263808215913034,
+              "specific_energy_wh_kg": -2.4606539259183364,
+              "resistance_mohm": 0.0,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0,
+              "heat_w": 0.0,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_thickness_um",
+            "label": "正極片面厚",
+            "factor": 0.9,
+            "baseline_value": 65,
+            "value": 58.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.1111934601961515,
+              "np_ratio": 1.9389614269423134,
+              "inventory_limited_ah": 3.2254772893052803,
+              "specific_energy_wh_kg": 187.92136652351755,
+              "resistance_mohm": 10.570512777345266,
+              "current_a": 5,
+              "terminal_voltage_v": 3.647147436113274,
+              "heat_w": 0.26426281943363167,
+              "winding_length_mm": 963.4786600112611
+            },
+            "delta": {
+              "design_ah": -0.2795338836949295,
+              "np_ratio": 0.19389614269423183,
+              "inventory_limited_ah": -0.3139049589832319,
+              "specific_energy_wh_kg": -16.33723010081013,
+              "resistance_mohm": -0.1701324739101846,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0008506623695510029,
+              "heat_w": -0.004253311847754626,
+              "winding_length_mm": 37.38872411984005
+            }
+          },
+          {
+            "parameter": "positive_thickness_um",
+            "label": "正極片面厚",
+            "factor": 1.1,
+            "baseline_value": 65,
+            "value": 71.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.649376512137538,
+              "np_ratio": 1.5864229856800747,
+              "inventory_limited_ah": 3.8298345379224212,
+              "specific_energy_wh_kg": 219.102209741222,
+              "resistance_mohm": 10.955837749773636,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645220811251132,
+              "heat_w": 0.2738959437443409,
+              "winding_length_mm": 891.4946221943279
+            },
+            "delta": {
+              "design_ah": 0.2586491682464569,
+              "np_ratio": -0.15864229856800693,
+              "inventory_limited_ah": 0.290452289633909,
+              "specific_energy_wh_kg": 14.843613116894318,
+              "resistance_mohm": 0.215192498518185,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0010759624925906763,
+              "heat_w": 0.005379812462954603,
+              "winding_length_mm": -34.59531369709316
+            }
+          },
+          {
+            "parameter": "negative_thickness_um",
+            "label": "負極片面厚",
+            "factor": 0.9,
+            "baseline_value": 75,
+            "value": 67.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.596542688135976,
+              "np_ratio": 1.5705587558232736,
+              "inventory_limited_ah": 3.7944159808729307,
+              "specific_energy_wh_kg": 216.7900222531395,
+              "resistance_mohm": 10.463221959403475,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6476838902029827,
+              "heat_w": 0.26158054898508687,
+              "winding_length_mm": 969.5004016363315
+            },
+            "delta": {
+              "design_ah": 0.20581534424489512,
+              "np_ratio": -0.17450652842480796,
+              "inventory_limited_ah": 0.2550337325844185,
+              "specific_energy_wh_kg": 12.531425628811832,
+              "resistance_mohm": -0.2774232918519761,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0013871164592598184,
+              "heat_w": -0.006935582296299425,
+              "winding_length_mm": 43.410465744910425
+            }
+          },
+          {
+            "parameter": "negative_thickness_um",
+            "label": "負極片面厚",
+            "factor": 1.1,
+            "baseline_value": 75,
+            "value": 82.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.202553314867178,
+              "np_ratio": 1.9195718126728898,
+              "inventory_limited_ah": 3.306208549925616,
+              "specific_energy_wh_kg": 192.57801351882233,
+              "resistance_mohm": 11.056777530287357,
+              "current_a": 5,
+              "terminal_voltage_v": 3.644716112348563,
+              "heat_w": 0.2764194382571839,
+              "winding_length_mm": 886.4003672103603
+            },
+            "delta": {
+              "design_ah": -0.18817402902390334,
+              "np_ratio": 0.17450652842480818,
+              "inventory_limited_ah": -0.23317369836289625,
+              "specific_energy_wh_kg": -11.680583105505349,
+              "resistance_mohm": 0.31613227903190655,
+              "current_a": 0,
+              "terminal_voltage_v": -0.001580661395159666,
+              "heat_w": 0.007903306975797608,
+              "winding_length_mm": -39.68956868106079
+            }
+          },
+          {
+            "parameter": "positive_porosity",
+            "label": "正極空隙率",
+            "factor": 0.9,
+            "baseline_value": 0.3,
+            "value": 0.27,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.5789013729149834,
+              "np_ratio": 1.673350272566654,
+              "inventory_limited_ah": 3.7275562773124147,
+              "specific_energy_wh_kg": 212.72910597626665,
+              "resistance_mohm": 10.82086400441324,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645895679977934,
+              "heat_w": 0.270521600110331,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.18817402902390246,
+              "np_ratio": -0.07171501168142758,
+              "inventory_limited_ah": 0.18817402902390246,
+              "specific_energy_wh_kg": 8.470509351938972,
+              "resistance_mohm": 0.08021875315778892,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0004010937657890068,
+              "heat_w": 0.002005468828944701,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_porosity",
+            "label": "正極空隙率",
+            "factor": 1.1,
+            "baseline_value": 0.3,
+            "value": 0.33,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.202553314867178,
+              "np_ratio": 1.8232025357815778,
+              "inventory_limited_ah": 3.351208219264609,
+              "specific_energy_wh_kg": 195.5956698414434,
+              "resistance_mohm": 10.716035692124509,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6464198215393777,
+              "heat_w": 0.2679008923031127,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": -0.18817402902390334,
+              "np_ratio": 0.07813725153349615,
+              "inventory_limited_ah": -0.18817402902390334,
+              "specific_energy_wh_kg": -8.662926782884284,
+              "resistance_mohm": -0.024609559130942316,
+              "current_a": 0,
+              "terminal_voltage_v": 0.00012304779565486257,
+              "heat_w": -0.0006152389782735912,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_porosity",
+            "label": "負極空隙率",
+            "factor": 0.9,
+            "baseline_value": 0.32,
+            "value": 0.28800000000000003,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.8271860035068148,
+              "inventory_limited_ah": 3.499318949671921,
+              "specific_energy_wh_kg": 201.0396221677626,
+              "resistance_mohm": 10.838177813590011,
+              "current_a": 5,
+              "terminal_voltage_v": 3.64580911093205,
+              "heat_w": 0.27095444533975027,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.08212071925873321,
+              "inventory_limited_ah": -0.040063298616591414,
+              "specific_energy_wh_kg": -3.2189744565650926,
+              "resistance_mohm": 0.09753256233456042,
+              "current_a": 0,
+              "terminal_voltage_v": -0.00048766281167278436,
+              "heat_w": 0.0024383140583639773,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_porosity",
+            "label": "負極空隙率",
+            "factor": 1.1,
+            "baseline_value": 0.32,
+            "value": 0.35200000000000004,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.6629445649893484,
+              "inventory_limited_ah": 3.579445546905104,
+              "specific_energy_wh_kg": 207.50674498507928,
+              "resistance_mohm": 10.701345798802954,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646493271005985,
+              "heat_w": 0.26753364497007387,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": -0.08212071925873321,
+              "inventory_limited_ah": 0.04006329861659186,
+              "specific_energy_wh_kg": 3.2481483607515997,
+              "resistance_mohm": -0.03929945245249655,
+              "current_a": 0,
+              "terminal_voltage_v": 0.00019649726226234066,
+              "heat_w": -0.000982486311312425,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_foil_um",
+            "label": "Al箔厚",
+            "factor": 0.9,
+            "baseline_value": 15,
+            "value": 13.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.410475742739167,
+              "np_ratio": 1.7450652842480814,
+              "inventory_limited_ah": 3.5553015087755675,
+              "specific_energy_wh_kg": 205.22057638706417,
+              "resistance_mohm": 10.741974252182947,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462901287390856,
+              "heat_w": 0.2685493563045737,
+              "winding_length_mm": 930.2552579419072
+            },
+            "delta": {
+              "design_ah": 0.01974839884808599,
+              "np_ratio": -2.220446049250313e-16,
+              "inventory_limited_ah": 0.015919260487055276,
+              "specific_energy_wh_kg": 0.9619797627364903,
+              "resistance_mohm": 0.0013290009274964376,
+              "current_a": 0,
+              "terminal_voltage_v": -6.645004637206853e-06,
+              "heat_w": 3.322502318742204e-05,
+              "winding_length_mm": 4.165322050486111
+            }
+          },
+          {
+            "parameter": "positive_foil_um",
+            "label": "Al箔厚",
+            "factor": 1.1,
+            "baseline_value": 15,
+            "value": 16.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.3711550080342105,
+              "np_ratio": 1.7450652842480825,
+              "inventory_limited_ah": 3.5236049128578046,
+              "specific_energy_wh_kg": 203.30559342179285,
+              "resistance_mohm": 10.747037353095102,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6462648132345246,
+              "heat_w": 0.2686759338273776,
+              "winding_length_mm": 921.9617489557982
+            },
+            "delta": {
+              "design_ah": -0.01957233585687046,
+              "np_ratio": 8.881784197001252e-16,
+              "inventory_limited_ah": -0.015777335430707584,
+              "specific_energy_wh_kg": -0.9530032025348305,
+              "resistance_mohm": 0.006392101839651332,
+              "current_a": 0,
+              "terminal_voltage_v": -3.1960509198292186e-05,
+              "heat_w": 0.0001598025459912944,
+              "winding_length_mm": -4.128186935622921
+            }
+          },
+          {
+            "parameter": "negative_foil_um",
+            "label": "Cu箔厚",
+            "factor": 0.9,
+            "baseline_value": 8,
+            "value": 7.2,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.401237762428223,
+              "np_ratio": 1.745065284248082,
+              "inventory_limited_ah": 3.5478547372132003,
+              "specific_energy_wh_kg": 205.72535180991486,
+              "resistance_mohm": 10.797728112674452,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646011359436628,
+              "heat_w": 0.2699432028168613,
+              "winding_length_mm": 928.3067879222804
+            },
+            "delta": {
+              "design_ah": 0.010510418537141852,
+              "np_ratio": 4.440892098500626e-16,
+              "inventory_limited_ah": 0.008472488924688104,
+              "specific_energy_wh_kg": 1.466755185587175,
+              "resistance_mohm": 0.05708286141900132,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0002854143070947224,
+              "heat_w": 0.0014270715354749997,
+              "winding_length_mm": 2.216852030859286
+            }
+          },
+          {
+            "parameter": "negative_foil_um",
+            "label": "Cu箔厚",
+            "factor": 1.1,
+            "baseline_value": 8,
+            "value": 8.8,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.3802670047752,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.530950128578474,
+              "specific_energy_wh_kg": 202.81260835699467,
+              "resistance_mohm": 10.697792539946873,
+              "current_a": 5,
+              "terminal_voltage_v": 3.646511037300266,
+              "heat_w": 0.26744481349867183,
+              "winding_length_mm": 923.8836465861408
+            },
+            "delta": {
+              "design_ah": -0.01046033911588129,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": -0.008432119710038322,
+              "specific_energy_wh_kg": -1.4459882673330071,
+              "resistance_mohm": -0.04285271130857815,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0002142635565429707,
+              "heat_w": -0.0010713177827144649,
+              "winding_length_mm": -2.2062893052802792
+            }
+          },
+          {
+            "parameter": "separator_um",
+            "label": "セパレータ厚",
+            "factor": 0.9,
+            "baseline_value": 16,
+            "value": 14.4,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.433073116948499,
+              "np_ratio": 1.7450652842480823,
+              "inventory_limited_ah": 3.5735173392906914,
+              "specific_energy_wh_kg": 205.3138458191725,
+              "resistance_mohm": 10.601714775926329,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6469914261203686,
+              "heat_w": 0.2650428693981582,
+              "winding_length_mm": 935.0214843991142
+            },
+            "delta": {
+              "design_ah": 0.04234577305741816,
+              "np_ratio": 6.661338147750939e-16,
+              "inventory_limited_ah": 0.03413509100217915,
+              "specific_energy_wh_kg": 1.0552491948448335,
+              "resistance_mohm": -0.13893047532912206,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0006946523766457879,
+              "heat_w": -0.003473261883228107,
+              "winding_length_mm": 8.931548507693151
+            }
+          },
+          {
+            "parameter": "separator_um",
+            "label": "セパレータ厚",
+            "factor": 1.1,
+            "baseline_value": 16,
+            "value": 17.6,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.349182910122744,
+              "np_ratio": 1.7450652842480823,
+              "inventory_limited_ah": 3.5058931199782717,
+              "specific_energy_wh_kg": 203.21413926692478,
+              "resistance_mohm": 10.880449392584588,
+              "current_a": 5,
+              "terminal_voltage_v": 3.645597753037077,
+              "heat_w": 0.2720112348146147,
+              "winding_length_mm": 917.3274054512895
+            },
+            "delta": {
+              "design_ah": -0.04154443376833683,
+              "np_ratio": 6.661338147750939e-16,
+              "inventory_limited_ah": -0.033489128310240535,
+              "specific_energy_wh_kg": -1.044457357402905,
+              "resistance_mohm": 0.13980414132913666,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0006990207066457366,
+              "heat_w": 0.0034951035332284053,
+              "winding_length_mm": -8.762530440131627
+            }
+          },
+          {
+            "parameter": "electrolyte_conductivity_s_m",
+            "label": "電解液導電率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.5393822482885122,
+              "specific_energy_wh_kg": 204.25859662432768,
+              "resistance_mohm": 11.063557073852717,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6446822146307367,
+              "heat_w": 0.2765889268463179,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.32291182259726625,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0016145591129861359,
+              "heat_w": 0.008072795564931623,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "electrolyte_conductivity_s_m",
+            "label": "電解液導電率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.5393822482885122,
+              "specific_energy_wh_kg": 204.25859662432768,
+              "resistance_mohm": 10.476444669130414,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6476177766543483,
+              "heat_w": 0.2619111167282604,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": -0.26420058212503683,
+              "current_a": 0,
+              "terminal_voltage_v": 0.001321002910625424,
+              "heat_w": -0.006605014553125899,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_contact_fraction",
+            "label": "正極接触率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.5393822482885122,
+              "specific_energy_wh_kg": 204.25859662432768,
+              "resistance_mohm": 10.780638167279731,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6460968091636015,
+              "heat_w": 0.26951595418199326,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.039992916024280234,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0001999645801213923,
+              "heat_w": 0.0009998229006069614,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "positive_contact_fraction",
+            "label": "正極接触率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "invalid",
+            "reason": "positive_contact_fraction は0〜1で指定してください。"
+          },
+          {
+            "parameter": "negative_contact_fraction",
+            "label": "負極接触率",
+            "factor": 0.9,
+            "baseline_value": 1,
+            "value": 0.9,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.5393822482885122,
+              "specific_energy_wh_kg": 204.25859662432768,
+              "resistance_mohm": 10.815631968800977,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6459218401559954,
+              "heat_w": 0.27039079922002446,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.0749867175455261,
+              "current_a": 0,
+              "terminal_voltage_v": -0.000374933587727444,
+              "heat_w": 0.0018746679386381637,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_contact_fraction",
+            "label": "負極接触率",
+            "factor": 1.1,
+            "baseline_value": 1,
+            "value": 1.1,
+            "status": "invalid",
+            "reason": "negative_contact_fraction は0〜1で指定してください。"
+          },
+          {
+            "parameter": "negative_particle_radius_um",
+            "label": "負極粒子半径",
+            "factor": 0.9,
+            "baseline_value": 5,
+            "value": 4.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.5393822482885122,
+              "specific_energy_wh_kg": 204.25859662432768,
+              "resistance_mohm": 10.48381163935914,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6475809418032044,
+              "heat_w": 0.2620952909839785,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": -0.2568336118963117,
+              "current_a": 0,
+              "terminal_voltage_v": 0.0012841680594815053,
+              "heat_w": -0.006420840297407804,
+              "winding_length_mm": 0.0
+            }
+          },
+          {
+            "parameter": "negative_particle_radius_um",
+            "label": "負極粒子半径",
+            "factor": 1.1,
+            "baseline_value": 5,
+            "value": 5.5,
+            "status": "available",
+            "metrics": {
+              "design_ah": 4.390727343891081,
+              "np_ratio": 1.7450652842480816,
+              "inventory_limited_ah": 3.5393822482885122,
+              "specific_energy_wh_kg": 204.25859662432768,
+              "resistance_mohm": 10.995889906320581,
+              "current_a": 5,
+              "terminal_voltage_v": 3.6450205504683972,
+              "heat_w": 0.27489724765801454,
+              "winding_length_mm": 926.0899358914211
+            },
+            "delta": {
+              "design_ah": 0.0,
+              "np_ratio": 0.0,
+              "inventory_limited_ah": 0.0,
+              "specific_energy_wh_kg": 0.0,
+              "resistance_mohm": 0.2552446550651304,
+              "current_a": 0,
+              "terminal_voltage_v": -0.0012762232753256164,
+              "heat_w": 0.006381116376628249,
+              "winding_length_mm": 0.0
+            }
+          }
+        ],
+        "comparison_basis": "固定Aまたは固定Cレートは入力に従う。fitでは毎回巻回長を再計算。±10%は各1項目のみ変更。範囲外は省略せず理由表示。"
+      }
+    }
+  }
+}

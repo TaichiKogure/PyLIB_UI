@@ -2,8 +2,21 @@
 import math
 from copy import deepcopy
 
-PHYSICS_VERSION = '1.0.0'
+PHYSICS_VERSION = '1.1.0'
 PINNED_PYBAMM = '26.10.1.0'
+DIAGNOSTICS = {
+    'surface_ocv_v': ('Surface open-circuit voltage [V]', '表面濃度に基づくOCV', 'V'),
+    'reaction_overpotential_v': ('X-averaged reaction overpotential [V]', '反応過電圧（符号付き）', 'V'),
+    'electrolyte_ohmic_loss_v': ('X-averaged electrolyte ohmic losses [V]', '電解液オーム損失（符号付き）', 'V'),
+    'concentration_overpotential_v': ('X-averaged concentration overpotential [V]', '電解液濃度過電圧（符号付き）', 'V'),
+    'solid_ohmic_loss_v': ('X-averaged solid phase ohmic losses [V]', '固相オーム損失（符号付き）', 'V'),
+    'ohmic_heating_w': ('Ohmic heating [W]', 'オーム発熱', 'W'),
+    'reaction_heating_w': ('Irreversible electrochemical heating [W]', '不可逆反応発熱', 'W'),
+    'reversible_heating_w': ('Reversible heating [W]', '可逆反応熱', 'W'),
+    'hysteresis_heating_w': ('Hysteresis electrochemical heating [W]', 'ヒステリシス発熱', 'W'),
+    'mixing_heating_w': ('Heat of mixing [W]', '混合熱（現設定は無効）', 'W'),
+    'total_heating_w': ('Total heating [W]', '全発熱', 'W'),
+}
 DEFAULTS = dict(name='SPMe · 基準プロトコル', model='SPMe', parameter_set='Chen2020',
                 thermal='isothermal', initial_soc=.5, initial_temp_c=25, ambient_temp_c=25,
                 heat_transfer_w_m2_k=10, min_voltage_v=2.5, max_voltage_v=4.2,

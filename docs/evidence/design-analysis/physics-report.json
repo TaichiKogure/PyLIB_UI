@@ -1,0 +1,1044 @@
+{
+  "scope": "Live PyBaMM functional diagnostics and design response; no measured-cell accuracy claim",
+  "cases": {
+    "literature-spme": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.02777777777777779,
+        "energy_wh": -0.0034382710608816423,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.8830243229447836,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 5.0
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.750873608447337,
+          "final": 3.7599513090222336,
+          "minimum": 3.731145264815366,
+          "maximum": 3.7599513090222336
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.09117236530665586,
+          "final": 0.09214976409060244,
+          "minimum": -0.09117236530665586,
+          "maximum": 0.09214976409060244
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.020291891367639293,
+          "final": 0.020291891367639304,
+          "minimum": -0.020291891367639304,
+          "maximum": 0.020291891367639304
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": -5.204170427930421e-18,
+          "final": 0.0038260369326517133,
+          "minimum": -0.009102381751240162,
+          "maximum": 0.0038260369326517133
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.006805343855437852,
+          "final": 0.006805343855437852,
+          "minimum": -0.006805343855437852,
+          "maximum": 0.006805343855437852
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.13542012319128038,
+          "final": 0.15448722988449343,
+          "minimum": 0.0,
+          "maximum": 0.18083316305598435
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.45586182653327945,
+          "final": 0.46074882045301213,
+          "minimum": 0.0,
+          "maximum": 0.46074882045301213
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.5912819497245598,
+          "final": 0.6152360503375055,
+          "minimum": 0.0,
+          "maximum": 0.6265737047799023
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2
+      }
+    },
+    "literature-dfn": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.027777777777777755,
+        "energy_wh": -0.0034000555295476843,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.881526065114663,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 5.0
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.7508736084473404,
+          "final": 3.7599513896834336,
+          "minimum": 3.7311484514129214,
+          "maximum": 3.7599513896834336
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.09095473022715406,
+          "final": 0.0919363107231377,
+          "minimum": -0.09095473022715406,
+          "maximum": 0.0919363107231377
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.018953444348662443,
+          "final": 0.01901734270813777,
+          "minimum": -0.019060325231827952,
+          "maximum": 0.01937390413568193
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": -5.073064833058189e-18,
+          "final": 0.003765747274207337,
+          "minimum": -0.00874476440834507,
+          "maximum": 0.003765747274207337
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.006703360318704584,
+          "final": 0.006855252992649288,
+          "minimum": -0.006911411507107548,
+          "maximum": 0.006855252992649288
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.12493862989699156,
+          "final": 0.14493073374854204,
+          "minimum": -0.0002143337827079129,
+          "maximum": 0.16882276210644842
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.45814320365778116,
+          "final": 0.4626359513417165,
+          "minimum": 0.00018188886376308445,
+          "maximum": 0.4626359513417165
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.5830818335547726,
+          "final": 0.6075666850902585,
+          "minimum": -1.3054884132478517e-05,
+          "maximum": 0.6175324396444826
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2
+      }
+    },
+    "literature-dfn-lumped": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.027777777777777752,
+        "energy_wh": -0.0033917125312189775,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.8809331376177685,
+        "max_temperature_c": 25.27058002663813,
+        "point_count": 28,
+        "c_rate_reference_ah": 5.0
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.7508736084473404,
+          "final": 3.7599513898994705,
+          "minimum": 3.7311484568244673,
+          "maximum": 3.7599513898994705
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.09095473022715364,
+          "final": 0.09134057503740663,
+          "minimum": -0.09095473022715364,
+          "maximum": 0.09134057503740663
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.01895344434866266,
+          "final": 0.019016474668417292,
+          "minimum": -0.01906023761757646,
+          "maximum": 0.019373636465550705
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": -5.7977883806379374e-18,
+          "final": 0.003769116686650475,
+          "minimum": -0.008748725536561504,
+          "maximum": 0.003769116686650475
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.006703360318704584,
+          "final": 0.006855559595316202,
+          "minimum": -0.006911554843917931,
+          "maximum": 0.006855559595316202
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.12493862989699245,
+          "final": 0.14494121565641016,
+          "minimum": -0.0002151310583059677,
+          "maximum": 0.16883532715492267
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.45814320365778016,
+          "final": 0.4596596937791736,
+          "minimum": 0.0001825991230007477,
+          "maximum": 0.4596596937791736
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.5830818335547726,
+          "final": 0.6046009094355836,
+          "minimum": -1.317098109710222e-05,
+          "maximum": 0.6160117054746352
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2,
+        "Total heat transfer coefficient [W.m-2.K-1]": 10
+      }
+    },
+    "literature-composite-dfn": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.027777777777777755,
+        "energy_wh": -0.003630567481507367,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.822691828545623,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 5.0
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.684702156111548,
+          "final": 3.691904182686685,
+          "minimum": 3.6698751018890468,
+          "maximum": 3.691904182686685
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.09977237820755944,
+          "final": 0.10068369960170026,
+          "minimum": -0.09977237820755944,
+          "maximum": 0.10068369960170026
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.01956067873824418,
+          "final": 0.01948599954204379,
+          "minimum": -0.019564142673986366,
+          "maximum": 0.019945825708685548
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": -6.280937412357824e-18,
+          "final": 0.003764891723857618,
+          "minimum": -0.008736698400322922,
+          "maximum": 0.003764891723857618
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.006704512481322524,
+          "final": 0.006853054991336518,
+          "minimum": -0.006918821270670073,
+          "maximum": 0.006853054991336518
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.12794207096095495,
+          "final": 0.14714003632280065,
+          "minimum": -0.00024515025815348163,
+          "maximum": 0.1710038805264456
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.5012850733478461,
+          "final": 0.5053968898012243,
+          "minimum": 0.0001846644538346663,
+          "maximum": 0.5053968898012243
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0009041007832525386,
+          "final": 0.001033044881538538,
+          "minimum": 0.0,
+          "maximum": 0.001033044881538538
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.6301312450920511,
+          "final": 0.6535699710055655,
+          "minimum": -2.4482023710523268e-05,
+          "maximum": 0.6644503127757696
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2
+      }
+    },
+    "design-spme": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.027777777777777766,
+        "energy_wh": -0.0035948356880020757,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.9217022922971445,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 4.270869054933677
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.7839602013195663,
+          "final": 3.793792561074981,
+          "minimum": 3.76132003592622,
+          "maximum": 3.793792561074981
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.10197269447505061,
+          "final": 0.10278369486088101,
+          "minimum": -0.10197269447505061,
+          "maximum": 0.10278369486088101
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.015328871652334989,
+          "final": 0.01532887165233499,
+          "minimum": -0.01532887165233499,
+          "maximum": 0.015328871652334994
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": 0.0,
+          "final": 0.004389500008321616,
+          "minimum": -0.008855660347941701,
+          "maximum": 0.004389500008321616
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.005407386662220199,
+          "final": 0.005407386662220199,
+          "minimum": -0.005407386662220199,
+          "maximum": 0.005407386662220199
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.10364281396948767,
+          "final": 0.12553972776386824,
+          "minimum": 0.0,
+          "maximum": 0.1478427215482538
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.509863472375253,
+          "final": 0.513918474304405,
+          "minimum": 0.0,
+          "maximum": 0.513918474304405
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.6135062863447407,
+          "final": 0.6394582020682731,
+          "minimum": 0.0,
+          "maximum": 0.6512593345998383
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2,
+        "Electrode height [m]": 0.06,
+        "Electrode width [m]": 0.9260899358914211,
+        "Number of electrodes connected in parallel to make a cell": 2,
+        "Positive electrode thickness [m]": 6.5e-05,
+        "Negative electrode thickness [m]": 7.5e-05,
+        "Positive current collector thickness [m]": 1.4999999999999999e-05,
+        "Negative current collector thickness [m]": 8e-06,
+        "Separator thickness [m]": 1.6e-05,
+        "Positive electrode porosity": 0.3,
+        "Negative electrode porosity": 0.32,
+        "Separator porosity": 0.45,
+        "Nominal cell capacity [A.h]": 4.270869054933677,
+        "Cell volume [m3]": 2.4245241304079233e-05,
+        "Cell cooling surface area [m2]": 0.005310862380893546,
+        "Positive electrode active material volume fraction": 0.6331658291457285,
+        "Negative electrode active material volume fraction": 0.6478047059342403
+      }
+    },
+    "design-dfn": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.027777777777777766,
+        "energy_wh": -0.0035774781150668357,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.920992303500238,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 4.270869054933677
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.78396020131957,
+          "final": 3.793791341504119,
+          "minimum": 3.7613197841639514,
+          "maximum": 3.793791341504119
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.10189565622661942,
+          "final": 0.10268481958180795,
+          "minimum": -0.10189565622661942,
+          "maximum": 0.10268481958180795
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.014688938375622379,
+          "final": 0.014726323127368577,
+          "minimum": -0.01475925609203192,
+          "maximum": 0.01487467452625573
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": 0.0,
+          "final": 0.004308612717753496,
+          "minimum": -0.008610432685054376,
+          "maximum": 0.004308612717753496
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.0054006523043226146,
+          "final": 0.005481188251508879,
+          "minimum": -0.0055205476080871525,
+          "maximum": 0.005481188251508879
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.09903798528797784,
+          "final": 0.12091744347484226,
+          "minimum": -0.00014075525592378586,
+          "maximum": 0.1420084501056096
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.5108848663118253,
+          "final": 0.5148026502077029,
+          "minimum": 9.660919741852814e-05,
+          "maximum": 0.5148026502077029
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.6099228515998031,
+          "final": 0.6357200936825452,
+          "minimum": -1.531048064369876e-05,
+          "maximum": 0.6466152058362076
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2,
+        "Electrode height [m]": 0.06,
+        "Electrode width [m]": 0.9260899358914211,
+        "Number of electrodes connected in parallel to make a cell": 2,
+        "Positive electrode thickness [m]": 6.5e-05,
+        "Negative electrode thickness [m]": 7.5e-05,
+        "Positive current collector thickness [m]": 1.4999999999999999e-05,
+        "Negative current collector thickness [m]": 8e-06,
+        "Separator thickness [m]": 1.6e-05,
+        "Positive electrode porosity": 0.3,
+        "Negative electrode porosity": 0.32,
+        "Separator porosity": 0.45,
+        "Nominal cell capacity [A.h]": 4.270869054933677,
+        "Cell volume [m3]": 2.4245241304079233e-05,
+        "Cell cooling surface area [m2]": 0.005310862380893546,
+        "Positive electrode active material volume fraction": 0.6331658291457285,
+        "Negative electrode active material volume fraction": 0.6478047059342403
+      }
+    },
+    "design-thicker-positive": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.02777777777777774,
+        "energy_wh": -0.0037399486285653863,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.99472901812282,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 3.919838721651458
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.8531377999034806,
+          "final": 3.8598413003567567,
+          "minimum": 3.8377810643455206,
+          "maximum": 3.8598413003567567
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.10449482073051951,
+          "final": 0.10543590452913568,
+          "minimum": -0.10449482073051951,
+          "maximum": 0.10543590452913568
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.018274252942718568,
+          "final": 0.01827425294271856,
+          "minimum": -0.018274252942718568,
+          "maximum": 0.018274252942718568
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": 1.0842021724855044e-19,
+          "final": 0.003927266184188903,
+          "minimum": -0.008949941474166206,
+          "maximum": 0.003927266184188903
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.007249925095869395,
+          "final": 0.007249925095869395,
+          "minimum": -0.007249925095869395,
+          "maximum": 0.007249925095869395
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.12757984440358872,
+          "final": 0.14716277433546363,
+          "minimum": 0.0,
+          "maximum": 0.1722442838261622
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.5224741036525976,
+          "final": 0.5271795226456784,
+          "minimum": 0.0,
+          "maximum": 0.5271795226456784
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.6500539480561864,
+          "final": 0.6743422969811419,
+          "minimum": 0.0,
+          "maximum": 0.6858408673292923
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2,
+        "Electrode height [m]": 0.06,
+        "Electrode width [m]": 0.8499729548592495,
+        "Number of electrodes connected in parallel to make a cell": 2,
+        "Positive electrode thickness [m]": 7.999999999999999e-05,
+        "Negative electrode thickness [m]": 7.5e-05,
+        "Positive current collector thickness [m]": 1.4999999999999999e-05,
+        "Negative current collector thickness [m]": 8e-06,
+        "Separator thickness [m]": 1.6e-05,
+        "Positive electrode porosity": 0.3,
+        "Negative electrode porosity": 0.32,
+        "Separator porosity": 0.45,
+        "Nominal cell capacity [A.h]": 3.919838721651458,
+        "Cell volume [m3]": 2.4245241304079233e-05,
+        "Cell cooling surface area [m2]": 0.005310862380893546,
+        "Positive electrode active material volume fraction": 0.6331658291457285,
+        "Negative electrode active material volume fraction": 0.6478047059342403
+      }
+    },
+    "design-higher-porosity": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 25.0,
+        "capacity_ah": 0.02777777777777777,
+        "energy_wh": -0.003593826281729321,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.852472435790108,
+        "max_temperature_c": 25.0,
+        "point_count": 28,
+        "c_rate_reference_ah": 3.763480580478069
+      },
+      "diagnostics": {
+        "surface_ocv_v": {
+          "source_variable": "Surface open-circuit voltage [V]",
+          "label": "表面濃度に基づくOCV",
+          "unit": "V",
+          "initial": 3.714053227993073,
+          "final": 3.724837146622292,
+          "minimum": 3.692212003182124,
+          "maximum": 3.724837146622292
+        },
+        "reaction_overpotential_v": {
+          "source_variable": "X-averaged reaction overpotential [V]",
+          "label": "反応過電圧（符号付き）",
+          "unit": "V",
+          "initial": -0.10443534053954052,
+          "final": 0.10527099221099553,
+          "minimum": -0.10443534053954052,
+          "maximum": 0.10527099221099553
+        },
+        "electrolyte_ohmic_loss_v": {
+          "source_variable": "X-averaged electrolyte ohmic losses [V]",
+          "label": "電解液オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.013137769394477148,
+          "final": 0.013137769394477151,
+          "minimum": -0.013137769394477151,
+          "maximum": 0.013137769394477151
+        },
+        "concentration_overpotential_v": {
+          "source_variable": "X-averaged concentration overpotential [V]",
+          "label": "電解液濃度過電圧（符号付き）",
+          "unit": "V",
+          "initial": -1.0842021724855044e-19,
+          "final": 0.0038195480836764727,
+          "minimum": -0.007536435204690819,
+          "maximum": 0.0038195480836764727
+        },
+        "solid_ohmic_loss_v": {
+          "source_variable": "X-averaged solid phase ohmic losses [V]",
+          "label": "固相オーム損失（符号付き）",
+          "unit": "V",
+          "initial": -0.005407386662220199,
+          "final": 0.005407386662220199,
+          "minimum": -0.005407386662220199,
+          "maximum": 0.005407386662220199
+        },
+        "ohmic_heating_w": {
+          "source_variable": "Ohmic heating [W]",
+          "label": "オーム発熱",
+          "unit": "W",
+          "initial": 0.09270015713580768,
+          "final": 0.11175518076396816,
+          "minimum": 0.0,
+          "maximum": 0.13031625959741108
+        },
+        "reaction_heating_w": {
+          "source_variable": "Irreversible electrochemical heating [W]",
+          "label": "不可逆反応発熱",
+          "unit": "W",
+          "initial": 0.5221767026977027,
+          "final": 0.5263549610549776,
+          "minimum": 0.0,
+          "maximum": 0.5263549610549776
+        },
+        "reversible_heating_w": {
+          "source_variable": "Reversible heating [W]",
+          "label": "可逆反応熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "hysteresis_heating_w": {
+          "source_variable": "Hysteresis electrochemical heating [W]",
+          "label": "ヒステリシス発熱",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "mixing_heating_w": {
+          "source_variable": "Heat of mixing [W]",
+          "label": "混合熱（現設定は無効）",
+          "unit": "W",
+          "initial": 0.0,
+          "final": 0.0,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "total_heating_w": {
+          "source_variable": "Total heating [W]",
+          "label": "全発熱",
+          "unit": "W",
+          "initial": 0.6148768598335103,
+          "final": 0.6381101418189457,
+          "minimum": 0.0,
+          "maximum": 0.6456265691231265
+        }
+      },
+      "overrides": {
+        "Initial temperature [K]": 298.15,
+        "Ambient temperature [K]": 298.15,
+        "Lower voltage cut-off [V]": 2.5,
+        "Upper voltage cut-off [V]": 4.2,
+        "Electrode height [m]": 0.06,
+        "Electrode width [m]": 0.9260899358914211,
+        "Number of electrodes connected in parallel to make a cell": 2,
+        "Positive electrode thickness [m]": 6.5e-05,
+        "Negative electrode thickness [m]": 7.5e-05,
+        "Positive current collector thickness [m]": 1.4999999999999999e-05,
+        "Negative current collector thickness [m]": 8e-06,
+        "Separator thickness [m]": 1.6e-05,
+        "Positive electrode porosity": 0.4,
+        "Negative electrode porosity": 0.32,
+        "Separator porosity": 0.45,
+        "Nominal cell capacity [A.h]": 3.763480580478069,
+        "Cell volume [m3]": 2.4245241304079233e-05,
+        "Cell cooling surface area [m2]": 0.005310862380893546,
+        "Positive electrode active material volume fraction": 0.5427135678391959,
+        "Negative electrode active material volume fraction": 0.6478047059342403
+      }
+    }
+  },
+  "environment": {
+    "available": true,
+    "versions": {
+      "python": [
+        3,
+        13
+      ],
+      "pybamm": "26.10.1.0",
+      "solvers": "0.11.1",
+      "numpy": "2.3.5",
+      "casadi": "3.8.1"
+    },
+    "message": "固定計算環境を確認しました。"
+  }
+}

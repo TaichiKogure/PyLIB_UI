@@ -19,6 +19,17 @@ class SimulationService:
         self.lock = Lock()
         self.originals = {}
 
+    def run_reference(self, data, project_id="default"):
+        from .cathodes import simulate
+        self.repository.require_project(project_id)
+        result = simulate(data, project_id)
+        with self.lock:
+            self.recent[result["id"]] = result
+            while len(self.recent) > 20:
+                old_id, _ = self.recent.popitem(last=False)
+                self.originals.pop(old_id, None)
+        return result
+
     def run(self, data, project_id="default", design_id=None):
         self.repository.require_project(project_id)
         config = SimulationInput.from_dict(data)
@@ -122,10 +133,20 @@ def export_csv(run):
         stream.write(f"# {key}: {value}\n")
     columns = COLUMNS if run.get("record_type") != "physics" else COLUMNS + ("segment_id", "electrolyte_min_mol_m3",
                                                                              "negative_surface_max_mol_m3")
+    if run.get("record_type") == "reference_curve":
+        import json
+        columns += ("positive_reference_v", "negative_reference_v", "negative_fraction", "additional_ohmic_loss_v")
+        for key in ("input", "voltage_reference", "source_snapshot", "mapping", "limitations"):
+            stream.write(f"# {key}: {json.dumps(run[key], ensure_ascii=False)}\n")
     if run.get("record_type") == "physics":
         import json
+        from .physics import DIAGNOSTICS
+        columns += tuple(key for key in DIAGNOSTICS if key in run.get('diagnostic_summary', {}))
         for key in ("input", "parameter_provenance", "numerical", "step_results"):
             stream.write(f"# {key}: {json.dumps(run[key], ensure_ascii=False)}\n")
+        if run.get('diagnostic_summary'):
+            stream.write(f'# diagnostic_basis: {run["diagnostic_basis"]}\n')
+            stream.write(f'# diagnostic_summary: {json.dumps(run["diagnostic_summary"], ensure_ascii=False)}\n')
         if run.get("design_snapshot"):
             stream.write(f'# design_id: {run["design_snapshot"]["id"]}\n')
     writer = csv.DictWriter(stream, fieldnames=columns, extrasaction="ignore")
