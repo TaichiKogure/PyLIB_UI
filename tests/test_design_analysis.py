@@ -5,8 +5,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from pylib_ui.design import evaluate_design, templates
-from pylib_ui.storage import RunRepository
+from pylibstudy.design import evaluate_design, templates
+from pylibstudy.storage import RunRepository
 
 
 def component(result, key):

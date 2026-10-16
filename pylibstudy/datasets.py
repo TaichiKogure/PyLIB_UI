@@ -253,7 +253,7 @@ def demo_request(project_id="default", seed=42):
         writer.writerow([second, f"{4.1 - .0004 * second + rng.gauss(0, .002):.8f}", 1, 25 + second / 1200])
     return {"project_id": project_id, "seed": seed, "name": f"操作デモ seed={seed}",
             "text": stream.getvalue(), "filename": f"synthetic-demo-{seed}.csv", "source_type": "synthetic_demo",
-            "source": "PyLIB demo formula v1; voltage=4.1-0.0004*t+Gaussian(0,0.002); I=1 A; T=25+t/1200 degC; t=0..600 s, dt=10 s",
+            "source": "PyLiBStudy demo formula v1; voltage=4.1-0.0004*t+Gaussian(0,0.002); I=1 A; T=25+t/1200 degC; t=0..600 s, dt=10 s",
             "notes": f"generator=python.random.Random.gauss; seed={seed}; 合成・未校正。実測ではありません。",
             "mode": "discharge", "shape": "time_series", "mapping": {
             "time_s": {"column": "time", "unit": "s"}, "voltage_v": {"column": "voltage", "unit": "V"},

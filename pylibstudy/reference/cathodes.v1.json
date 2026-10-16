@@ -17,7 +17,10 @@
         "title": "PyBEP: An Open-Source Tool for Electrode Potential Determination from Battery OCV Measurements",
         "url": "https://github.com/JonPisek/PyBEP",
         "doi": "10.3390/batteries11080295",
-        "original_doi": "10.1149/2.062204jes"
+        "original_doi": "10.1149/2.062204jes",
+        "authors": [
+          "University of Ljubljana, Faculty of Mechanical Engineering, LICeM (PyBEP rights holder and contributors)"
+        ]
       },
       "sources": [
         {
@@ -334,7 +337,9 @@
           }
         }
       },
-      "requested_max_v": 4.4
+      "requested_max_v": 4.4,
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "nmc523_pybep",
@@ -350,7 +355,10 @@
         "title": "PyBEP: An Open-Source Tool for Electrode Potential Determination from Battery OCV Measurements",
         "url": "https://github.com/JonPisek/PyBEP",
         "doi": "10.3390/batteries11080295",
-        "original_doi": "10.1149/2.1701713jes"
+        "original_doi": "10.1149/2.1701713jes",
+        "authors": [
+          "University of Ljubljana, Faculty of Mechanical Engineering, LICeM (PyBEP rights holder and contributors)"
+        ]
       },
       "sources": [
         {
@@ -507,7 +515,9 @@
           }
         }
       },
-      "requested_max_v": 4.4
+      "requested_max_v": 4.4,
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "nmc622_wan2026",
@@ -522,7 +532,17 @@
       "citation": {
         "title": "Managing silicon burn-out via onboard material diagnostics for durable high-energy density batteries",
         "doi": "10.1016/j.joule.2026.102531",
-        "url": "https://zenodo.org/records/20259651"
+        "url": "https://zenodo.org/records/20259651",
+        "authors": [
+          "Zhiwen Wan",
+          "Andrew Weng",
+          "Sravan Pannala",
+          "Hamidreza Movahedi",
+          "Taylor R. Garrick",
+          "Gregory J. Offer",
+          "Jason B. Siegel",
+          "Anna G. Stefanopoulou"
+        ]
       },
       "sources": [
         {
@@ -784,7 +804,9 @@
           }
         }
       },
-      "requested_max_v": 4.4
+      "requested_max_v": 4.4,
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "nmc811_2023_cycle4",
@@ -799,7 +821,21 @@
       "citation": {
         "title": "Anion-enrichment interface enables high-voltage anode-free lithium metal batteries",
         "doi": "10.1038/s41467-023-36853-x",
-        "url": "https://www.nature.com/articles/s41467-023-36853-x"
+        "url": "https://www.nature.com/articles/s41467-023-36853-x",
+        "authors": [
+          "Minglei Mao",
+          "Xiao Ji",
+          "Qiyu Wang",
+          "Zejing Lin",
+          "Meiying Li",
+          "Tao Liu",
+          "Chengliang Wang",
+          "Yong-Sheng Hu",
+          "Hong Li",
+          "Xuejie Huang",
+          "Liquan Chen",
+          "Liumin Suo"
+        ]
       },
       "sources": [
         {
@@ -1963,7 +1999,9 @@
           }
         }
       },
-      "requested_max_v": 4.4
+      "requested_max_v": 4.4,
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "lco2018_bare_cycle3",
@@ -1978,7 +2016,16 @@
       "citation": {
         "title": "Electrochemical surface passivation of LiCoO2 particles at ultrahigh voltage and its applications in lithium-based batteries",
         "doi": "10.1038/s41467-018-07296-6",
-        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6249257/"
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6249257/",
+        "authors": [
+          "Jiawei Qian",
+          "Lei Liu",
+          "Jixiang Yang",
+          "Siyuan Li",
+          "Xiao Wang",
+          "Houlong L. Zhuang",
+          "Yingying Lu"
+        ]
       },
       "sources": [
         {
@@ -3384,7 +3431,9 @@
           }
         }
       },
-      "requested_max_v": 4.55
+      "requested_max_v": 4.55,
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "lco2018_laf2_cycle3",
@@ -3399,7 +3448,16 @@
       "citation": {
         "title": "Electrochemical surface passivation of LiCoO2 particles at ultrahigh voltage and its applications in lithium-based batteries",
         "doi": "10.1038/s41467-018-07296-6",
-        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6249257/"
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6249257/",
+        "authors": [
+          "Jiawei Qian",
+          "Lei Liu",
+          "Jixiang Yang",
+          "Siyuan Li",
+          "Xiao Wang",
+          "Houlong L. Zhuang",
+          "Yingying Lu"
+        ]
       },
       "sources": [
         {
@@ -4917,7 +4975,9 @@
           }
         }
       },
-      "requested_max_v": 4.55
+      "requested_max_v": 4.55,
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "lmfp_2022_fmc_cycle3",
@@ -4932,7 +4992,25 @@
       "citation": {
         "title": "Rational design of a topological polymeric solid electrolyte for high-performance all-solid-state alkali metal batteries",
         "doi": "10.1038/s41467-022-31792-5",
-        "url": "https://www.nature.com/articles/s41467-022-31792-5"
+        "url": "https://www.nature.com/articles/s41467-022-31792-5",
+        "authors": [
+          "Yun Su",
+          "Xiaohui Rong",
+          "Ang Gao",
+          "Yuan Liu",
+          "Jianwei Li",
+          "Minglei Mao",
+          "Xingguo Qi",
+          "Guoliang Chai",
+          "Qinghua Zhang",
+          "Liumin Suo",
+          "Lin Gu",
+          "Hong Li",
+          "Xuejie Huang",
+          "Liquan Chen",
+          "Binyuan Liu",
+          "Yong-Sheng Hu"
+        ]
       },
       "sources": [
         {
@@ -8879,7 +8957,9 @@
           }
         }
       },
-      "requested_max_v": 4.2
+      "requested_max_v": 4.2,
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     },
     {
       "id": "lfp_2022_fmc_cycle3",
@@ -8894,7 +8974,25 @@
       "citation": {
         "title": "Rational design of a topological polymeric solid electrolyte for high-performance all-solid-state alkali metal batteries",
         "doi": "10.1038/s41467-022-31792-5",
-        "url": "https://www.nature.com/articles/s41467-022-31792-5"
+        "url": "https://www.nature.com/articles/s41467-022-31792-5",
+        "authors": [
+          "Yun Su",
+          "Xiaohui Rong",
+          "Ang Gao",
+          "Yuan Liu",
+          "Jianwei Li",
+          "Minglei Mao",
+          "Xingguo Qi",
+          "Guoliang Chai",
+          "Qinghua Zhang",
+          "Liumin Suo",
+          "Lin Gu",
+          "Hong Li",
+          "Xuejie Huang",
+          "Liquan Chen",
+          "Binyuan Liu",
+          "Yong-Sheng Hu"
+        ]
       },
       "sources": [
         {
@@ -11917,7 +12015,9 @@
           }
         }
       },
-      "requested_max_v": 3.7
+      "requested_max_v": 3.7,
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "modifications": "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
     }
   ],
   "negative_reference": {
@@ -11926,7 +12026,17 @@
     "license": "CC BY 4.0",
     "citation": {
       "url": "https://zenodo.org/records/20259651",
-      "doi": "10.1016/j.joule.2026.102531"
+      "doi": "10.1016/j.joule.2026.102531",
+      "authors": [
+        "Zhiwen Wan",
+        "Andrew Weng",
+        "Sravan Pannala",
+        "Hamidreza Movahedi",
+        "Taylor R. Garrick",
+        "Gregory J. Offer",
+        "Jason B. Siegel",
+        "Anna G. Stefanopoulou"
+      ]
     },
     "source": {
       "file": "Graphite_OCP_Lithiation_raw.csv",
@@ -15110,7 +15220,8 @@
     "notes": [
       "黒鉛リチウム化OCPの公開基準座標。絶対化学量論組成とは同一視しません。",
       "両方向に同じOCPを使用。負極の分極・ヒステリシスは未計算です。"
-    ]
+    ],
+    "license_url": "https://creativecommons.org/licenses/by/4.0/"
   },
   "exclusions": [
     {

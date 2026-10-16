@@ -1,6 +1,9 @@
 "use strict";
 
-const library = {projectId: localStorage.getItem("pylib-project") || "default", revision: 0, inspectedRevision: -1};
+// Carry the selected project forward from the previous application name.
+const savedProject = localStorage.getItem("pylibstudy-project") ?? localStorage.getItem("pylib-project");
+if (savedProject !== null) localStorage.setItem("pylibstudy-project", savedProject);
+const library = {projectId: savedProject || "default", revision: 0, inspectedRevision: -1};
 const importLabels = {
     time_s: "時間",
     voltage_v: "電圧",
@@ -23,6 +26,7 @@ const importUnits = {
 };
 
 function sourceLabel(run) {
+    if (run.record_type === "reference_curve") return `公開曲線の参照計算 / ${run.voltage_reference === "Li/Li+" ? "対Li基準" : "セル端子電圧"}`;
     return {
         synthetic: "合成モデル・未校正",
         synthetic_demo: "合成デモ・未校正",
@@ -73,7 +77,7 @@ async function switchProject() {
     physical.follow = null;
     physical.signature = "";
     $("physics-jobs").replaceChildren(element("p", "このプロジェクトのジョブを読み込んでいます…"));
-    localStorage.setItem("pylib-project", library.projectId);
+    localStorage.setItem("pylibstudy-project", library.projectId);
     ++state.viewVersion;
     state.current = null;
     state.comparisons.clear();
@@ -81,6 +85,7 @@ async function switchProject() {
     $("result-title").textContent = "カーブを選択・計算・取込";
     $("result-state").textContent = "未選択";
     $("result-meta").textContent = "プロジェクトを切り替えました。";
+    $("result-origin").textContent = "表示中の結果：なし。保存一覧から表示、または計算・取込してください。";
     for (const id of ["metric-capacity", "metric-energy", "metric-temp", "metric-soc"]) $(id).textContent = "—";
     $("snapshot").replaceChildren();
     $("chart").replaceChildren(element("p", "保存一覧から表示、または新たに計算・取込してください。", "chart-empty"));

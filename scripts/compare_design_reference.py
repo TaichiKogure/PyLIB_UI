@@ -2,23 +2,23 @@
 
 Pass a local source folder obtained from the pinned official repository. This
 executes only explicitly named numerical methods, not the package or its imports.
-No upstream implementation is bundled with PyLIB. See docs/07 for limitations.
+No upstream implementation is bundled with PyLiBStudy. See docs/07 for limitations.
 """
-import ast
 import argparse
+import ast
 import hashlib
 import json
 import math
 import sys
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace as NS
-import warnings
 
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylib_ui.design import evaluate_design, templates
+from pylibstudy.design import evaluate_design, templates
 
 COMMIT = '53178ecab1b9dc539bdc37e69ca7e86527142081'
 EXPECTED = {

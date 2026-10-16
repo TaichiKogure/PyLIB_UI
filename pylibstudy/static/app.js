@@ -149,6 +149,9 @@ function busy(enabled, operation = "計算") {
 
 function showResult(run) {
     state.current = run;
+    $("result-origin").textContent = `表示中：${run.name} / ${run.engine?.label || sourceLabel(run)} / ${sourceLabel(run)} / ID ${run.id.slice(0, 8)}`;
+    $("metric-temp-title").textContent = "最高温度";
+    $("metric-temp-kind").textContent = "°C · セル平均";
     $("original").disabled = !run.original;
     $("metric-soc-kind").textContent = "% · 推定状態";
     if (run.record_type === "reference_curve") {
@@ -214,7 +217,7 @@ function renderChart() {
         voltage_v: allSeries.some(r => r.record_type === "reference_curve") ? "電圧 (V) · 対Li/セルの基準は凡例を確認" : "電圧 (V)",
         positive_reference_v: "正極参照電圧 (V vs Li/Li⁺)",
         negative_reference_v: "負極OCP (V vs Li/Li⁺)",
-        soc: allSeries.some(r => r.record_type === "physics") ? "SOC / 基準容量による電荷帳簿 (%)" : "SOC (%)",
+        soc: allSeries.some(r => r.record_type === "reference_curve") ? "相対座標 / SOC (%) · 定義は来歴参照" : allSeries.some(r => r.record_type === "physics") ? "SOC / 基準容量による電荷帳簿 (%)" : "SOC (%)",
         temperature_c: "温度 (°C) · 測定位置は来歴参照",
         current_a: "電流 (A)"
     };
@@ -369,10 +372,10 @@ async function refreshHistory() {
         info.append(element("p", run.record_type === "physics"
             ? `${run.engine.label} / ${run.input.parameter_set} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 実測未検証`
             : run.record_type === "reference_curve"
-            ? `${run.source_snapshot.positive.chemistry} / ${run.voltage_reference === "Li/Li+" ? "対Li基準" : "セル端子電圧"} / ${modes[run.input.mode]} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 参照計算`
-            : run.record_type === "dataset"
-            ? `${sourceLabel(run)} · ${run.quality.row_count}点／${run.quality.segment_count}区間 · ${run.specimen_id || "個体不明"} · ${date} JST`
-            : `${run.input.cell_format} / ${run.input.chemistry} · ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · ${sourceLabel(run)}`));
+                ? `${run.source_snapshot.positive.chemistry} / ${run.voltage_reference === "Li/Li+" ? "対Li基準" : "セル端子電圧"} / ${modes[run.input.mode]} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · 参照計算`
+                : run.record_type === "dataset"
+                    ? `${sourceLabel(run)} · ${run.quality.row_count}点／${run.quality.segment_count}区間 · ${run.specimen_id || "個体不明"} · ${date} JST`
+                    : `${run.input.cell_format} / ${run.input.chemistry} · ${modes[run.input.mode]} ${run.input.mode === "rest" ? "0 A" : run.input.c_rate + "C"} · ${run.summary.capacity_ah.toFixed(3)} Ah · ${date} JST · ${sourceLabel(run)}`));
         const open = element("button", "表示");
         open.type = "button";
         open.addEventListener("click", async () => {

@@ -1,18 +1,16 @@
 """Contract and lifecycle checks; fake sleep worker only for cancellation/timeout."""
-import copy
-import json
-from pathlib import Path
 import sys
 import tempfile
 import time
 import unittest
+from pathlib import Path
 from urllib.error import HTTPError
 
-from pylib_ui.physics import DEFAULTS, validate_request, validate_design
-from pylib_ui.design import evaluate_design
-from pylib_ui.jobs import PhysicsJobs, TERMINAL
-from pylib_ui.storage import RunRepository
 import test_simulation
+from pylibstudy.design import evaluate_design
+from pylibstudy.jobs import PhysicsJobs, TERMINAL
+from pylibstudy.physics import DEFAULTS, validate_request, validate_design
+from pylibstudy.storage import RunRepository
 
 
 class ContractTests(unittest.TestCase):

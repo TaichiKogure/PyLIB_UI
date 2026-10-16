@@ -7,6 +7,8 @@ function updateConfigurationSummary() {
     if (active === "design") {
         const name = $("design-form").elements.namedItem("name")?.value || "円筒設計";
         $("active-configuration").textContent = `編集中：共通の円筒設計 / ${name}。保存後、各方式で選択・反映してください。`;
+    } else if (active === "cathodes") {
+        $("active-configuration").textContent = `設定中：公開正極曲線 / ${$("cathode-curve").selectedOptions[0]?.textContent || "準備中"} / 対Li基準とセル端子電圧を個別設定。単一CCの参照曲線計算です。`;
     } else if (active === "synthetic") {
         $("active-configuration").textContent = `設定中：合成 1RC / ${value("cell_format").value} / ${value("chemistry").value} / ${value("capacity_ah").value} Ah / 初期SOC ${Math.round(Number(value("initial_soc").value) * 100)}% / 周囲 ${value("ambient_temp_c").value} °C。物理計算の設定とは独立です。`;
     } else {
@@ -29,6 +31,7 @@ function syncModelNavigation() {
     $("physics-panel").hidden = !["SPMe", "DFN"].includes(active);
     $("synthetic-panel").hidden = active !== "synthetic";
     $("design-panel").hidden = active !== "design";
+    $("cathodes-panel").hidden = active !== "cathodes";
     $("physics-panel").setAttribute("aria-labelledby", "tab-" + model);
     $("physics-title").textContent = `${model}で充放電を計算`;
     const resultsOnly = active !== "synthetic";
@@ -52,6 +55,7 @@ function selectModelTab(model) {
 function revealModelPanel(hash) {
     const model = {
         "#design-panel": "design",
+        "#cathodes-panel": "cathodes",
         "#synthetic-panel": "synthetic",
         "#physics-panel": $("physics-model").value
     }[hash];

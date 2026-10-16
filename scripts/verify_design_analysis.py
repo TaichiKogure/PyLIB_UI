@@ -9,7 +9,7 @@ from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from pylib_ui.server import create_server
+from pylibstudy.server import create_server
 
 
 class DesignAnalysisBrowserTests(unittest.TestCase):
@@ -137,7 +137,7 @@ class DesignAnalysisBrowserTests(unittest.TestCase):
 
     def test_invalid_transport_is_visible_without_stale_numbers(self):
         self.fill('electrolyte_fill', .5)
-        expect(self.page.locator('.insight-warning')).to_contain_text('注液充填率=1')
+        expect(self.page.locator('#design-insights .insight-warning')).to_contain_text('注液充填率=1')
         self.assertIsNone(self.page.evaluate('designing.result.analysis.resistance'))
         expect(self.page.locator('.insight-metrics')).to_contain_text('算出対象外')
         self.fill('electrolyte_fill', 1)

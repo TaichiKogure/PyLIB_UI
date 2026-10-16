@@ -3,13 +3,13 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-
-from pylib_ui.design import evaluate_design, templates
-from pylib_ui.schema import SimulationInput
-from pylib_ui.service import SimulationService, design_simulation_fields
-from pylib_ui.storage import RunRepository
-import test_simulation
 from urllib.error import HTTPError
+
+import test_simulation
+from pylibstudy.design import evaluate_design, templates
+from pylibstudy.schema import SimulationInput
+from pylibstudy.service import SimulationService, design_simulation_fields
+from pylibstudy.storage import RunRepository
 
 
 class DesignTests(unittest.TestCase):

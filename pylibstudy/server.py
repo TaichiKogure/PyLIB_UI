@@ -27,6 +27,11 @@ def create_server(port=8765, data_dir=None, research_python=None):
     jobs = None
 
     class Handler(BaseHTTPRequestHandler):
+        # Large reference/solver snapshots use a length-delimited persistent
+        # connection. Avoid closing a socket immediately after a large write.
+        protocol_version = "HTTP/1.1"
+        timeout = 30
+
         def log_message(self, format, *args):
             logger.debug(format, *args)
 
@@ -38,6 +43,10 @@ def create_server(port=8765, data_dir=None, research_python=None):
             self.send_response(status)
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
+            if status >= 400:
+                # Invalid/oversized bodies may not have been consumed.
+                self.close_connection = True
+                self.send_header("Connection", "close")
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Content-Security-Policy",
@@ -143,7 +152,8 @@ def create_server(port=8765, data_dir=None, research_python=None):
                     raise ValueError("application/json で送信してください。")
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= (
-                3 * 1024 * 1024 if path.startswith("/api/import/") else 262144 if path == "/api/jobs" else 65536):
+                        3 * 1024 * 1024 if path.startswith(
+                            "/api/import/") else 262144 if path == "/api/jobs" else 65536):
                     raise ValueError("リクエストサイズが範囲外です。")
                 try:
                     data = json.loads(self.rfile.read(length))
@@ -190,6 +200,8 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 return self.send(500, {"error": "処理に失敗しました。ローカル保存先とサーバー状態を確認してください。"})
 
     class LocalServer(ThreadingHTTPServer):
+        request_queue_size = 64
+
         def server_close(self):
             if jobs is not None:
                 jobs.close()
@@ -208,7 +220,7 @@ def create_server(port=8765, data_dir=None, research_python=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="LIB simulation workbench")
+    parser = argparse.ArgumentParser(description="PyLiBStudy - LIB simulation workbench")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--data-dir", type=Path)
     parser.add_argument("--no-browser", action="store_true")
@@ -217,7 +229,7 @@ def main():
     logging.basicConfig(level=logging.WARNING)
     server = create_server(args.port, args.data_dir, args.research_python)
     url = f"http://127.0.0.1:{server.server_port}"
-    print(f"PyLIB UI: {url}\n終了: Ctrl+C", flush=True)
+    print(f"PyLiBStudy: {url}\n終了: Ctrl+C", flush=True)
     if not args.no_browser:
         webbrowser.open(url)
     try:

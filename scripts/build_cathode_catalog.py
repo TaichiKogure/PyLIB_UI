@@ -16,7 +16,8 @@ import openpyxl
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "data/reference/cathodes/sources"
-DESTINATION = ROOT / "pylib_ui/reference/cathodes.v1.json"
+DESTINATION = ROOT / "pylibstudy/reference/cathodes.v1.json"
+ACQUISITION = ROOT / "pylibstudy/reference/acquisition.json"
 
 
 def digest(path):
@@ -108,7 +109,8 @@ def emf_curves(data):
 
 def main():
     curves = []
-    pybep = json.loads((SOURCES / "pybep-acquisition.json").read_text())
+    acquisition = json.loads(ACQUISITION.read_text(encoding="utf-8"))
+    pybep = acquisition["pybep"]
     for chemistry, filename, doi, composition in [
         ("NMC111", "NMC111-10.1149_2.062204jes.txt", "10.1149/2.062204jes", "LiNi1/3Mn1/3Co1/3O2"),
         ("NMC523", "NMC523-10.1149_2.1701713jes.txt", "10.1149/2.1701713jes", "LiNi0.5Mn0.3Co0.2O2")]:
@@ -134,7 +136,7 @@ def main():
     a = branch(sorted(rows), "published_ocp_csv", capacity=False,
                extra={
                    "coordinate": "1 - source sto; normalized electrode reference coordinate, not absolute stoichiometry"})
-    members = json.loads((SOURCES / "nmc622-members.json").read_text())
+    members = acquisition["wan2026_remote_zip"]
     wan_url = "https://zenodo.org/records/20259651"
     curves.append(dict(id="nmc622_wan2026", chemistry="NMC622", composition="LiNi0.6Mn0.2Co0.2O2",
                        label="NMC622 / Wan 2026 OCP", kind="published_ocp", temperature_c=None,
@@ -254,6 +256,28 @@ def main():
                                 "point_count": len(grouped)},
                     notes=["黒鉛リチウム化OCPの公開基準座標。絶対化学量論組成とは同一視しません。",
                            "両方向に同じOCPを使用。負極の分極・ヒステリシスは未計算です。"])
+    authors = {
+        "10.3390/batteries11080295": [
+            "University of Ljubljana, Faculty of Mechanical Engineering, LICeM (PyBEP rights holder and contributors)"],
+        "10.1016/j.joule.2026.102531": ["Zhiwen Wan", "Andrew Weng", "Sravan Pannala", "Hamidreza Movahedi",
+                                        "Taylor R. Garrick", "Gregory J. Offer", "Jason B. Siegel",
+                                        "Anna G. Stefanopoulou"],
+        "10.1038/s41467-018-07296-6": ["Jiawei Qian", "Lei Liu", "Jixiang Yang", "Siyuan Li", "Xiao Wang",
+                                       "Houlong L. Zhuang", "Yingying Lu"],
+        "10.1038/s41467-022-31792-5": ["Yun Su", "Xiaohui Rong", "Ang Gao", "Yuan Liu", "Jianwei Li", "Minglei Mao",
+                                       "Xingguo Qi", "Guoliang Chai", "Qinghua Zhang", "Liumin Suo", "Lin Gu",
+                                       "Hong Li", "Xuejie Huang", "Liquan Chen", "Binyuan Liu", "Yong-Sheng Hu"],
+        "10.1038/s41467-023-36853-x": ["Minglei Mao", "Xiao Ji", "Qiyu Wang", "Zejing Lin", "Meiying Li", "Tao Liu",
+                                       "Chengliang Wang", "Yong-Sheng Hu", "Hong Li", "Xuejie Huang", "Liquan Chen",
+                                       "Liumin Suo"],
+    }
+    for c in curves:
+        c["citation"]["authors"] = authors[c["citation"]["doi"]]
+        c["license_url"] = "https://creativecommons.org/licenses/by-nc-sa/4.0/" if c[
+                                                                                       "kind"] == "processed_ocp" else "https://creativecommons.org/licenses/by/4.0/"
+        c["modifications"] = "容量座標の正規化、枝の分離、同一・後退座標の処理、0.5mV以下の線形節点削減。手順は各枝のprocessing参照。"
+    graphite["citation"]["authors"] = authors["10.1016/j.joule.2026.102531"]
+    graphite["license_url"] = "https://creativecommons.org/licenses/by/4.0/"
     document = dict(schema_version="1.0", catalog_version="2026-10-16.1", voltage_reference="Li/Li+",
                     curves=curves, negative_reference=graphite,
                     exclusions=[{"source": "RepOD 10.18150/JKHCAM",

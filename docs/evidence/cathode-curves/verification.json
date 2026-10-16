@@ -1,0 +1,43 @@
+{
+  "verified_date": "2026-10-16",
+  "catalog_version": "2026-10-16.1",
+  "catalog_sha256": "6c60af4bdb81287d9aa10875753fb56fe6851805ae5df336d51c11194cd05c9f",
+  "standard_tests": {
+    "command": ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+    "passed": 70
+  },
+  "browser_tests": {
+    "public_cathode": 8,
+    "existing_model_navigation": 9,
+    "existing_design_analysis": 8,
+    "browser": "installed Microsoft Edge (Playwright, headless)",
+    "database": "isolated temporary directories; regular database untouched"
+  },
+  "source_integrity": {
+    "original_files_verified": 7,
+    "positive_branches": 13,
+    "positive_points": 2802,
+    "negative_ocp_points": 791,
+    "source_quality": "source-quality.json"
+  },
+  "checks": [
+    "charge and discharge; half cell and graphite full-cell reference",
+    "separate positive and terminal voltage limits",
+    "source-domain stop without extrapolation",
+    "charge conservation and additional I^2 R energy",
+    "CSV/JSON provenance, saved-result restoration and project isolation",
+    "source curve CSV/JSON downloads",
+    "390px layout and JavaScript error checks",
+    "persistent HTTP connection with repeated large JSON responses",
+    "JavaScript parse and git diff whitespace checks"
+  ],
+  "boundaries": [
+    "No target cylindrical-cell accuracy validation",
+    "Current changes rescale trajectory time; no rate or temperature response prediction",
+    "NMC111/523/622 share OCP between charge/discharge and require assumed specific capacity",
+    "LFP and LMFP are 70 degC solid-electrolyte figure extractions",
+    "Requested 1.5-2 V lower tails and some NMC upper tails to 4.4 V remain unrecorded",
+    "Whole 14.4 GB archive MD5 not verified; extracted members CRC and SHA256 verified"
+  ],
+  "transport_fix": "HTTP/1.1 with Content-Length, bounded idle timeout, and Connection: close on error; no diagnostic server wrapper in final browser checks"
+}

@@ -1,0 +1,172 @@
+{
+  "catalog_version": "2026-10-16.1",
+  "catalog_sha256": "6c60af4bdb81287d9aa10875753fb56fe6851805ae5df336d51c11194cd05c9f",
+  "source_hashes": [
+    {
+      "file": "NMC111-10.1149_2.062204jes.txt",
+      "sha256": "a7370f979824a860acd5386e54c5a6c333bf7a30607eed98f2c2c5a4f756785f",
+      "bytes": 37675,
+      "verified": true
+    },
+    {
+      "file": "NMC523-10.1149_2.1701713jes.txt",
+      "sha256": "350d73974c57da3b96e6d7f9e3eea7f599af36cac4b2d3980870c28d35470f89",
+      "bytes": 50050,
+      "verified": true
+    },
+    {
+      "file": "NMC622_OCP_Delithiation.csv",
+      "sha256": "2db054679ac5e67cf9749b09314b8519d5580dba23b46ea6e81213fdd2895343",
+      "bytes": 32191,
+      "verified": true
+    },
+    {
+      "file": "nmc8112023-source.xlsx",
+      "sha256": "aa0baf401e3e0ea7ace69a7aee17fdf6901a61b748ad9e0fdc1ae2f798712b44",
+      "bytes": 21237372,
+      "verified": true
+    },
+    {
+      "file": "lco2018-figure4.xlsx",
+      "sha256": "ba8346f952c974112d23a3686f83a44c43db3e9f747e05bf2fbe58ec65c98435",
+      "bytes": 2530596,
+      "verified": true
+    },
+    {
+      "file": "lmfp2022-source.xlsx",
+      "sha256": "60137424328de724f0befd874ce4b6a3e673cef377cea1d72236e6b1f869d681",
+      "bytes": 34321568,
+      "verified": true
+    },
+    {
+      "file": "Graphite_OCP_Lithiation_raw.csv",
+      "sha256": "6e6552433fe9f12d65c2765631db9f0cacc4050a27815f783b45b5db6e645fa4",
+      "bytes": 16309,
+      "verified": true
+    }
+  ],
+  "branches": [
+    {
+      "curve_id": "nmc111_pybep",
+      "mode": "charge",
+      "original_points": 1001,
+      "advancing_points": 1001,
+      "retained_points": 70,
+      "max_interpolation_error_v": 0.00048107196142899156,
+      "capacity_mah_g": null
+    },
+    {
+      "curve_id": "nmc523_pybep",
+      "mode": "charge",
+      "original_points": 1001,
+      "advancing_points": 1001,
+      "retained_points": 30,
+      "max_interpolation_error_v": 0.0004367427706601923,
+      "capacity_mah_g": null
+    },
+    {
+      "curve_id": "nmc622_wan2026",
+      "mode": "charge",
+      "original_points": 1000,
+      "advancing_points": 1000,
+      "retained_points": 36,
+      "max_interpolation_error_v": 0.00046314568938576883,
+      "capacity_mah_g": null
+    },
+    {
+      "curve_id": "nmc811_2023_cycle4",
+      "mode": "charge",
+      "original_points": 780,
+      "advancing_points": 780,
+      "retained_points": 120,
+      "max_interpolation_error_v": 0.0004974358974791926,
+      "capacity_mah_g": 216.6
+    },
+    {
+      "curve_id": "nmc811_2023_cycle4",
+      "mode": "discharge",
+      "original_points": 734,
+      "advancing_points": 734,
+      "retained_points": 153,
+      "max_interpolation_error_v": 0.0005000000008745786,
+      "capacity_mah_g": 203.6
+    },
+    {
+      "curve_id": "lco2018_bare_cycle3",
+      "mode": "charge",
+      "original_points": 14002,
+      "advancing_points": 14002,
+      "retained_points": 146,
+      "max_interpolation_error_v": 0.0004999999855224146,
+      "capacity_mah_g": 212.636
+    },
+    {
+      "curve_id": "lco2018_bare_cycle3",
+      "mode": "discharge",
+      "original_points": 13699,
+      "advancing_points": 13699,
+      "retained_points": 189,
+      "max_interpolation_error_v": 0.000499956149484504,
+      "capacity_mah_g": 208.12849
+    },
+    {
+      "curve_id": "lco2018_laf2_cycle3",
+      "mode": "charge",
+      "original_points": 13948,
+      "advancing_points": 13948,
+      "retained_points": 109,
+      "max_interpolation_error_v": 0.0004944057106568422,
+      "capacity_mah_g": 212.21059
+    },
+    {
+      "curve_id": "lco2018_laf2_cycle3",
+      "mode": "discharge",
+      "original_points": 13724,
+      "advancing_points": 13724,
+      "retained_points": 254,
+      "max_interpolation_error_v": 0.000492025020404796,
+      "capacity_mah_g": 208.63434
+    },
+    {
+      "curve_id": "lmfp_2022_fmc_cycle3",
+      "mode": "charge",
+      "original_points": 1974,
+      "advancing_points": 1499,
+      "retained_points": 437,
+      "max_interpolation_error_v": 0.00046425634654800874,
+      "capacity_mah_g": 149.7689769
+    },
+    {
+      "curve_id": "lmfp_2022_fmc_cycle3",
+      "mode": "discharge",
+      "original_points": 2130,
+      "advancing_points": 1453,
+      "retained_points": 526,
+      "max_interpolation_error_v": 0.0004642569723776191,
+      "capacity_mah_g": 145.21452145
+    },
+    {
+      "curve_id": "lfp_2022_fmc_cycle3",
+      "mode": "charge",
+      "original_points": 2219,
+      "advancing_points": 1579,
+      "retained_points": 349,
+      "max_interpolation_error_v": 0.0004642565275418953,
+      "capacity_mah_g": 157.78699862
+    },
+    {
+      "curve_id": "lfp_2022_fmc_cycle3",
+      "mode": "discharge",
+      "original_points": 2262,
+      "advancing_points": 1551,
+      "retained_points": 383,
+      "max_interpolation_error_v": 0.00046425616545686665,
+      "capacity_mah_g": 154.98386353
+    }
+  ],
+  "boundary": "Extraction and numerical checks only; no target-cell validation or instrument-accuracy claim.",
+  "maximum_voltage_simplification_error_v": 0.0005000000008745786,
+  "positive_branch_count": 13,
+  "positive_point_count": 2802,
+  "negative_point_count": 791
+}

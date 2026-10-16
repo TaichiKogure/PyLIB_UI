@@ -1,0 +1,105 @@
+{
+  "pybep": [
+    {
+      "file": "pybep-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/JonPisek/PyBEP/f65b19ca5a94648c114c3bdda97c9badc5e65991/LICENSE.txt",
+      "commit": "f65b19ca5a94648c114c3bdda97c9badc5e65991",
+      "sha256": "a7b398ad64adbeceb69a85de23d2743a85720739e60c9aaeaaa45ac9e1e50e84",
+      "bytes": 1924
+    },
+    {
+      "file": "NMC111-10.1149_2.062204jes.txt",
+      "url": "https://raw.githubusercontent.com/JonPisek/PyBEP/f65b19ca5a94648c114c3bdda97c9badc5e65991/data/cathode_data/NMC111-10.1149_2.062204jes.txt",
+      "commit": "f65b19ca5a94648c114c3bdda97c9badc5e65991",
+      "sha256": "a7370f979824a860acd5386e54c5a6c333bf7a30607eed98f2c2c5a4f756785f",
+      "bytes": 37675
+    },
+    {
+      "file": "NMC523-10.1149_2.1701713jes.txt",
+      "url": "https://raw.githubusercontent.com/JonPisek/PyBEP/f65b19ca5a94648c114c3bdda97c9badc5e65991/data/cathode_data/NMC523-10.1149_2.1701713jes.txt",
+      "commit": "f65b19ca5a94648c114c3bdda97c9badc5e65991",
+      "sha256": "350d73974c57da3b96e6d7f9e3eea7f599af36cac4b2d3980870c28d35470f89",
+      "bytes": 50050
+    }
+  ],
+  "wan2026_remote_zip": {
+    "archive": {
+      "id": "7f86469e-12d1-4d12-afcb-d331611d4f4f",
+      "key": "managing_si_burnout_data_v1.zip",
+      "size": 14404613761,
+      "checksum": "md5:60a7d8350b6e05a5f9179a76c5041af8",
+      "links": {
+        "self": "https://zenodo.org/api/records/20259651/files/managing_si_burnout_data_v1.zip/content"
+      }
+    },
+    "verified_whole_archive": false,
+    "members": [
+      {
+        "file": "Graphite_OCP_Lithiation_raw.csv",
+        "member": "data/cell_ocp/Graphite_OCP_Lithiation_raw.csv",
+        "crc32": 1250272799,
+        "bytes": 16309,
+        "sha256": "6e6552433fe9f12d65c2765631db9f0cacc4050a27815f783b45b5db6e645fa4"
+      },
+      {
+        "file": "NMC622_OCP_Delithiation.csv",
+        "member": "data/cell_ocp/NMC622_OCP_Delithiation.csv",
+        "crc32": 3868682783,
+        "bytes": 32191,
+        "sha256": "2db054679ac5e67cf9749b09314b8519d5580dba23b46ea6e81213fdd2895343"
+      }
+    ],
+    "ranges": [
+      {
+        "start": 14404613739,
+        "end": 14404613760,
+        "bytes": 22
+      },
+      {
+        "start": 14404613719,
+        "end": 14404613738,
+        "bytes": 20
+      },
+      {
+        "start": 14404613663,
+        "end": 14404613718,
+        "bytes": 56
+      },
+      {
+        "start": 14404581911,
+        "end": 14404613662,
+        "bytes": 31752
+      },
+      {
+        "start": 200044198,
+        "end": 200044227,
+        "bytes": 30
+      },
+      {
+        "start": 200044228,
+        "end": 200044272,
+        "bytes": 45
+      },
+      {
+        "start": 200044273,
+        "end": 200048583,
+        "bytes": 4311
+      },
+      {
+        "start": 200059278,
+        "end": 200059307,
+        "bytes": 30
+      },
+      {
+        "start": 200059308,
+        "end": 200059348,
+        "bytes": 41
+      },
+      {
+        "start": 200059349,
+        "end": 200069959,
+        "bytes": 10611
+      }
+    ]
+  }
+}

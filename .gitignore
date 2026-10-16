@@ -7362,9 +7362,9 @@ tags
 result
 result-*
 
-# PyLIB source (the upstream template above ignores root directories).
-!/pylib_ui/
-!/pylib_ui/**
+# PyLiBStudy source (the upstream template above ignores root directories).
+!/pylibstudy/
+!/pylibstudy/**
 !/tests/
 !/tests/**
 !/docs/

@@ -2,13 +2,13 @@
 import argparse
 import base64
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from pylib_ui.datasets import import_curve
-from pylib_ui.storage import RunRepository
+from pylibstudy.datasets import import_curve
+from pylibstudy.storage import RunRepository
 
 
 def main():

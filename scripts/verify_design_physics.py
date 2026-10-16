@@ -8,11 +8,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from pylib_ui.design import evaluate_design
-from pylib_ui.jobs import PhysicsJobs, TERMINAL
-from pylib_ui.physics import DEFAULTS, DIAGNOSTICS
-from pylib_ui.service import export_csv
-from pylib_ui.storage import RunRepository
+from pylibstudy.design import evaluate_design
+from pylibstudy.jobs import PhysicsJobs, TERMINAL
+from pylibstudy.physics import DEFAULTS, DIAGNOSTICS
+from pylibstudy.service import export_csv
+from pylibstudy.storage import RunRepository
 
 
 def main():

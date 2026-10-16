@@ -2,14 +2,14 @@
 import base64
 import hashlib
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
-from pylib_ui.datasets import import_curve, demo_request, table_preview
-from pylib_ui.service import SimulationService, export_csv
-from pylib_ui.storage import RunRepository
 import test_simulation
+from pylibstudy.datasets import import_curve, demo_request, table_preview
+from pylibstudy.service import SimulationService, export_csv
+from pylibstudy.storage import RunRepository
 
 
 def request_data(text="t,v,i\n0,4100,-1000\n1,4000,-1000\n", **kwargs):

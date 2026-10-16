@@ -9,11 +9,11 @@ from threading import Thread
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from pylib_ui.models import EquivalentCircuitModel, synthetic_ocv
-from pylib_ui.schema import SimulationInput
-from pylib_ui.server import create_server
-from pylib_ui.service import SimulationService, export_csv
-from pylib_ui.storage import RunRepository
+from pylibstudy.models import EquivalentCircuitModel, synthetic_ocv
+from pylibstudy.schema import SimulationInput
+from pylibstudy.server import create_server
+from pylibstudy.service import SimulationService, export_csv
+from pylibstudy.storage import RunRepository
 
 
 class ModelTests(unittest.TestCase):

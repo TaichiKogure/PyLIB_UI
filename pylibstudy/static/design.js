@@ -365,7 +365,7 @@ async function initDesign() {
         const url = URL.createObjectURL(new Blob([JSON.stringify(designing.result, null, 2)], {type: "application/json"}));
         const a = element("a");
         a.href = url;
-        a.download = "pylib-design.json";
+        a.download = "pylibstudy-design.json";
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
     });

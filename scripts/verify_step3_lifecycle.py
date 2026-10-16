@@ -1,13 +1,13 @@
 """Exercise real PyBaMM processes for timeout, cancellation and shutdown recovery."""
 import json
-from pathlib import Path
 import sys
 import tempfile
 import time
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylib_ui.jobs import PhysicsJobs, TERMINAL
-from pylib_ui.storage import RunRepository
+from pylibstudy.jobs import PhysicsJobs, TERMINAL
+from pylibstudy.storage import RunRepository
 
 
 def wait(jobs, jid, states, seconds=20):

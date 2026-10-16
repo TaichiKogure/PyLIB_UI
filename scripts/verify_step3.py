@@ -2,16 +2,16 @@
 import argparse
 import copy
 import json
-from pathlib import Path
 import sys
 import tempfile
 import time
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylib_ui.physics import DEFAULTS
-from pylib_ui.jobs import PhysicsJobs, TERMINAL
-from pylib_ui.service import export_csv
-from pylib_ui.storage import RunRepository
+from pylibstudy.physics import DEFAULTS
+from pylibstudy.jobs import PhysicsJobs, TERMINAL
+from pylibstudy.service import export_csv
+from pylibstudy.storage import RunRepository
 
 
 def main():

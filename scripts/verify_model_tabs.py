@@ -12,7 +12,7 @@ from threading import Thread
 from playwright.sync_api import expect, sync_playwright
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylib_ui.server import create_server
+from pylibstudy.server import create_server
 
 
 class ModelTabTests(unittest.TestCase):
@@ -53,7 +53,7 @@ class ModelTabTests(unittest.TestCase):
         expect(tab).to_have_attribute('tabindex', '0')
         expect(self.page.locator('[data-model-tab][aria-selected="true"]')).to_have_count(1)
         panel = 'physics' if model in ('SPMe', 'DFN') else model
-        for name in ('physics', 'synthetic', 'design'):
+        for name in ('physics', 'synthetic', 'design', 'cathodes'):
             if name == panel:
                 expect(self.page.locator('#' + name + '-panel')).to_be_visible()
             else:
@@ -73,7 +73,7 @@ class ModelTabTests(unittest.TestCase):
         self.page.locator('#tab-synthetic').click()
         self.assert_tab('synthetic')
         self.page.locator('[name="capacity_ah"]').fill('6.2')
-        self.page.locator('[name="initial_soc"]').fill('0.42')
+        self.page.locator('#simulation-form [name="initial_soc"]').fill('0.42')
         expect(self.page.locator('#active-configuration')).to_contain_text('6.2 Ah')
         expect(self.page.locator('#active-configuration')).to_contain_text('42%')
         self.page.locator('#tab-design').click()
@@ -85,7 +85,7 @@ class ModelTabTests(unittest.TestCase):
         expect(self.page.locator('#physics-initial_soc')).to_have_value('0.61')
         self.page.locator('#tab-synthetic').click()
         expect(self.page.locator('[name="capacity_ah"]')).to_have_value('6.2')
-        expect(self.page.locator('[name="initial_soc"]')).to_have_value('0.42')
+        expect(self.page.locator('#simulation-form [name="initial_soc"]')).to_have_value('0.42')
         self.page.locator('#tab-design').click()
         expect(self.page.locator('#design-form [name="name"]')).to_have_value('Navigation test design')
         self.page.locator('#tab-SPMe').click()
@@ -96,8 +96,8 @@ class ModelTabTests(unittest.TestCase):
     def test_keyboard_navigation(self):
         tab = self.page.locator('#tab-SPMe')
         tab.focus()
-        for key, model in [('ArrowRight', 'DFN'), ('ArrowRight', 'synthetic'), ('End', 'design'),
-                           ('Home', 'SPMe'), ('ArrowLeft', 'design')]:
+        for key, model in [('ArrowRight', 'DFN'), ('ArrowRight', 'synthetic'), ('End', 'cathodes'),
+                           ('Home', 'SPMe'), ('ArrowLeft', 'cathodes')]:
             self.page.keyboard.press(key)
             self.assert_tab(model)
             expect(self.page.locator('#tab-' + model)).to_be_focused()
@@ -152,7 +152,7 @@ class ModelTabTests(unittest.TestCase):
     def test_synthetic_restore_and_curve_survive_switching(self):
         self.page.locator('#tab-synthetic').click()
         expect(self.page.locator('#synthetic-panel')).to_be_visible()
-        self.page.locator('[name="duration_min"]').fill('1')
+        self.page.locator('#simulation-form [name="duration_min"]').fill('1')
         self.page.locator('#run').click()
         expect(self.page.locator('#chart svg')).to_have_count(1)
         run_id = self.page.evaluate('state.current.id')

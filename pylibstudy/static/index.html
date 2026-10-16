@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1" name="viewport">
-    <title>PyLIB — セルシミュレーション</title>
+    <title>PyLiBStudy — セルシミュレーション</title>
     <link href="/style.css" rel="stylesheet">
     <script defer src="/app.js"></script>
     <script defer src="/library.js"></script>
@@ -11,11 +11,12 @@
     <script defer src="/design.js"></script>
     <script defer src="/physics.js"></script>
     <script defer src="/model-tabs.js"></script>
+    <script defer src="/cathodes.js"></script>
 </head>
 <body>
 <header class="topbar">
-    <a class="brand" href="/"><span class="brand-icon">ϟ</span> PyLIB <span class="brand-sub">WORKBENCH</span></a>
-    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.5</span></span>
+    <a class="brand" href="/"><span class="brand-icon">ϟ</span> PyLiBStudy <span class="brand-sub">WORKBENCH</span></a>
+    <span class="local-badge"><span class="dot"></span> ローカル環境 <span class="version">v0.6</span></span>
 </header>
 <main>
     <div class="heading">
@@ -44,10 +45,14 @@
                     type="button">SPMe <small>物理計算・通常</small></button>
             <button aria-controls="physics-panel" aria-selected="false" data-model-tab="DFN" id="tab-DFN" role="tab"
                     tabindex="-1" type="button">DFN <small>物理計算・詳細</small></button>
-            <button aria-controls="synthetic-panel" aria-selected="false" data-model-tab="synthetic" id="tab-synthetic" role="tab"
+            <button aria-controls="synthetic-panel" aria-selected="false" data-model-tab="synthetic" id="tab-synthetic"
+                    role="tab"
                     tabindex="-1" type="button">合成モデル <small>1RC＋集中熱</small></button>
-            <button aria-controls="design-panel" aria-selected="false" data-model-tab="design" id="tab-design" role="tab"
+            <button aria-controls="design-panel" aria-selected="false" data-model-tab="design" id="tab-design"
+                    role="tab"
                     tabindex="-1" type="button">共通の円筒設計 <small>保存して各方式へ</small></button>
+            <button aria-controls="cathodes-panel" aria-selected="false" data-model-tab="cathodes" id="tab-cathodes"
+                    role="tab" tabindex="-1" type="button">公開正極曲線 <small>NMC・LCO・LFP・LMFP</small></button>
         </div>
         <div aria-live="polite" class="configuration-summary" id="active-configuration">設定を準備しています…</div>
         <p class="field-note">
@@ -126,6 +131,46 @@
             <p class="field-note">
                 設計の比容量・利用率は容量帳簿とCレート基準容量に反映し、物理計算の反応・輸送・OCV関数は文献セットを保持します。設計画面の抵抗・ICE・κ・i₀・Dは物理計算の物性へ転用しません。LFP・NCA・SiOxの物理計算は未対応です。共通設計を編集しただけでは各方式の設定や保存結果は変わりません。</p>
         </details>
+    </section>
+    <section aria-labelledby="tab-cathodes" class="panel design-panel" hidden id="cathodes-panel" role="tabpanel"
+             tabindex="0">
+        <div class="section-title">
+            <div><p class="eyebrow">PUBLIC CATHODE REFERENCES / Li–Li⁺</p>
+                <h2>公開正極曲線から充放電を計算</h2></div>
+            <span class="pill">出典付き参照計算 · 対象セル未検証</span></div>
+        <p>曲線・測定条件を確認 → 対Li基準とセル電圧を設定 → 単一CCを実行 → CURVE VIEWで保存・比較</p>
+        <p class="field-note">
+            対Li基準は、有限電流データでは分極を含む半電池電圧です。OCPとは区別します。フルセルは黒鉛OCPとの差から近似し、物理計算のSPMe/DFNとは別の方式です。</p>
+        <label>採用する正極曲線<select disabled id="cathode-curve"></select></label>
+        <div class="cathode-workspace">
+            <form id="cathode-form">
+                <div id="cathode-fields"></div>
+                <button disabled id="cathode-reference-current" type="button">測定比電流を活物質質量に合わせる</button>
+                <p class="field-note" id="cathode-scale"></p>
+                <button class="primary" disabled id="cathode-run" type="submit">▶ 公開曲線でCC計算</button>
+                <p aria-live="polite" id="cathode-status" role="status">公開曲線を準備しています…</p>
+            </form>
+            <div class="cathode-reference">
+                <div id="cathode-source"></div>
+                <div class="design-actions">
+                    <button id="cathode-source-csv" type="button">参照曲線CSV</button>
+                    <button id="cathode-source-json" type="button">出典付き曲線JSON</button>
+                </div>
+                <div class="cathode-chart" id="cathode-chart"></div>
+                <p class="field-note">
+                    正極参照曲線はすべて対Li/Li⁺。有限電流曲線は枝ごとの通過比容量、OCP資料は収録範囲内の相対座標で表示します。</p>
+                <details>
+                    <summary>抽出手順・原本ハッシュ・ライセンス</summary>
+                    <pre id="cathode-provenance"></pre>
+                </details>
+            </div>
+        </div>
+        <details>
+            <summary>収録データと電圧範囲の一覧</summary>
+            <div class="insight-table-scroll" id="cathode-inventory"></div>
+        </details>
+        <p class="insight-warning">指定下限は1.5 Vから設定できます。収録下端は資料により約2.5–3.6
+            Vで、それより低い領域は未収録です。曲線の端で停止し、低電圧側を外挿しません。各材料の高電圧曲線も特定の電解液・温度・サイクルの測定条件に限られます。</p>
     </section>
     <section aria-labelledby="tab-design" class="panel design-panel" hidden id="design-panel" role="tabpanel"
              tabindex="0">
@@ -377,7 +422,8 @@
                         電流絶対値の積算</small></div>
                     <div><span>端子エネルギー</span><strong id="metric-energy">—</strong><small>Wh · 放電＋／充電−</small>
                     </div>
-                    <div><span>最高温度</span><strong id="metric-temp">—</strong><small>°C · セル平均</small></div>
+                    <div><span id="metric-temp-title">最高温度</span><strong id="metric-temp">—</strong><small
+                            id="metric-temp-kind">°C · セル平均</small></div>
                     <div><span>最終SOC</span><strong id="metric-soc">—</strong><small id="metric-soc-kind">% ·
                         推定状態</small></div>
                 </div>
@@ -387,6 +433,8 @@
                         <button aria-pressed="false" data-chart="soc" type="button">SOC</button>
                         <button aria-pressed="false" data-chart="temperature_c" type="button">温度</button>
                         <button aria-pressed="false" data-chart="current_a" type="button">電流</button>
+                        <button aria-pressed="false" data-chart="positive_reference_v" type="button">正極参照</button>
+                        <button aria-pressed="false" data-chart="negative_reference_v" type="button">負極OCP</button>
                     </div>
                     <label class="axis-select">横軸<select aria-label="グラフの横軸" id="x-axis">
                         <option value="time_s">時間 (min)</option>
@@ -442,7 +490,8 @@
                                                             type="file"></label>
                         <label>データ名<input id="import-name" maxlength="100" required value="取込カーブ"></label>
                     </div>
-                    <label>表の貼付け・手入力<textarea id="import-text" placeholder="time,voltage,current&#10;0,4.1,1&#10;60,4.0,1"
+                    <label>表の貼付け・手入力<textarea id="import-text"
+                                                       placeholder="time,voltage,current&#10;0,4.1,1&#10;60,4.0,1"
                                                        rows="5"></textarea></label>
                     <div class="fields two">
                         <label>文字コード<select id="import-encoding">
@@ -523,7 +572,7 @@
             </div>
         </section>
     </div>
-    <footer>PyLIB WORKBENCH <span>SPMe / DFN · 合成モデル · データライブラリ</span></footer>
+    <footer>PyLiBStudy WORKBENCH <span>SPMe / DFN · 合成モデル · データライブラリ</span></footer>
 </main>
 </body>
 </html>

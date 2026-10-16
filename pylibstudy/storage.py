@@ -103,7 +103,9 @@ class RunRepository:
         if data.get("x_axis") not in {"time_s", "capacity_ah", "soc"} or data.get("variable") not in {"voltage_v",
                                                                                                       "soc",
                                                                                                       "current_a",
-                                                                                                      "temperature_c"}:
+                                                                                                      "temperature_c",
+                                                                                                      "positive_reference_v",
+                                                                                                      "negative_reference_v"}:
             raise ValueError("比較軸を確認してください。")
         name, notes = data.get("name", "比較セット"), data.get("notes", "")
         if not isinstance(name, str) or not name.strip() or len(name) > 100 or not isinstance(notes, str) or len(

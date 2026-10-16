@@ -43,7 +43,7 @@ class RemoteZipFile(io.RawIOBase):
             if cached_start <= start and end <= cached_start + len(raw):
                 self.position = end
                 return raw[start - cached_start:end - cached_start]
-        headers = {'User-Agent': 'PyLIB-Research/0.6', 'Range': f'bytes={start}-{end - 1}',
+        headers = {'User-Agent': 'PyLiBStudy-Research/0.6', 'Range': f'bytes={start}-{end - 1}',
                    'Accept-Encoding': 'identity'}
         with urlopen(Request(self.url, headers=headers), timeout=60) as response:
             content_range = response.headers.get('Content-Range', '')

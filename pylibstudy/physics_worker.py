@@ -65,7 +65,7 @@ def solve(request):
                 for phase, part in zip(['Primary', 'Secondary'], components):
                     updates[f'{phase}: {side} electrode active material volume fraction'] = part[
                                                                                                 'solid_volume_fraction'] * (
-                                                                                                        1 - porosity)
+                                                                                                    1 - porosity)
             else:
                 updates[f'{side} electrode active material volume fraction'] = sum(
                     p['solid_volume_fraction'] for p in components) * (1 - porosity)
@@ -214,7 +214,7 @@ def main():
         # No arbitrary exception text is sent to the browser (paths/auth/env can appear in third-party errors).
         reason = str(error).lower()
         code = 'initial_condition_infeasible' if 'initial' in reason and (
-                    'infeasible' in reason or 'non-positive' in reason or 'termination' in reason) else 'solver_failed'
+                'infeasible' in reason or 'non-positive' in reason or 'termination' in reason) else 'solver_failed'
         payload = {'ok': False, 'error_code': code, 'error_type': type(error).__name__}
         import traceback
         traceback.print_exc()

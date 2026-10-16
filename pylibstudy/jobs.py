@@ -1,14 +1,14 @@
 """Persistent serial queue and a killable solver process, independent of HTTP."""
 import json
 import os
-from pathlib import Path
 import subprocess
 import threading
 import time
-from uuid import uuid4
 from datetime import datetime, timezone
+from pathlib import Path
+from uuid import uuid4
 
-from .physics import DEFAULTS, PINNED_PYBAMM, validate_request, validate_design
+from .physics import PINNED_PYBAMM, validate_request, validate_design
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = {'queued', 'running', 'cancelling'}
@@ -133,7 +133,8 @@ class PhysicsJobs:
                 if job:
                     self.execute(job)
                 else:
-                    self.wake.wait(.5);self.wake.clear()
+                    self.wake.wait(.5);
+                    self.wake.clear()
             except Exception:
                 # Keep HTTP responsive; a storage failure must not turn into success.
                 if job:
@@ -150,7 +151,7 @@ class PhysicsJobs:
                 self.wake.clear()
 
     def worker_command(self, request, output):
-        return [str(self.python), '-m', 'pylib_ui.physics_worker', '--request', str(request), '--output', str(output)]
+        return [str(self.python), '-m', 'pylibstudy.physics_worker', '--request', str(request), '--output', str(output)]
 
     def execute(self, job):
         folder = self.folder / job['id'];
@@ -184,7 +185,8 @@ class PhysicsJobs:
                         try:
                             process.wait(timeout=5)
                         except subprocess.TimeoutExpired:
-                            process.kill();process.wait(timeout=5)
+                            process.kill();
+                            process.wait(timeout=5)
                         break
                     self.wake.wait(.1);
                     self.wake.clear()
@@ -232,7 +234,8 @@ class PhysicsJobs:
                 process.kill();
                 process.wait(timeout=5)
             with self.lock:
-                self.process = None;self.current = None
+                self.process = None;
+                self.current = None
 
     def close(self):
         if self.owner.closed: return

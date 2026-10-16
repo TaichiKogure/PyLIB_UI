@@ -19,7 +19,7 @@ MATERIALS = {
 }
 for _material in MATERIALS.values():
     _material.update(status="illustrative_unvalidated",
-                     source="PyLIB Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。")
+                     source="PyLiBStudy Step2 仮定値 v1。材料名は識別用、物性は実測・文献校正値ではない。")
 
 
 @dataclass(frozen=True)
@@ -229,7 +229,7 @@ def evaluate_design(data, *, include_sensitivity=True):
                 [c.negative_graphite, c.negative_si, c.negative_binder, c.negative_carbon], c.fraction_basis,
                 capacities)
     pitch = (
-                        2 * c.positive_thickness_um + c.positive_foil_um + 2 * c.negative_thickness_um + c.negative_foil_um + 2 * c.separator_um) / 1000
+                    2 * c.positive_thickness_um + c.positive_foil_um + 2 * c.negative_thickness_um + c.negative_foil_um + 2 * c.separator_um) / 1000
     ri = c.core_diameter_mm / 2
     limit_r = c.diameter_mm / 2 - c.wall_mm - c.radial_gap_mm
     max_length = math.pi * (limit_r ** 2 - ri ** 2) / pitch
@@ -285,41 +285,41 @@ def evaluate_design(data, *, include_sensitivity=True):
               "materials": deepcopy({i: dict(MATERIALS[i], capacity_used_mah_g=capacities[i],
                                              capacity_source="user_input_unvalidated" if capacities[i] != MATERIALS[i][
                                                  "capacity_mah_g"] else "illustrative_default") for i in
-                                   {c.positive_material, "graphite_demo", c.negative_additive, "binder_demo",
-                                    "carbon_demo"}}),
-            "geometry": {"pitch_mm": pitch, "length_mm": length, "max_length_mm": max_length,
-                         "inner_radius_mm": ri, "outer_radius_mm": ro, "turns": (ro - ri) / pitch,
-                         "envelope_cm3": envelope, "layer_volume_cm3": accounted,
-                         "uncoated_void_cm3": max(0, envelope - accounted), "pore_volume_cm3": pores},
-            "positive": p, "negative": n, "negative_phase_count": len(active_n),
-            "capacity": {"positive_ah": p["capacity_ah"], "negative_total_ah": n["capacity_ah"],
-                         "negative_overlap_ah": overlap_n_capacity, "np_ratio": overlap_n_capacity / p["capacity_ah"],
-                         "usable_np_ratio": overlap_n_capacity * c.negative_utilization / (
-                                     p["capacity_ah"] * c.positive_utilization),
-                         "design_ah": nominal,
-                         "c_rate_reference_ah": nominal if c.c_rate_capacity_mode == "design" else c.rated_capacity_ah},
-            "lithium_inventory": {"positive_ah_equivalent": p["capacity_ah"] * c.lithium_fraction_positive,
-                                  "negative_ah_equivalent": n["capacity_ah"] * c.lithium_fraction_negative,
-                                  "total_mol_equivalent": (p["capacity_ah"] * c.lithium_fraction_positive +
-                                                           n[
-                                                               "capacity_ah"] * c.lithium_fraction_negative) * 3600 / 96485.33212},
-            "mass_g": masses, "total_mass_g": sum(masses.values()),
-            "collector_connections": {"positive": {"foil": "Al", "face": c.positive_terminal,
-                                                   "contact_fraction": c.positive_contact_fraction},
-                                      "negative": {"foil": "Cu", "face": c.negative_terminal,
-                                                   "contact_fraction": c.negative_contact_fraction},
-                                      "distribution_solved": False},
-            "adapter_input": {"electrode_height_m": c.positive_width_mm / 1000, "electrode_width_m": length / 1000,
-                              "parallel_electrodes": 2, "paired_area_m2": p["area_cm2"] / 10000,
-                              "positive_thickness_m": c.positive_thickness_um * 1e-6,
-                              "negative_thickness_m": c.negative_thickness_um * 1e-6,
-                              "positive_porosity": c.positive_porosity, "negative_porosity": c.negative_porosity,
-                              "negative_phase_volume_fractions": [
-                                  part["solid_volume_fraction"] * (1 - c.negative_porosity) for part in active_n],
-                              "negative_particle_phases": "1" if len(active_n) == 1 else "2",
-                              "negative_active_components": active_n,
-                              "solver_ready": False, "reason": "Step3で材料パラメータ・初期化の整合検証が必要"},
-            "warnings": warnings}
+                                     {c.positive_material, "graphite_demo", c.negative_additive, "binder_demo",
+                                      "carbon_demo"}}),
+              "geometry": {"pitch_mm": pitch, "length_mm": length, "max_length_mm": max_length,
+                           "inner_radius_mm": ri, "outer_radius_mm": ro, "turns": (ro - ri) / pitch,
+                           "envelope_cm3": envelope, "layer_volume_cm3": accounted,
+                           "uncoated_void_cm3": max(0, envelope - accounted), "pore_volume_cm3": pores},
+              "positive": p, "negative": n, "negative_phase_count": len(active_n),
+              "capacity": {"positive_ah": p["capacity_ah"], "negative_total_ah": n["capacity_ah"],
+                           "negative_overlap_ah": overlap_n_capacity, "np_ratio": overlap_n_capacity / p["capacity_ah"],
+                           "usable_np_ratio": overlap_n_capacity * c.negative_utilization / (
+                                   p["capacity_ah"] * c.positive_utilization),
+                           "design_ah": nominal,
+                           "c_rate_reference_ah": nominal if c.c_rate_capacity_mode == "design" else c.rated_capacity_ah},
+              "lithium_inventory": {"positive_ah_equivalent": p["capacity_ah"] * c.lithium_fraction_positive,
+                                    "negative_ah_equivalent": n["capacity_ah"] * c.lithium_fraction_negative,
+                                    "total_mol_equivalent": (p["capacity_ah"] * c.lithium_fraction_positive +
+                                                             n[
+                                                                 "capacity_ah"] * c.lithium_fraction_negative) * 3600 / 96485.33212},
+              "mass_g": masses, "total_mass_g": sum(masses.values()),
+              "collector_connections": {"positive": {"foil": "Al", "face": c.positive_terminal,
+                                                     "contact_fraction": c.positive_contact_fraction},
+                                        "negative": {"foil": "Cu", "face": c.negative_terminal,
+                                                     "contact_fraction": c.negative_contact_fraction},
+                                        "distribution_solved": False},
+              "adapter_input": {"electrode_height_m": c.positive_width_mm / 1000, "electrode_width_m": length / 1000,
+                                "parallel_electrodes": 2, "paired_area_m2": p["area_cm2"] / 10000,
+                                "positive_thickness_m": c.positive_thickness_um * 1e-6,
+                                "negative_thickness_m": c.negative_thickness_um * 1e-6,
+                                "positive_porosity": c.positive_porosity, "negative_porosity": c.negative_porosity,
+                                "negative_phase_volume_fractions": [
+                                    part["solid_volume_fraction"] * (1 - c.negative_porosity) for part in active_n],
+                                "negative_particle_phases": "1" if len(active_n) == 1 else "2",
+                                "negative_active_components": active_n,
+                                "solver_ready": False, "reason": "Step3で材料パラメータ・初期化の整合検証が必要"},
+              "warnings": warnings}
     from .design_analysis import analyze_design, sensitivity
     result["analysis"] = analyze_design(result)
     if include_sensitivity:
