@@ -91,6 +91,32 @@ class ImportTests(unittest.TestCase):
         self.assertEqual(run["points"][0]["source_row"], 3)
         self.assertEqual(table_preview(data)["headers"], ["t", "v", "i"])
 
+    def test_multiline_header_can_be_previewed_and_imported(self):
+        data = request_data('t,v,i,"note\ntext"\n0,4100,-1000,first\n1,4000,-1000,second\n')
+        self.assertEqual(table_preview(data)["headers"], ["t", "v", "i", "note\ntext"])
+        run, original = import_curve(data)
+        self.assertEqual([p["source_row"] for p in run["points"]], [3, 4])
+        self.assertEqual(original, data["text"].encode())
+
+    def test_multiline_records_keep_starting_physical_line(self):
+        for newline in ("\n", "\r\n", "\r"):
+            with self.subTest(newline=newline):
+                text = newline.join(['記録', 't,v,i,note', '', '0,4100,-1000,"first',
+                                     'line"', '', '1,4000,-1000,second', ''])
+                run, original = import_curve(request_data(text, header_row=2))
+                self.assertEqual([p["source_row"] for p in run["points"]], [4, 7])
+                self.assertEqual(original, text.encode())
+
+    def test_multiline_record_error_reports_starting_line(self):
+        data = request_data('t,v,i\n0,4100,-1000\n1,"invalid\nvoltage",-1000\n')
+        with self.assertRaisesRegex(ValueError, "3行目・v"):
+            import_curve(data)
+
+    def test_header_row_cannot_select_multiline_continuation(self):
+        data = request_data('"record\nnotes"\nt,v,i\n0,4100,-1000\n', header_row=2)
+        with self.assertRaises(ValueError):
+            table_preview(data)
+
     def test_demo_seed_repeatable_and_recorded(self):
         first, raw = import_curve(demo_request(seed=42))
         again, second = import_curve(demo_request(seed=42))

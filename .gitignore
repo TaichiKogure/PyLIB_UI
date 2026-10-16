@@ -7370,6 +7370,8 @@ result-*
 !/docs/
 !/docs/**
 !/start.ps1
+!/start.cmd
+/PyLiBStudy.lnk
 /data/
 /.test_tmp/
 **/__pycache__/

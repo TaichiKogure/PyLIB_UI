@@ -13,14 +13,16 @@ function updateConfigurationSummary() {
         $("active-configuration").textContent = `設定中：合成 1RC / ${value("cell_format").value} / ${value("chemistry").value} / ${value("capacity_ah").value} Ah / 初期SOC ${Math.round(Number(value("initial_soc").value) * 100)}% / 周囲 ${value("ambient_temp_c").value} °C。物理計算の設定とは独立です。`;
     } else {
         const design = $("physics-design").selectedOptions[0]?.textContent || "文献セットの基準形状";
-        $("active-configuration").textContent = `設定中：${$("physics-model").value} / ${$("physics-parameter_set").value} / ${$("physics-thermal").value === "lumped" ? "集中熱" : "等温"} / 初期SOC ${Math.round(Number($("physics-initial_soc").value) * 100)}% / 周囲 ${$("physics-ambient_temp_c").value} °C / ${design}。SPMeとDFNで条件を共用します。`;
+        $("active-configuration").textContent = `設定中：${$("physics-model").value} / ${$("physics-parameter_set").value} / ${$("physics-thermal").value === "lumped" ? "集中熱" : "等温"} / 初期SOC ${Math.round(Number($("physics-initial_soc").value) * 100)}% / 周囲 ${$("physics-ambient_temp_c").value} °C / ${design}。SPM・SPMe・DFNで条件を共用します。`;
     }
 }
 
 function syncModelNavigation() {
     const model = $("physics-model").value;
-    if (["SPMe", "DFN"].includes(modelNavigation.active)) modelNavigation.active = model;
+    if (["SPM", "SPMe", "DFN"].includes(modelNavigation.active)) modelNavigation.active = model;
     const active = modelNavigation.active;
+    $("tab-SPM").disabled = $("physics-model").querySelector('option[value="SPM"]').disabled;
+    $("tab-SPM").title = $("tab-SPM").disabled ? "複合負極はDFN・等温のみ対応です。" : "";
     $("tab-SPMe").disabled = $("physics-model").querySelector('option[value="SPMe"]').disabled;
     $("tab-SPMe").title = $("tab-SPMe").disabled ? "Chen2020_compositeはDFN・等温のみ対応です。Chen2020を選ぶとSPMeを使用できます。" : "";
     for (const tab of document.querySelectorAll("[data-model-tab]")) {
@@ -28,7 +30,7 @@ function syncModelNavigation() {
         tab.setAttribute("aria-selected", String(selected));
         tab.tabIndex = selected ? 0 : -1;
     }
-    $("physics-panel").hidden = !["SPMe", "DFN"].includes(active);
+    $("physics-panel").hidden = !["SPM", "SPMe", "DFN"].includes(active);
     $("synthetic-panel").hidden = active !== "synthetic";
     $("design-panel").hidden = active !== "design";
     $("cathodes-panel").hidden = active !== "cathodes";
@@ -44,7 +46,7 @@ function syncModelNavigation() {
 function selectModelTab(model) {
     const tab = $("tab-" + model);
     if (!tab || tab.disabled) return;
-    if (["SPMe", "DFN"].includes(model)) {
+    if (["SPM", "SPMe", "DFN"].includes(model)) {
         $("physics-model").value = model;
         physicsCompatibility();
     }

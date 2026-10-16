@@ -7,12 +7,16 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 
+from .capabilities import catalog as capability_catalog, CONFIG_SCHEMA_VERSION
 from .cathodes import catalog as cathode_catalog, DEFAULTS as CATHODE_DEFAULTS
 from .datasets import table_preview
 from .design import MATERIALS, evaluate_design, templates
 from .jobs import PhysicsJobs
 from .models import MODEL_REGISTRY
 from .physics import DEFAULTS as PHYSICS_DEFAULTS
+from .physics import validate_design as validate_physics_design
+from .physics import validate_request as validate_physics
+from .protocol import protocol_templates, preview_protocol
 from .schema import SimulationInput
 from .service import SimulationService, export_csv
 from .storage import RunRepository
@@ -83,10 +87,13 @@ def create_server(port=8765, data_dir=None, research_python=None):
                       "/design.js": ("design.js", "text/javascript; charset=utf-8"),
                       "/design-insights.js": ("design-insights.js", "text/javascript; charset=utf-8"),
                       "/physics.js": ("physics.js", "text/javascript; charset=utf-8"),
+                      "/capabilities.js": ("capabilities.js", "text/javascript; charset=utf-8"),
                       "/model-tabs.js": ("model-tabs.js", "text/javascript; charset=utf-8"),
                       "/cathodes.js": ("cathodes.js", "text/javascript; charset=utf-8"),
                       "/style.css": ("style.css", "text/css; charset=utf-8")}
             try:
+                if path == "/api/identity":
+                    return self.send(200, {"app": "PyLiBStudy", "root": str(Path(__file__).resolve().parents[1])})
                 if path in assets:
                     name, kind = assets[path]
                     return self.send(200, (STATIC / name).read_bytes(), kind)
@@ -97,7 +104,11 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 if path == "/api/runs":
                     return self.send(200, repository.list(project_id))
                 if path == "/api/physics/config":
-                    return self.send(200, {"defaults": PHYSICS_DEFAULTS, "environment": jobs.availability})
+                    return self.send(200, {"defaults": PHYSICS_DEFAULTS, "environment": jobs.availability,
+                                           "templates": protocol_templates(),
+                                           "capabilities": capability_catalog(jobs.availability)})
+                if path == "/api/capabilities":
+                    return self.send(200, capability_catalog(jobs.availability))
                 if path == "/api/cathodes":
                     return self.send(200, {"defaults": CATHODE_DEFAULTS, "catalog": cathode_catalog()})
                 if path == "/api/jobs":
@@ -145,7 +156,8 @@ def create_server(port=8765, data_dir=None, research_python=None):
             path = urlsplit(self.path).path
             if path not in {"/api/simulate", "/api/save", "/api/projects", "/api/comparisons", "/api/import/inspect",
                             "/api/import/preview", "/api/import/demo", "/api/design/evaluate", "/api/designs",
-                            "/api/jobs", "/api/jobs/cancel", "/api/cathodes/simulate"}:
+                            "/api/jobs", "/api/jobs/cancel", "/api/cathodes/simulate",
+                            "/api/physics/validate", "/api/physics/environment", "/api/physics/preview"}:
                 return self.send(404, {"error": "APIが見つかりません。"})
             try:
                 if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
@@ -153,7 +165,8 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= (
                         3 * 1024 * 1024 if path.startswith(
-                            "/api/import/") else 262144 if path == "/api/jobs" else 65536):
+                            "/api/import/") else 262144 if path in {"/api/jobs", "/api/physics/validate",
+                                                                    "/api/physics/preview"} else 65536):
                     raise ValueError("リクエストサイズが範囲外です。")
                 try:
                     data = json.loads(self.rfile.read(length))
@@ -163,6 +176,23 @@ def create_server(port=8765, data_dir=None, research_python=None):
                     raise ValueError("入力はオブジェクトで指定してください。")
                 if path == "/api/projects":
                     return self.send(200, repository.create_project(data.get("name")))
+                if path == "/api/physics/environment":
+                    if data:
+                        raise ValueError("環境診断の入力は空のオブジェクトで指定してください。")
+                    jobs.availability = jobs.probe()
+                    return self.send(200, capability_catalog(jobs.availability))
+                if path == "/api/physics/validate":
+                    return self.send(200, {"input": validate_physics(data),
+                                           "config_schema_version": CONFIG_SCHEMA_VERSION})
+                if path == "/api/physics/preview":
+                    if set(data) - {"input", "project_id"}:
+                        raise ValueError("プレビューの入力項目を確認してください。")
+                    project = data.get("project_id", "default")
+                    repository.require_project(project)
+                    config = validate_physics(data.get("input"))
+                    design = repository.design(config['design_id'], project) if config['design_id'] else None
+                    validate_physics_design(config, design)
+                    return self.send(200, preview_protocol(config, design))
                 if path == "/api/jobs":
                     if set(data) - {"project_id", "input"}:
                         raise ValueError("ジョブの入力項目を確認してください。")
@@ -207,9 +237,14 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 jobs.close()
             super().server_close()
 
-    server = LocalServer(("127.0.0.1", port), Handler)
+    # Reserve the port first, but accept connections only after environment
+    # diagnostics finish. Otherwise a cold-start client can connect to a socket
+    # with no request loop yet and time out while native solver imports run.
+    server = LocalServer(("127.0.0.1", port), Handler, bind_and_activate=False)
     try:
+        server.server_bind()
         jobs = PhysicsJobs(repository, research_python)
+        server.server_activate()
     except Exception:
         server.server_close()
         raise
@@ -219,13 +254,13 @@ def create_server(port=8765, data_dir=None, research_python=None):
     return server
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description="PyLiBStudy - LIB simulation workbench")
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--data-dir", type=Path)
     parser.add_argument("--no-browser", action="store_true")
     parser.add_argument("--research-python", type=Path, help="固定した研究用Python 3.13環境")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     logging.basicConfig(level=logging.WARNING)
     server = create_server(args.port, args.data_dir, args.research_python)
     url = f"http://127.0.0.1:{server.server_port}"

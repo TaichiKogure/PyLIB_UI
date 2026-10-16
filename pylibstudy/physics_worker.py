@@ -12,9 +12,11 @@ os.environ.setdefault('OMP_NUM_THREADS', '1')
 os.environ.setdefault('OPENBLAS_NUM_THREADS', '1')
 
 from .physics import PINNED_PYBAMM, PHYSICS_VERSION, MESHES, DIAGNOSTICS, validate_request, validate_design
+from .capabilities import CATALOG_VERSION, build_model, build_solver
+from .experiment_runtime import build_experiment, progress_callback
 
 
-def solve(request):
+def solve(request, progress_path=None):
     import numpy as np
     import pybamm
     if pybamm.__version__ != PINNED_PYBAMM:
@@ -24,12 +26,8 @@ def solve(request):
     validate_design(c, design)
     started = time.perf_counter()
     composite = c['parameter_set'] == 'Chen2020_composite'
-    options = {'thermal': c['thermal'], 'calculate discharge energy': 'true',
-               'calculate heat source for isothermal models': 'true'}
-    if composite:
-        options.update(
-            {'particle phases': ('2', '1'), 'open-circuit potential': (('single', 'current sigmoid'), 'single')})
-    model = getattr(pybamm.lithium_ion, c['model'])(options=options)
+    model = build_model(pybamm, c)
+    options = dict(model.options)
     parameters = pybamm.ParameterValues(c['parameter_set'])
     citations = list(parameters.get('citations', []))
     updates = {'Initial temperature [K]': c['initial_temp_c'] + 273.15,
@@ -77,35 +75,37 @@ def solve(request):
         limitations.append(
             '温度は集中熱。端面接触抵抗の追加発熱は未導入。形状を上書きしても文献の熱物性を引き継ぐため未校正。')
     parameters.update(updates)
-    steps = []
-    for s in c['protocol']:
-        common = dict(period=c['dt_s'], skip_ok=False, temperature=c['ambient_temp_c'] + 273.15)
-        # Explicit events ensure experiment overrides cannot relax the UI voltage limits.
-        limits = [pybamm.step.VoltageTermination(c['min_voltage_v'], operator='<'),
-                  pybamm.step.VoltageTermination(c['max_voltage_v'], operator='>')]
-        if s['kind'] == 'cv':
-            steps.append(pybamm.step.voltage(s['voltage_v'], duration=s['duration_s'],
-                                             termination=[pybamm.step.CurrentTermination(s['stop_current_a'])],
-                                             **common))
-        elif s['kind'] == 'profile':
-            steps.append(pybamm.step.current(np.asarray(s['points'], dtype=float), duration=s['points'][-1][0],
-                                             termination=limits, **common))
-        else:
-            current = 0 if s['kind'] == 'rest' else s['current_a']
-            if s.get('stop_voltage_v') is not None:
-                limits.append(pybamm.step.VoltageTermination(s['stop_voltage_v'], operator='<' if current > 0 else '>'))
-            steps.append(pybamm.step.current(current, duration=s['duration_s'], termination=limits, **common))
+    experiment, preview = build_experiment(pybamm, c, design)
+    if not math.isclose(float(parameters['Nominal cell capacity [A.h]']), preview['c_rate_reference_ah'],
+                        rel_tol=1e-12):
+        raise ValueError('capacity_reference_mismatch')
+    if any(s['control'] == 'differential' for s in preview['steps']):
+        limitations.append(
+            '微分CP/CRはdI/dt=(目標電流−I)/時定数の定義済み追従制御。初回の電流状態は0 A、継続可能な電流状態は切替時に引き継ぎます。瞬時の定電力・定抵抗ではありません。')
+    progress = progress_callback(pybamm, preview, progress_path)
     nx, nr = MESHES[c['mesh']]
     var_pts = {'x_n': nx, 'x_s': nx, 'x_p': nx, 'r_n': nr, 'r_p': nr}
     if composite:
         var_pts.update(r_n_prim=nr, r_n_sec=nr)
-    solver = pybamm.IDAKLUSolver(rtol=c['rtol'], atol=c['atol'], options={'num_threads': 1})
-    sim = pybamm.Simulation(model, parameter_values=parameters, experiment=pybamm.Experiment([tuple(steps)]),
+    solver = build_solver(pybamm, c)
+    sim = pybamm.Simulation(model, parameter_values=parameters, experiment=experiment,
                             solver=solver, var_pts=var_pts)
-    solution = sim.solve(initial_soc=c['initial_soc'], calc_esoh=False)
-    subs = [step for cycle in solution.cycles if cycle is not None for step in cycle.steps if step is not None]
-    points = [];
-    step_results = []
+    solution = sim.solve(initial_soc=c['initial_soc'], calc_esoh=False, callbacks=progress)
+    points = []
+    step_results = [
+        dict(row, status='skipped' if (row['cycle'], row['step_number']) in progress.ended_steps else 'not_run',
+             termination='initial_condition_skip' if (row['cycle'],
+                                                      row['step_number']) in progress.ended_steps else 'not_run')
+        for row in preview['steps']]
+    subs = []
+    actual = []
+    for cycle_i, cycle in zip(progress.cycle_numbers, solution.cycles):
+        if cycle is None: continue
+        for step_i, sub in enumerate(cycle.steps, 1):
+            index = (cycle_i - 1) * (preview['total_steps'] // c['cycles']) + step_i - 1
+            if sub is None or isinstance(sub, pybamm.EmptySolution): continue
+            subs.append(sub)
+            actual.append((index, sub))
     reference_capacity = float(parameters['Nominal cell capacity [A.h]'])
 
     def scalar(sub, key, t):
@@ -114,11 +114,11 @@ def solve(request):
             raise ValueError('nonfinite_result')
         return float(v[0])
 
-    for index, sub in enumerate(subs):
+    for index, sub in actual:
         t0 = float(sub.t[0]);
         end = float(sub.t[-1])
         # Keep both sides of step discontinuities and let segment_id break graph paths.
-        times = np.append(np.arange(t0, end, c['dt_s']), end)
+        times = np.append(np.arange(t0, end, step_results[index]['period_s']), end)
         if len(points) + len(times) > 12050:
             raise ValueError('output_limit')
         for t in times:
@@ -141,9 +141,11 @@ def solve(request):
             points.append(point)
             for name, (key, _label, _unit) in DIAGNOSTICS.items():
                 point[name] = scalar(sub, key, t)
-        step_results.append(dict(index=index, start_s=t0, end_s=end, termination=str(sub.termination)))
+        step_results[index].update(status='completed', start_s=t0, end_s=end, termination=str(sub.termination))
     if not points:
-        raise ValueError('empty_solution')
+        raise ValueError('all_steps_skipped')
+    if any(s['status'] == 'skipped' and not s['skip_ok'] for s in step_results):
+        raise ValueError('initial condition infeasible: forbidden skip')
     last = points[-1]
     first_sub = subs[0];
     last_sub = subs[-1]
@@ -160,8 +162,10 @@ def solve(request):
     final_li = scalar(last_sub, 'Total lithium in particles [mol]', end_time) + scalar(last_sub,
                                                                                        'Total lithium in electrolyte [mol]',
                                                                                        end_time)
-    partial = len(subs) != len(steps) or any(
-        s['termination'] != 'final time' and '[experiment]' not in s['termination'] for s in step_results)
+    partial = progress.failed or any(s['status'] == 'not_run' or (s['status'] == 'completed' and
+                                                                  s[
+                                                                      'termination'] != 'final time' and '[experiment]' not in
+                                                                  s['termination']) for s in step_results)
     scalar_parameters = {k: float(v) for k, v in parameters.items() if isinstance(v, (int, float)) and math.isfinite(v)}
     diagnostics = {name: dict(source_variable=key, label=label, unit=unit,
                               initial=points[0][name], final=points[-1][name],
@@ -173,8 +177,15 @@ def solve(request):
                 validation_status='not_validated',
                 engine=dict(id='pybamm_' + c['model'].lower(), version=pybamm.__version__,
                             label='PyBaMM ' + c['model']),
-                adapter_version=PHYSICS_VERSION, input=c, design_snapshot=design,
-                model_options=options,
+                adapter_version=PHYSICS_VERSION, capability_catalog_version=CATALOG_VERSION,
+                input_sha256=hashlib.sha256(json.dumps(c, sort_keys=True, allow_nan=False).encode()).hexdigest(),
+                input=c, design_snapshot=design,
+                model_options=options, protocol_preview=preview, progress_events=progress.events,
+                experiment_metadata=dict(
+                    initial_start_time=solution.initial_start_time.isoformat() if solution.initial_start_time else None,
+                    tags=[s.tags for s in sim.experiment.steps],
+                    periods_s=[s.period for s in sim.experiment.steps],
+                    temperatures_k=[s.temperature for s in sim.experiment.steps]),
                 parameter_provenance=dict(name=c['parameter_set'], package_version=pybamm.__version__,
                                           citations=citations,
                                           source='https://docs.pybamm.org/en/pybamm-v26.10.0.0/source/api/parameters/parameter_sets.html',
@@ -183,7 +194,7 @@ def solve(request):
                 initial_state=initial_state,
                 lithium_balance=dict(initial_mol=initial_li, final_mol=final_li,
                                      relative_change=(final_li - initial_li) / initial_li),
-                numerical=dict(solver='IDAKLUSolver', mesh_points=var_pts, rtol=c['rtol'], atol=c['atol'],
+                numerical=dict(solver=c['solver'], mesh_points=var_pts, rtol=c['rtol'], atol=c['atol'],
                                elapsed_s=time.perf_counter() - started,
                                initialization='PyBaMM initial_soc / electrode SOH',
                                numeric_parameter_snapshot_stage='before initial_soc initialization; actual initial state is recorded separately'),
@@ -206,15 +217,18 @@ def main():
     parser = argparse.ArgumentParser();
     parser.add_argument('--request', type=Path, required=True);
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--progress', type=Path)
     args = parser.parse_args()
     try:
         request = json.loads(args.request.read_text(encoding='utf-8'))
-        payload = {'ok': True, 'result': solve(request)}
+        payload = {'ok': True, 'result': solve(request, args.progress)}
     except Exception as error:
         # No arbitrary exception text is sent to the browser (paths/auth/env can appear in third-party errors).
         reason = str(error).lower()
         code = 'initial_condition_infeasible' if 'initial' in reason and (
                 'infeasible' in reason or 'non-positive' in reason or 'termination' in reason) else 'solver_failed'
+        if 'all steps' in reason or 'all_steps_skipped' in reason:
+            code = 'all_steps_skipped'
         payload = {'ok': False, 'error_code': code, 'error_type': type(error).__name__}
         import traceback
         traceback.print_exc()

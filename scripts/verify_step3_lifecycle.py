@@ -1,4 +1,5 @@
 """Exercise real PyBaMM processes for timeout, cancellation and shutdown recovery."""
+import argparse
 import json
 import sys
 import tempfile
@@ -20,6 +21,9 @@ def wait(jobs, jid, states, seconds=20):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output', type=Path, default=Path('docs/evidence/step03/worker-lifecycle.json'))
+    args = parser.parse_args()
     report = {'scope': 'Real solver subprocess lifecycle; no measured-data validation', 'cases': {}}
     with tempfile.TemporaryDirectory(prefix='step3-lifecycle-', dir=Path('.test_tmp').resolve()) as tmp:
         repo = RunRepository(Path(tmp) / 'runs.sqlite3');
@@ -51,7 +55,7 @@ def main():
         finally:
             again.close()
     report['passed'] = True
-    path = Path('docs/evidence/step03/worker-lifecycle.json')
+    path = args.output
     path.parent.mkdir(parents=True, exist_ok=True);
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
     print(json.dumps(report, ensure_ascii=False, indent=2))

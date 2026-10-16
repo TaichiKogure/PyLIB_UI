@@ -10,6 +10,7 @@
     <script defer src="/design-insights.js"></script>
     <script defer src="/design.js"></script>
     <script defer src="/physics.js"></script>
+    <script defer src="/capabilities.js"></script>
     <script defer src="/model-tabs.js"></script>
     <script defer src="/cathodes.js"></script>
 </head>
@@ -26,7 +27,8 @@
         <span class="pill">研究用 · 実測未検証</span></div>
     <div class="steps">
         <a href="#design-panel"><b>01</b> 円筒セルを設計</a><i>→</i><a href="#physics-panel"><b>02</b>
-        SPMe・DFNの試験</a><i>→</i><a href="#result-title"><b>03</b> カーブ確認</a><i>→</i><a href="#history"><b>04</b>
+        SPM・SPMe・DFNの試験</a><i>→</i><a href="#result-title"><b>03</b> カーブ確認</a><i>→</i><a
+            href="#history"><b>04</b>
         保存して比較</a>
     </div>
     <div aria-live="polite" class="message" id="message" role="status">起動しています…</div>
@@ -35,12 +37,15 @@
         <label>新しいプロジェクト名<input id="project-name" maxlength="100" placeholder="例：基準セルの比較"></label>
         <button id="create-project" type="button">作成</button>
         <a href="#import-panel">実測・表データを取り込む ↓</a>
+        <a href="#capabilities-panel" id="capabilities-link">利用可能な機能・環境診断 ↓</a>
     </div>
     <section aria-label="計算方式とパラメータ" class="panel model-navigation">
         <h2>計算方式を選ぶ</h2>
         <p class="field-note">方式を選ぶ → 専用の条件を設定 → 実行 → 下のCURVE
             VIEWで結果を確認。切替だけでは計算・保存しません。</p>
         <div aria-label="設定する計算方式" class="model-tabs" role="tablist">
+            <button aria-controls="physics-panel" aria-selected="false" data-model-tab="SPM" id="tab-SPM" role="tab"
+                    tabindex="-1" type="button">SPM <small>物理計算・単粒子近似</small></button>
             <button aria-controls="physics-panel" aria-selected="true" data-model-tab="SPMe" id="tab-SPMe" role="tab"
                     type="button">SPMe <small>物理計算・通常</small></button>
             <button aria-controls="physics-panel" aria-selected="false" data-model-tab="DFN" id="tab-DFN" role="tab"
@@ -56,7 +61,7 @@
         </div>
         <div aria-live="polite" class="configuration-summary" id="active-configuration">設定を準備しています…</div>
         <p class="field-note">
-            SPMeとDFNは物性・設計・試験入力を共用します。合成モデルの入力は独立して保持し、同名の項目も自動コピーしません。</p>
+            SPM・SPMe・DFNは物性・設計・試験入力を共用します。SPMは電解液の厚さ方向分布を縮約する単粒子近似です。合成モデルの入力は独立して保持し、同名の項目も自動コピーしません。</p>
         <details id="parameter-guide">
             <summary>共通で使える項目・方式専用の項目を見る</summary>
             <div class="table-scroll parameter-table">
@@ -210,6 +215,47 @@
         </div>
         <div class="design-insights" id="design-insights"></div>
     </section>
+    <section aria-label="利用可能な機能" class="panel design-panel" id="capabilities-panel">
+        <details id="capabilities-details">
+            <summary>利用可能な機能・互換表・環境診断</summary>
+            <p id="capabilities-summary" role="status">固定版の機能カタログを準備しています…</p>
+            <p class="field-note" id="capabilities-limitation"></p>
+            <h3>環境診断</h3>
+            <p id="capabilities-environment" role="status"></p>
+            <button id="capabilities-probe" type="button">環境を再診断</button>
+            <div id="capabilities-checks"></div>
+            <h3>実行できる組合せ</h3>
+            <p>表は登録済み経路です。実行には固定環境と対応する保存設計が必要です。入力欄の選択肢もこの表に従います。</p>
+            <div id="capabilities-combinations"></div>
+            <details>
+                <summary>全39設定キーの接続状態</summary>
+                <p>
+                    「実行可」は登録値または温度・物性への連動値に限ります。「未接続」は既定挙動を使用していても変更できません。候補値の全組合せが使える意味ではありません。</p>
+                <div id="capabilities-options"></div>
+            </details>
+            <details>
+                <summary>モデル・物性・ソルバの公開候補</summary>
+                <div id="capabilities-candidates"></div>
+            </details>
+            <details>
+                <summary>機能一覧83項目と実装段階</summary>
+                <div class="fields">
+                    <label>機能を検索<input id="capabilities-search" placeholder="ID・機能名・実装段階"
+                                            type="search"></label>
+                    <label>接続状態<select id="capabilities-filter">
+                        <option value="all">すべて</option>
+                        <option value="対応">対応</option>
+                        <option value="一部">一部</option>
+                        <option value="未">未接続</option>
+                        <option value="調査">調査</option>
+                    </select></label>
+                </div>
+                <p id="capabilities-feature-count" role="status"></p>
+                <div id="capabilities-features"></div>
+            </details>
+            <p id="capabilities-next"></p>
+        </details>
+    </section>
     <section aria-labelledby="tab-SPMe" class="panel design-panel" id="physics-panel" role="tabpanel" tabindex="0">
         <div class="section-title">
             <div><p class="eyebrow">STEP 3 / ELECTROCHEMISTRY</p>
@@ -217,12 +263,14 @@
             <span class="pill">文献物性 · 対象セル未検証</span></div>
         <p>設計・物性を選ぶ → 試験を組む → ジョブを実行 → 保存されたカーブを比較</p>
         <p id="physics-environment" role="status">別計算環境を確認しています…</p>
+        <p class="field-note" id="physics-compatibility" role="status"></p>
         <p class="field-note">
             このタブで有効：物性セット・保存設計・試験プロトコル・数値精度。合成モデルのR₀・R₁・時定数・直接入力の容量や熱容量は使用しません。</p>
         <form id="physics-form">
             <div class="fields two">
                 <label>物理計算名<input id="physics-name" maxlength="100" required></label>
                 <label>計算モデル<select id="physics-model">
+                    <option value="SPM">SPM（単粒子近似）</option>
                     <option value="SPMe">SPMe（通常）</option>
                     <option value="DFN">DFN（詳細比較）</option>
                 </select></label>
@@ -254,13 +302,26 @@
                 <label>物理計算の上限電圧 (V)<input id="physics-max_voltage_v" max="4.3" min="2.5" required
                                                     step="any" type="number"></label>
             </div>
+            <div class="physics-protocol-tools">
+                <label>試験テンプレート<select id="physics-template"></select></label>
+                <button id="physics-template-apply" type="button">テンプレートを試験欄に展開</button>
+                <p class="field-note">
+                    展開すると現在のステップを置き換えます。HPPC/GITTは例示条件です。規格適合試験や拡散係数の同定を意味しません。</p>
+            </div>
+            <div class="fields two">
+                <label>試験全体の繰返しサイクル数<input id="physics-cycles" max="20" min="1" required step="1"
+                                                        type="number"></label>
+                <label>試験開始日時（任意・ISO形式の時刻ラベル）<input id="physics-start_time"
+                                                                     placeholder="2026-10-17T09:00:00+09:00"></label>
+            </div>
             <label>試験の入力方法<select id="physics-protocol-mode">
-                <option value="steps">CC・CV・休止のステップ</option>
+                <option value="steps">CC・C-rate・CV・CP・CR・休止・波形・繰返し</option>
                 <option value="profile">電流プロファイル（時間と電流）</option>
             </select></label>
             <div id="physics-step-editor">
                 <div id="physics-steps"></div>
                 <button id="physics-add-step" type="button">＋ ステップを追加</button>
+                <button id="physics-add-repeat" type="button">＋ 繰返しブロックを追加</button>
             </div>
             <div hidden id="physics-profile-editor"><label>電流プロファイル（各行：秒, A。0秒始まり・直線補間）<textarea
                     id="physics-profile" rows="6">0,1
@@ -270,7 +331,13 @@
 41,-1
 70,-1</textarea></label></div>
             <p class="field-note">
-                電流は放電＋／充電−。CC終止は電圧、CV終止は電流の絶対値。時間は各ステップの上限で、終止条件に達すると次へ進みます。初期状態で終止済みのステップは黙ってスキップせず失敗として記録します。</p>
+                電流・C-rate・電力・抵抗は放電＋／充電−。負の抵抗は能動的な充電制御を表します。CC/CP/CR終止は電圧、CV終止は電流の絶対値。時間は各ステップの上限です。スキップは明示的に許可した場合のみ。微分CP/CRは初期電流0から時定数で追従し、切替時は引継ぎ可能な電流状態を使用します。日時は実行予約ではありません。</p>
+            <details class="physics-preview-panel" open>
+                <summary>試験プレビュー・A/C-rate換算</summary>
+                <button id="physics-preview-button" type="button">プレビューを更新</button>
+                <p id="physics-preview-status" role="status"></p>
+                <div id="physics-preview"></div>
+            </details>
             <details>
                 <summary>出力・数値精度・時間上限</summary>
                 <div class="fields two">
@@ -280,6 +347,9 @@
                         <option value="coarse">粗（10点・探索用）</option>
                         <option value="normal">標準（20点）</option>
                         <option value="fine">細（40点）</option>
+                    </select></label>
+                    <label>ソルバ<select id="physics-solver">
+                        <option value="IDAKLUSolver">IDAKLU（固定環境で確認）</option>
                     </select></label>
                     <label>相対許容誤差<input id="physics-rtol" max="0.001" min="0.00000001" required step="any"
                                               type="number"></label>
@@ -572,7 +642,7 @@
             </div>
         </section>
     </div>
-    <footer>PyLiBStudy WORKBENCH <span>SPMe / DFN · 合成モデル · データライブラリ</span></footer>
+    <footer>PyLiBStudy WORKBENCH <span>SPM / SPMe / DFN · 合成モデル · データライブラリ</span></footer>
 </main>
 </body>
 </html>

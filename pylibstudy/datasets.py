@@ -72,7 +72,12 @@ def inspect_table(data):
         raise ValueError("区切りはカンマ・タブ・セミコロンを指定してください。")
     try:
         reader = csv.reader(io.StringIO(content, newline=""), delimiter=delimiter, strict=True)
-        numbered = [(reader.line_num, row) for row in reader if row]
+        numbered = []
+        start_line = 1
+        for row in reader:
+            if row:
+                numbered.append((start_line, row))
+            start_line = reader.line_num + 1
         numbered = [(line, row) for line, row in numbered if line >= header_row]
         rows = [row for _, row in numbered]
     except csv.Error:

@@ -2,8 +2,10 @@
 import math
 from copy import deepcopy
 
-PHYSICS_VERSION = '1.1.0'
-PINNED_PYBAMM = '26.10.1.0'
+from .capabilities import CONFIG_SCHEMA_VERSION, SOLVER, compatibility, validate_options
+from .protocol import validate_protocol
+
+PHYSICS_VERSION = '1.3.0'
 DIAGNOSTICS = {
     'surface_ocv_v': ('Surface open-circuit voltage [V]', '表面濃度に基づくOCV', 'V'),
     'reaction_overpotential_v': ('X-averaged reaction overpotential [V]', '反応過電圧（符号付き）', 'V'),
@@ -17,11 +19,12 @@ DIAGNOSTICS = {
     'mixing_heating_w': ('Heat of mixing [W]', '混合熱（現設定は無効）', 'W'),
     'total_heating_w': ('Total heating [W]', '全発熱', 'W'),
 }
-DEFAULTS = dict(name='SPMe · 基準プロトコル', model='SPMe', parameter_set='Chen2020',
+DEFAULTS = dict(config_schema_version=CONFIG_SCHEMA_VERSION, solver=SOLVER, model_options={},
+                name='SPMe · 基準プロトコル', model='SPMe', parameter_set='Chen2020',
                 thermal='isothermal', initial_soc=.5, initial_temp_c=25, ambient_temp_c=25,
                 heat_transfer_w_m2_k=10, min_voltage_v=2.5, max_voltage_v=4.2,
                 dt_s=5, mesh='normal', rtol=1e-6, atol=1e-6, timeout_s=120,
-                design_id=None, protocol=[dict(kind='cc', current_a=1, duration_s=30),
+                design_id=None, cycles=1, start_time=None, protocol=[dict(kind='cc', current_a=1, duration_s=30),
                                           dict(kind='rest', duration_s=10),
                                           dict(kind='cc', current_a=-1, duration_s=30)])
 MESHES = {'coarse': (10, 10), 'normal': (20, 20), 'fine': (40, 40)}
@@ -34,19 +37,32 @@ def number(value, label, low, high):
     return value
 
 
+def migrate_request(data):
+    """Missing version is the legacy contract; never rewrite a saved record."""
+    if not isinstance(data, dict):
+        raise ValueError('物理計算の入力はオブジェクトで指定してください。')
+    version = data.get('config_schema_version', CONFIG_SCHEMA_VERSION)
+    if not isinstance(version, str) or version not in {'1.0', CONFIG_SCHEMA_VERSION}:
+        raise ValueError('未対応の計算設定スキーマ版です。条件を対応版で確認してください。')
+    migrated = deepcopy(data)
+    migrated['config_schema_version'] = CONFIG_SCHEMA_VERSION
+    return migrated
+
+
 def validate_request(data):
+    data = migrate_request(data)
     if not isinstance(data, dict) or set(data) - set(DEFAULTS):
         raise ValueError('物理計算の入力項目を確認してください。')
     c = deepcopy(DEFAULTS);
     c.update(deepcopy(data))
     if not isinstance(c['name'], str) or not c['name'].strip() or len(c['name']) > 100:
         raise ValueError('計算名は1〜100文字で指定してください。')
-    for key, choices in dict(model=['SPMe', 'DFN'], parameter_set=['Chen2020', 'Chen2020_composite'],
-                             thermal=['isothermal', 'lumped'], mesh=list(MESHES)).items():
-        if not isinstance(c[key], str) or c[key] not in choices:
-            raise ValueError(f'{key} は検証済みの選択肢を指定してください。')
-    if c['parameter_set'] == 'Chen2020_composite' and (c['model'] != 'DFN' or c['thermal'] != 'isothermal'):
-        raise ValueError('複合負極はDFN・等温のみ対応しています。')
+    verdict = compatibility(c)
+    if not verdict['compatible']:
+        raise ValueError(verdict['reason'])
+    validate_options(c)
+    if not isinstance(c['mesh'], str) or c['mesh'] not in MESHES:
+        raise ValueError('meshは検証済みの選択肢を指定してください。')
     for key, bounds in dict(initial_soc=(0, 1), initial_temp_c=(0, 45), ambient_temp_c=(0, 45),
                             heat_transfer_w_m2_k=(0, 100), min_voltage_v=(2, 4), max_voltage_v=(2.5, 4.3),
                             dt_s=(.1, 60), rtol=(1e-8, 1e-3), atol=(1e-8, 1e-3), timeout_s=(5, 300)).items():
@@ -55,50 +71,7 @@ def validate_request(data):
         raise ValueError('下限電圧は上限電圧より小さくしてください。')
     if c['design_id'] is not None and (not isinstance(c['design_id'], str) or len(c['design_id']) > 100):
         raise ValueError('保存済み設計IDを指定してください。')
-    protocol = c['protocol']
-    if not isinstance(protocol, list) or not 1 <= len(protocol) <= 20:
-        raise ValueError('プロトコルは1〜20ステップです。')
-    total = 0
-    for step in protocol:
-        if not isinstance(step, dict) or not isinstance(step.get('kind'), str):
-            raise ValueError('ステップの種類を指定してください。')
-        kind = step['kind']
-        allowed = {'cc': {'kind', 'current_a', 'duration_s', 'stop_voltage_v'},
-                   'cv': {'kind', 'voltage_v', 'duration_s', 'stop_current_a'},
-                   'rest': {'kind', 'duration_s'}, 'profile': {'kind', 'points'}}
-        if kind not in allowed or set(step) - allowed[kind]:
-            raise ValueError('ステップの入力項目が未対応です。')
-        if kind == 'profile':
-            points = step.get('points')
-            if not isinstance(points, list) or not 2 <= len(points) <= 2000:
-                raise ValueError('電流プロファイルは2〜2000点で指定してください。')
-            previous = -1
-            for pair in points:
-                if not isinstance(pair, list) or len(pair) != 2:
-                    raise ValueError('プロファイルは[秒, A]の組で指定してください。')
-                t = number(pair[0], 'プロファイル時間', 0, 21600)
-                number(pair[1], 'プロファイル電流', -25, 25)
-                if t <= previous:
-                    raise ValueError('プロファイル時間は重複なしの昇順です。')
-                previous = t
-            if points[0][0] != 0:
-                raise ValueError('プロファイル時間は0秒から始めてください。')
-            total += points[-1][0]
-        else:
-            total += number(step.get('duration_s'), 'ステップ時間', .1, 21600)
-            if kind == 'cc':
-                number(step.get('current_a'), 'CC電流', -25, 25)
-                if step.get('stop_voltage_v') is not None:
-                    number(step['stop_voltage_v'], 'CC終止電圧', c['min_voltage_v'], c['max_voltage_v'])
-                    if step['current_a'] == 0:
-                        raise ValueError('電流0には休止ステップを使用してください。')
-            if kind == 'cv':
-                number(step.get('voltage_v'), 'CV電圧', c['min_voltage_v'], c['max_voltage_v'])
-                number(step.get('stop_current_a'), 'CV終止電流の絶対値', .001, 25)
-    if any(step['kind'] == 'profile' for step in protocol) and len(protocol) != 1:
-        raise ValueError('電流プロファイルは単独の試験として指定してください。')
-    if total > 21600 or math.ceil(total / c['dt_s']) + 2 * len(protocol) > 12000:
-        raise ValueError('合計6時間・出力約12000点以内になるよう時間と出力間隔を調整してください。')
+    validate_protocol(c, number)
     return c
 
 

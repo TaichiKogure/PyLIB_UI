@@ -15,7 +15,8 @@ from pylibstudy.storage import RunRepository
 
 class ContractTests(unittest.TestCase):
     def test_invalid_protocols_and_nonfinite_inputs(self):
-        for changes in [[], {'extra': 1}, {'model': 'SPM'}, {'rtol': True}, {'initial_soc': float('nan')},
+        for changes in [[], {'extra': 1}, {'model': 'SPM', 'parameter_set': 'Chen2020_composite'}, {'rtol': True},
+                        {'initial_soc': float('nan')},
                         {'protocol': []}, {'protocol': [{'kind': 'cc', 'current_a': '1', 'duration_s': 10}]},
                         {'protocol': [{'kind': 'cv', 'voltage_v': 4.2, 'duration_s': 10, 'stop_current_a': 0}]},
                         {'protocol': [{'kind': 'profile', 'points': [[1, 1], [2, 1]]}]},

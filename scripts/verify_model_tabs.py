@@ -52,7 +52,7 @@ class ModelTabTests(unittest.TestCase):
         expect(tab).to_have_attribute('aria-selected', 'true')
         expect(tab).to_have_attribute('tabindex', '0')
         expect(self.page.locator('[data-model-tab][aria-selected="true"]')).to_have_count(1)
-        panel = 'physics' if model in ('SPMe', 'DFN') else model
+        panel = 'physics' if model in ('SPM', 'SPMe', 'DFN') else model
         for name in ('physics', 'synthetic', 'design', 'cathodes'):
             if name == panel:
                 expect(self.page.locator('#' + name + '-panel')).to_be_visible()
@@ -97,7 +97,7 @@ class ModelTabTests(unittest.TestCase):
         tab = self.page.locator('#tab-SPMe')
         tab.focus()
         for key, model in [('ArrowRight', 'DFN'), ('ArrowRight', 'synthetic'), ('End', 'cathodes'),
-                           ('Home', 'SPMe'), ('ArrowLeft', 'cathodes')]:
+                           ('Home', 'SPM'), ('ArrowLeft', 'cathodes')]:
             self.page.keyboard.press(key)
             self.assert_tab(model)
             expect(self.page.locator('#tab-' + model)).to_be_focused()

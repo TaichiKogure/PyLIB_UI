@@ -357,7 +357,7 @@ async function initDesign() {
         designing.binding = record;
         syncDesignBinding();
         selectModelTab("synthetic");
-        message("合成モデルへ寸法・Cレート基準容量・模式曲線を反映しました。物理計算にはSPMe・DFN欄で保存設計を選択してください。");
+        message("合成モデルへ寸法・Cレート基準容量・模式曲線を反映しました。物理計算にはSPM・SPMe・DFN欄で保存設計を選択してください。");
         $("simulation-form").scrollIntoView({block: "start"});
     });
     $("design-export").addEventListener("click", () => {

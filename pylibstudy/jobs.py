@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from .physics import PINNED_PYBAMM, validate_request, validate_design
+from .physics import validate_request, validate_design
+from .protocol import preview_protocol
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = {'queued', 'running', 'cancelling'}
@@ -61,14 +62,12 @@ class PhysicsJobs:
         env = self.environment()
         try:
             result = subprocess.run([str(self.python), '-c',
-                                     "import importlib.metadata as m,json,sys;print(json.dumps({'python':list(sys.version_info[:2]),'pybamm':m.version('pybamm'),'solvers':m.version('pybammsolvers'),'numpy':m.version('numpy'),'casadi':m.version('casadi')}))"],
-                                    capture_output=True, timeout=10, text=True, env=env,
+                                     "from pylibstudy.environment_probe import diagnose;import json;print(json.dumps(diagnose()))"],
+                                    cwd=ROOT, capture_output=True, timeout=20, text=True, env=env,
                                     creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-            versions = json.loads(result.stdout)
-            valid = versions['python'] == [3, 13] and versions['pybamm'] == PINNED_PYBAMM and versions[
-                'solvers'] == '0.11.1' and versions['numpy'] == '2.3.5' and versions['casadi'] == '3.8.1'
-            return dict(available=valid, versions=versions,
-                        message='固定計算環境を確認しました。' if valid else '固定版と異なる環境です。setup-research.ps1で再現してください。')
+            if result.returncode != 0:
+                raise ValueError('probe_failed')
+            return json.loads(result.stdout)
         except Exception:
             return dict(available=False, message='計算環境を確認できません。setup-research.ps1の結果を確認してください。')
 
@@ -85,6 +84,7 @@ class PhysicsJobs:
         c = validate_request(data)
         design = self.repository.design(c['design_id'], project_id) if c['design_id'] else None
         validate_design(c, design)
+        preview = preview_protocol(c, design)
         if not self.availability['available']:
             raise ValueError(self.availability['message'])
         with self.lock:
@@ -92,7 +92,8 @@ class PhysicsJobs:
             if sum(j['status'] in ACTIVE for j in self.repository.jobs()) >= 8:
                 raise ValueError('待機中・実行中のジョブは合計8件までです。')
             job = dict(id=str(uuid4()), project_id=project_id, created_at=now(), status='queued', input=c,
-                       design_snapshot=design, result_id=str(uuid4()), message='実行待ち。結果は完了時に自動保存します。')
+                       design_snapshot=design, protocol_preview=preview, result_id=str(uuid4()),
+                       message='実行待ち。結果は完了時に自動保存します。')
             self.repository.put_job(job)
         self.wake.set()
         return job
@@ -151,7 +152,22 @@ class PhysicsJobs:
                 self.wake.clear()
 
     def worker_command(self, request, output):
-        return [str(self.python), '-m', 'pylibstudy.physics_worker', '--request', str(request), '--output', str(output)]
+        return [str(self.python), '-m', 'pylibstudy.physics_worker', '--request', str(request), '--output', str(output),
+                '--progress', str(output.parent / 'progress.json')]
+
+    def read_progress(self, job_id, project_id, path):
+        try:
+            if not path.is_file() or path.stat().st_size > 8192: return
+            progress = json.loads(path.read_text(encoding='utf-8'))
+            if not isinstance(progress, dict) or not isinstance(progress.get('sequence'), int): return
+            with self.lock:
+                latest = self.get(job_id, project_id)
+                if latest['status'] == 'running' and progress['sequence'] > latest.get('progress', {}).get('sequence',
+                                                                                                           0):
+                    latest['progress'] = progress
+                    self.repository.put_job(latest)
+        except (OSError, ValueError):
+            pass
 
     def execute(self, job):
         folder = self.folder / job['id'];
@@ -172,6 +188,7 @@ class PhysicsJobs:
                                                creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
                     self.process = process
                 while process.poll() is None:
+                    self.read_progress(job['id'], job['project_id'], folder / 'progress.json')
                     with self.lock:
                         status = self.get(job['id'], job['project_id'])['status']
                     if self.stopping.is_set():
@@ -190,6 +207,7 @@ class PhysicsJobs:
                         break
                     self.wake.wait(.1);
                     self.wake.clear()
+                self.read_progress(job['id'], job['project_id'], folder / 'progress.json')
                 with self.lock:
                     latest = self.get(job['id'], job['project_id'])
                     if self.stopping.is_set():
@@ -212,6 +230,8 @@ class PhysicsJobs:
                                           error_type=payload.get('error_type', 'ProcessError'))
                             if payload.get('error_code') == 'initial_condition_infeasible':
                                 latest['message'] = '初期状態でステップの終止条件に達しています。SOC・電流方向・終止条件を確認してください。'
+                            if payload.get('error_code') == 'all_steps_skipped':
+                                latest['message'] = '全ステップが初期条件でスキップされ、有効な計算結果がありません。試験条件を確認してください。'
                         else:
                             result = payload['result']
                             if result['id'] != job['result_id'] or result['project_id'] != job['project_id']:
