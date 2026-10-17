@@ -129,12 +129,11 @@ class RunRepository:
             record = self.get(run_id)
             if record is None or record.get("project_id", "default") != project_id:
                 raise ValueError("比較対象は同じプロジェクトの保存済みカーブから選択してください。")
-        if data.get("x_axis") not in {"time_s", "capacity_ah", "soc"} or data.get("variable") not in {"voltage_v",
-                                                                                                      "soc",
-                                                                                                      "current_a",
-                                                                                                      "temperature_c",
-                                                                                                      "positive_reference_v",
-                                                                                                      "negative_reference_v"}:
+        from .result_catalog import SCALARS
+        if (not isinstance(data.get("x_axis"), str) or not isinstance(data.get("variable"), str) or
+                data.get("x_axis") not in {"time_s", "capacity_ah", "soc"} or
+                data.get("variable") not in (set(SCALARS) - {'time_s'}) | {"positive_reference_v",
+                                                                           "negative_reference_v"}):
             raise ValueError("比較軸を確認してください。")
         name, notes = data.get("name", "比較セット"), data.get("notes", "")
         if not isinstance(name, str) or not name.strip() or len(name) > 100 or not isinstance(notes, str) or len(

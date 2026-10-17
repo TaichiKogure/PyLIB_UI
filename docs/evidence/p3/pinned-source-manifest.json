@@ -1,0 +1,11 @@
+{
+  "pybamm_version": "26.10.1.0",
+  "files_sha256": {
+    "models/submodels/thermal/lumped.py": "f4c03e752281b8089a1b98fbb8e4a09670f618b24ce2317a1dcb99dcb3422609",
+    "models/submodels/thermal/base_thermal.py": "da842f9e052b140b9690a52f931c41a95a16b8f63a0b09cbd95410e7b477ad93",
+    "models/submodels/thermal/surface/lumped.py": "956f6cda5f3402eccf8ad6bb1d91326824190732525e8446e8de1d88b8c0d685",
+    "parameters/thermal_parameters.py": "605ea7d30bfe10ea5418d4fe3a2ce4705782fc6e631c01e436d031c8ba02083a",
+    "models/full_battery_models/base_battery_model.py": "1d7f44835264797eec48be8c8b1304987dd427c63016f957a3da762c0194952e",
+    "simulation/simulation.py": "624d452b43367862202a7d3ee81df37b369b9962a65e1f00d923b86f577aa5da"
+  }
+}

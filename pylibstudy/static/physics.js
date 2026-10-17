@@ -32,6 +32,47 @@ const progressLabels = {
     infeasible_event: "モデル終了条件到達"
 };
 const physicsFields = ["name", "model", "parameter_set", "thermal", "solver", "cycles", "initial_soc", "initial_temp_c", "ambient_temp_c", "heat_transfer_w_m2_k", "min_voltage_v", "max_voltage_v", "dt_s", "mesh", "rtol", "atol", "timeout_s"];
+const thermalNumbers = ["cell_heat_capacity_j_k", "casing_heat_capacity_j_k", "environment_thermal_resistance_k_w", "contact_resistance_ohm", "cooling_area_m2", "cell_volume_m3"];
+
+function setThermalSettings(input) {
+    const settings = {...physical.config.defaults.thermal_settings, ...input.thermal_settings};
+    for (const [key, value] of Object.entries(settings)) {
+        if (typeof value === "boolean") $("thermal-" + key).checked = value;
+        else $("thermal-" + key).value = value ?? "";
+    }
+}
+
+function readThermalSettings() {
+    const t = {...physical.config.defaults.thermal_settings};
+    const lumped = $("physics-thermal").value === "lumped";
+    t.capacity_mode = lumped ? $("thermal-capacity_mode").value : "literature";
+    t.surface_temperature = lumped ? $("thermal-surface_temperature").value : "ambient";
+    for (const key of thermalNumbers) t[key] = $("thermal-" + key).value === "" ? null : Number($("thermal-" + key).value);
+    if (t.capacity_mode !== "user") t.cell_heat_capacity_j_k = null;
+    if (t.surface_temperature !== "lumped") {
+        t.casing_heat_capacity_j_k = null;
+        t.environment_thermal_resistance_k_w = null;
+    }
+    t.heat_of_mixing = $("thermal-heat_of_mixing").checked && $("physics-parameter_set").value !== "Chen2020_composite" && (lumped || $("thermal-isothermal_heat_source").checked);
+    t.isothermal_heat_source = $("thermal-isothermal_heat_source").checked;
+    t.source = $("thermal-source").value.trim();
+    return t;
+}
+
+function syncThermalSettings() {
+    const lumped = $("physics-thermal").value === "lumped", t = readThermalSettings();
+    for (const key of ["capacity_mode", "surface_temperature"]) $("thermal-" + key).disabled = !lumped;
+    $("thermal-cell_heat_capacity_j_k").disabled = !lumped || t.capacity_mode !== "user";
+    $("thermal-cell_heat_capacity_j_k").required = lumped && t.capacity_mode === "user";
+    for (const key of ["casing_heat_capacity_j_k", "environment_thermal_resistance_k_w"]) {
+        $("thermal-" + key).disabled = !lumped || t.surface_temperature !== "lumped";
+        $("thermal-" + key).required = lumped && t.surface_temperature === "lumped";
+    }
+    $("thermal-heat_of_mixing").disabled = $("physics-parameter_set").value === "Chen2020_composite" || (!lumped && !t.isothermal_heat_source);
+    const noHeat = ["Prada2013", "Xu2019"].includes($("physics-parameter_set").value);
+    $("thermal-isothermal_heat_source").disabled = lumped || noHeat;
+    $("thermal-source").required = t.capacity_mode === "user" || t.surface_temperature === "lumped" || t.contact_resistance_ohm > 0 || t.cooling_area_m2 !== null || t.cell_volume_m3 !== null;
+}
 
 function physicsStep(step = {kind: "rest", duration_s: 60}, parent = $("physics-steps"), depth = 0) {
     const row = element("div", undefined, "physics-step-card");
@@ -248,6 +289,8 @@ function readPhysics() {
     }];
     else input.protocol = [...$("physics-steps").children].map(row => row.read());
     readResultOutput(input);
+    input.thermal_settings = readThermalSettings();
+    input.material_settings = readMaterialSettings();
     return input;
 }
 
@@ -261,10 +304,11 @@ function physicsCompatibility() {
     for (const option of $("physics-thermal").options) option.disabled = !models.some(c => c.thermal === option.value);
     if (!models.some(c => c.thermal === $("physics-thermal").value) && models.length) $("physics-thermal").value = models[0].thermal;
     const selected = models.find(c => c.thermal === $("physics-thermal").value && c.solver === $("physics-solver").value);
-    $("physics-compatibility").textContent = `${selected?.reason || "この組合せは未接続です。"}${material.length === 1 ? " この物性はDFN・等温のみ選択できます。複合負極の集中熱用物性は未接続です。" : ""}`;
+    $("physics-compatibility").textContent = selected?.reason || "この組合せは未接続です。";
     $("physics-run").disabled = physical.submitting || !physical.config.environment.available || !selected?.compatible;
     $("physics-initial_temp_c").disabled = $("physics-thermal").value === "isothermal";
     $("physics-heat_transfer_w_m2_k").disabled = $("physics-thermal").value === "isothermal";
+    syncThermalSettings();
     $("physics-thermal-note").textContent = $("physics-thermal").value === "isothermal"
         ? "等温：初期温度・熱伝達係数は使用しません。周囲温度に固定します。"
         : "集中熱：初期温度と熱伝達係数を使用し、発熱・周囲への放熱でセル温度を計算します。";
@@ -279,7 +323,7 @@ function refreshPhysicsDesigns() {
     const composite = $("physics-parameter_set").value === "Chen2020_composite";
     select.replaceChildren(empty, ...designing.records.map(r => {
         const d = r.input,
-            compatible = d.positive_material === "NMC811_demo" && d.electrolyte_fill === 1 && (composite ? d.negative_si > 0 && d.negative_graphite > 0 && d.negative_additive === "Si_demo" : d.negative_si === 0 && d.negative_graphite > 0);
+            compatible = ["Chen2020", "Chen2020_composite"].includes($("physics-parameter_set").value) && d.positive_material === "NMC811_demo" && d.electrolyte_fill === 1 && (composite ? d.negative_si > 0 && d.negative_graphite > 0 && d.negative_additive === "Si_demo" : d.negative_si === 0 && d.negative_graphite > 0);
         const option = element("option", `${d.name} · ${r.id.slice(0, 8)}${compatible ? "" : "（この物性セットには未対応）"}`);
         option.value = r.id;
         option.disabled = !compatible;
@@ -294,6 +338,8 @@ function setPhysics(input) {
     if (input.config_schema_version !== physical.config.defaults.config_schema_version) throw new Error("未対応の計算設定スキーマ版です。");
     if (input.design_id && !designing.records.some(r => r.id === input.design_id)) throw new Error("この設計は現在のプロジェクトにありません。");
     setResultOutput(input);
+    setThermalSettings(input);
+    setMaterialSettings(input);
     for (const key of physicsFields) $("physics-" + key).value = input[key];
     physicsCompatibility();
     $("physics-design").value = input.design_id || "";
@@ -320,6 +366,7 @@ function syncPhysicsEditor() {
 }
 
 function showPhysics(run) {
+    renderMaterialProvenance(run);
     $("metric-soc-kind").textContent = "% · 基準容量による電荷帳簿";
     $("result-title").textContent = run.name;
     $("result-meta").textContent = `${run.engine.label} / ${run.input.parameter_set} · ${run.input.thermal === "lumped" ? "集中熱" : "等温"} · ${run.termination === "partial" ? "一部結果" : "プロトコル終了"} · ${(run.summary.duration_s / 60).toFixed(2)} min · ${run.summary.point_count}点`;
@@ -343,13 +390,15 @@ function showPhysics(run) {
             lithium_balance: run.lithium_balance,
             step_results: run.step_results,
             parameter_provenance: run.parameter_provenance,
+            thermal_provenance: run.thermal_provenance,
+            thermal_balance: run.thermal_balance,
             design_snapshot: run.design_snapshot
         }, null, 2)));
     if (run.diagnostic_summary) {
         const diagnostics = insightDetail("SPM/SPMe/DFNが計算した損失・発熱の内訳", insightTable(
                 ["変数", "単位", "初期", "最終", "表示点での最小", "表示点での最大"],
                 Object.values(run.diagnostic_summary).map(x => [x.label, x.unit, ...[x.initial, x.final, x.minimum, x.maximum].map(value => insightNumber(value, 6))])),
-            element("p", "電圧損失はソルバの符号付き値です。等温でも熱源は計算しますが温度は固定です。最大・最小は出力表示点に限ります。混合熱・外部端面接触発熱は含みません。設計画面の集中見積りとは物性・モデルが異なります。", "field-note"));
+            element("p", "電圧損失は符号付き値、最大・最小は出力表示点での値です。電気化学の合計発熱と接触を含む合計発熱を区別します。混合熱・接触抵抗・等温熱源の設定は保存条件で確認してください。設計画面の見積りとは物性・モデルが異なります。", "field-note"));
         diagnostics.open = true;
         $("snapshot").prepend(diagnostics);
     }
@@ -456,6 +505,7 @@ async function refreshPhysicsJobs() {
 
 async function initPhysics() {
     physical.config = await api("/api/physics/config");
+    initMaterialSettings(physical.config.materials);
     initResultSettings(physical.config.result_catalog);
     $("physics-environment").textContent = physical.config.environment.message;
     setPhysics(physical.config.defaults);
@@ -486,10 +536,11 @@ async function initPhysics() {
     $("physics-form").addEventListener("input", invalidatePhysicsPreview);
     $("physics-form").addEventListener("change", invalidatePhysicsPreview);
     $("physics-model").addEventListener("change", physicsCompatibility);
-    $("physics-parameter_set").addEventListener("change", physicsCompatibility);
+    $("physics-parameter_set").addEventListener("change", applyMaterialSelection);
     $("physics-thermal").addEventListener("change", physicsCompatibility);
     $("physics-initial_ocv_v").addEventListener("input", physicsCompatibility);
     $("physics-solver").addEventListener("change", physicsCompatibility);
+    for (const key of Object.keys(physical.config.defaults.thermal_settings)) $("thermal-" + key).addEventListener("input", syncThermalSettings);
     $("physics-protocol-mode").addEventListener("change", syncPhysicsEditor);
     $("physics-add-step").addEventListener("click", () => {
         if ($("physics-steps").children.length < 20) {

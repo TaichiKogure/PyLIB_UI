@@ -23,9 +23,19 @@ def extract_scalars(sub, times, config, meta):
     result = {}
     for key, item in meta.items():
         if item['status'] == 'not_selected' or key in {'time_s', 'soc'}: continue
+        if ((key == 'surface_cooling_w' and config['thermal'] != 'lumped') or
+                (key == 'environment_cooling_w' and config['thermal_settings']['surface_temperature'] != 'lumped')):
+            item.update(status='unavailable',
+                        reason='この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。')
+            continue
         try:
             values = scalar_series(sub, times, item['source_variable'])
-            if key == 'temperature_c': values = values - 273.15
+            if item['unit'] == 'degC': values = values - 273.15
+            if (config['thermal'] == 'isothermal' and not config['thermal_settings']['isothermal_heat_source']
+                    and key in {'ohmic_heating_w', 'reaction_heating_w', 'reversible_heating_w', 'hysteresis_heating_w',
+                                'mixing_heating_w', 'total_heating_w', 'total_heat_with_contact_w'}):
+                item.update(status='unavailable', reason='等温熱源の計算が無効です。未計算をゼロとして扱いません。')
+                continue
             result[key] = values
             if item['status'] != 'unavailable': item.update(status='available', reason='')
         except (KeyError, ValueError, NotImplementedError):

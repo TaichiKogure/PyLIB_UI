@@ -22,9 +22,9 @@ function syncModelNavigation() {
     if (["SPM", "SPMe", "DFN"].includes(modelNavigation.active)) modelNavigation.active = model;
     const active = modelNavigation.active;
     $("tab-SPM").disabled = $("physics-model").querySelector('option[value="SPM"]').disabled;
-    $("tab-SPM").title = $("tab-SPM").disabled ? "複合負極はDFN・等温のみ対応です。" : "";
+    $("tab-SPM").title = $("tab-SPM").disabled ? "選択した物性はDFN専用です。" : "";
     $("tab-SPMe").disabled = $("physics-model").querySelector('option[value="SPMe"]').disabled;
-    $("tab-SPMe").title = $("tab-SPMe").disabled ? "Chen2020_compositeはDFN・等温のみ対応です。Chen2020を選ぶとSPMeを使用できます。" : "";
+    $("tab-SPMe").title = $("tab-SPMe").disabled ? "選択した物性はDFN専用です。Chen2020・Prada2013・NCA_Kim2011ではSPMeを使用できます。" : "";
     for (const tab of document.querySelectorAll("[data-model-tab]")) {
         const selected = tab.dataset.modelTab === active;
         tab.setAttribute("aria-selected", String(selected));

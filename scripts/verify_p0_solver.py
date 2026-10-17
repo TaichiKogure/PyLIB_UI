@@ -7,7 +7,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylibstudy.capabilities import COMBINATIONS, CONFIG_SCHEMA_VERSION
+from pylibstudy.capabilities import COMBINATIONS as ALL_COMBINATIONS, CONFIG_SCHEMA_VERSION
+
+COMBINATIONS = tuple(c for c in ALL_COMBINATIONS if c['parameter_set'] in {'Chen2020', 'Chen2020_composite'})
 from pylibstudy.jobs import PhysicsJobs, TERMINAL
 from pylibstudy.storage import RunRepository
 
@@ -23,6 +25,9 @@ def main():
             report['environment'] = jobs.availability
             for combination in COMBINATIONS:
                 config = dict(combination, dt_s=5, protocol=[dict(kind='cc', current_a=1, duration_s=20)])
+                if combination['parameter_set'] == 'Chen2020_composite' and combination['thermal'] == 'lumped':
+                    config['thermal_settings'] = dict(capacity_mode='user', cell_heat_capacity_j_k=50,
+                                                      source='synthetic verification fixture')
                 job = jobs.submit(config)
                 deadline = time.monotonic() + 130
                 while time.monotonic() < deadline:

@@ -197,6 +197,7 @@ function svgElement(tag, attrs = {}, text) {
 }
 
 function renderChart() {
+    if (typeof showThermalComparison === "function") showThermalComparison();
     if ($("result-variable")) $("result-variable").value = state.variable;
     for (const button of document.querySelectorAll('[data-chart]')) button.setAttribute('aria-pressed', String(button.dataset.chart === state.variable));
     const runs = new Map();
@@ -224,6 +225,8 @@ function renderChart() {
         temperature_c: "温度 (°C) · 測定位置は来歴参照",
         current_a: "電流 (A)"
     };
+    const chartMeta = state.current?.result_variables?.[variable];
+    if (!labels[variable]) labels[variable] = `${chartMeta?.label || variable} (${chartMeta?.unit || state.current?.units?.[variable] || "単位不明"})`;
     let yMin = Infinity, yMax = -Infinity, xMax = 0, xMin = 0;
     for (const run of series) for (const p of run.points) {
         if (!valid(p)) continue;
@@ -331,7 +334,9 @@ function renderChart() {
 }
 
 async function refreshHistory() {
-    const history = await api(`/api/runs?project_id=${encodeURIComponent(library.projectId)}`);
+    const project = library.projectId;
+    const history = await api(`/api/runs?project_id=${encodeURIComponent(project)}`);
+    if (project !== library.projectId) return;
     state.savedIds = new Set(history.map(run => run.id));
     if (state.current) updateResultState();
     if (!history.length) {
@@ -358,10 +363,13 @@ async function refreshHistory() {
             // Reserve the slot during fetch so rapid checks cannot exceed the limit.
             state.comparisons.set(run.id, null);
             try {
-                state.comparisons.set(run.id, await api(`/api/results/${run.id}`));
+                const compared = await api(`/api/results/${run.id}`);
+                if (project !== library.projectId || !state.comparisons.has(run.id)) return;
+                state.comparisons.set(run.id, compared);
                 renderChart();
                 message("保存カーブを重ね合わせました。各カーブの凡例を確認してください。");
             } catch (error) {
+                if (project !== library.projectId) return;
                 state.comparisons.delete(run.id);
                 checkbox.checked = false;
                 message(error.message, "error");

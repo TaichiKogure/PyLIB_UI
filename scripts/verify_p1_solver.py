@@ -7,7 +7,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylibstudy.capabilities import COMBINATIONS, CONFIG_SCHEMA_VERSION
+from pylibstudy.capabilities import COMBINATIONS as ALL_COMBINATIONS, CONFIG_SCHEMA_VERSION
+
+COMBINATIONS = tuple(c for c in ALL_COMBINATIONS if c['parameter_set'] in {'Chen2020', 'Chen2020_composite'})
 from pylibstudy.jobs import PhysicsJobs, TERMINAL
 from pylibstudy.protocol import protocol_templates
 from pylibstudy.storage import RunRepository
@@ -54,6 +56,10 @@ def main():
             assert jobs.availability['available'], jobs.availability
             report['environment'] = jobs.availability
             for combo in COMBINATIONS if args.section == 'all' else []:
+                combo = dict(combo)
+                if combo['parameter_set'] == 'Chen2020_composite' and combo['thermal'] == 'lumped':
+                    combo['thermal_settings'] = dict(capacity_mode='user', cell_heat_capacity_j_k=50,
+                                                     source='synthetic verification fixture')
                 name = '_'.join([combo['model'], combo['parameter_set'], combo['thermal']])
                 r = run(name, dict(combo, protocol=[dict(kind='c_rate', c_rate=.2, duration_s=20)]))
                 assert all(abs(p['current_a'] - 1) < 1e-5 for p in r['points'])

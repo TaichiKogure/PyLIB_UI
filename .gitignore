@@ -7381,3 +7381,7 @@ result-*
 !/requirements-research.lock.txt
 !/setup-research.ps1
 
+
+# P4 optional BPX dependency manifest (vendor binaries remain local).
+!/requirements-bpx.lock.txt
+!/setup-bpx.ps1

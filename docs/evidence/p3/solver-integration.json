@@ -1,0 +1,4944 @@
+{
+  "scope": "Pinned native worker and numerical thermal checks; synthetic assumptions, no target-cell measured validation",
+  "cases": {
+    "SPM_Chen2020_isothermal": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "SPM_Chen2020_isothermal",
+        "model": "SPM",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555556,
+        "energy_wh": 0.02068129363129086,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.7198499783671526,
+        "max_temperature_c": 25.0,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "isothermal",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": null,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "not_applicable",
+        "reason": "等温では蓄熱・冷却の微分方程式を解きません。熱源の有効/無効は設定に記録します。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.440892098500626e-16,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 4.163336342344337e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "SPM_Chen2020_lumped": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "SPM_Chen2020_lumped",
+        "model": "SPM",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.020681323987086744,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.7198607749153103,
+        "max_temperature_c": 25.011294739908408,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 42.77529812749004,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.4891580929435765,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.006022315319062166,
+        "environment_heat_j": -0.006022315319062166,
+        "cell_stored_energy_j": 0.48313586685703425,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 8.923251992865033e-08,
+        "system_residual_j": 8.923251992865033e-08,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.440892098500626e-16,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 4.163336342344337e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "SPMe_Chen2020_isothermal": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "SPMe_Chen2020_isothermal",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.020642780846466622,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.711747481896276,
+        "max_temperature_c": 25.0,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "isothermal",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": null,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "not_applicable",
+        "reason": "等温では蓄熱・冷却の微分方程式を解きません。熱源の有効/無効は設定に記録します。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.464756120370339e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 6.938893903907228e-18,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "SPMe_Chen2020_lumped": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "SPMe_Chen2020_lumped",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.020642818293700994,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.7117609975834767,
+        "max_temperature_c": 25.014494610865768,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 42.77529812749004,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.6276213073051669,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.007620024679587445,
+        "environment_heat_j": -0.007620024679587445,
+        "cell_stored_energy_j": 0.6200113010251721,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 1.0018399592692795e-05,
+        "system_residual_j": 1.0018399592692795e-05,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.464756564459549e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 6.938893903907228e-18,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "DFN_Chen2020_isothermal": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "DFN_Chen2020_isothermal",
+        "model": "DFN",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555551,
+        "energy_wh": 0.020644144295210852,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.7120243007454587,
+        "max_temperature_c": 25.0,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "isothermal",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": null,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "not_applicable",
+        "reason": "等温では蓄熱・冷却の微分方程式を解きません。熱源の有効/無効は設定に記録します。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.5626546985033656e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 2.0816681711721685e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "DFN_Chen2020_lumped": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "DFN_Chen2020_lumped",
+        "model": "DFN",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.02064418156876099,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.712037762550968,
+        "max_temperature_c": 25.014374990419412,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 42.77529812749004,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.6224400059929982,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.007559396429893894,
+        "environment_heat_j": -0.007559396429893894,
+        "cell_stored_energy_j": 0.6148945007701772,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 1.3891207072846967e-05,
+        "system_residual_j": 1.3891207072846967e-05,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.5626546985033656e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.0408340855860843e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "DFN_Chen2020_composite_isothermal": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "DFN_Chen2020_composite_isothermal",
+        "model": "DFN",
+        "parameter_set": "Chen2020_composite",
+        "thermal": "isothermal",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555554,
+        "energy_wh": 0.020246742513009796,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.6411854837098923,
+        "max_temperature_c": 25.0,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "isothermal",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": null,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020_composite bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "not_applicable",
+        "reason": "等温では蓄熱・冷却の微分方程式を解きません。熱源の有効/無効は設定に記録します。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.440892098500626e-16,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 3.3514857555871913e-15,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "DFN_Chen2020_composite_lumped": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "DFN_Chen2020_composite_lumped",
+        "model": "DFN",
+        "parameter_set": "Chen2020_composite",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555552,
+        "energy_wh": 0.02024678407861577,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.6412004776810165,
+        "max_temperature_c": 25.014772792726205,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.7464179853908678,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.007786007518483017,
+        "environment_heat_j": -0.007786007518483017,
+        "cell_stored_energy_j": 0.7386396363102676,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 7.658437882861711e-06,
+        "system_residual_j": 7.658437882861711e-06,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 3.3584246494910985e-15,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "adiabatic_50": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "adiabatic_50",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 0,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.1,
+        "energy_wh": 0.36254368091752465,
+        "final_soc": 0.48,
+        "final_voltage_v": 3.6029541710066404,
+        "max_temperature_c": 25.653866048802115,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 0,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 32.69315448653857,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": 0.0,
+        "environment_heat_j": 0.0,
+        "cell_stored_energy_j": 32.693302440105754,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00014795356718622088,
+        "system_residual_j": 0.00014795356718622088,
+        "tolerance_j": 0.0653866048802115,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394269249289437e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "adiabatic_100": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "adiabatic_100",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 100,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 0,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.1,
+        "energy_wh": 0.3625150829713221,
+        "final_soc": 0.48,
+        "final_voltage_v": 3.602376089510818,
+        "max_temperature_c": 25.327962602072887,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 100,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 100.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 0,
+          "Cell heat capacity [J.K-1.m-3]": 4132231.404958678,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 32.79611234321035,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": 0.0,
+        "environment_heat_j": 0.0,
+        "cell_stored_energy_j": 32.79626020729438,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00014786408402756024,
+        "system_residual_j": 0.00014786408402756024,
+        "tolerance_j": 0.06559252041458877,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394268805200227e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "cooled": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "cooled",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 100,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.1,
+        "energy_wh": 0.36252579585117284,
+        "final_soc": 0.48,
+        "final_voltage_v": 3.602460009276936,
+        "max_temperature_c": 25.375117991986656,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 100,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 32.75754590979694,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -14.00165020873836,
+        "environment_heat_j": -14.00165020873836,
+        "cell_stored_energy_j": 18.755899599332793,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 3.898274213653963e-06,
+        "system_residual_j": 3.898274213653963e-06,
+        "tolerance_j": 0.06551509181959388,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394268805200227e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "contact": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "contact",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 0,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.09999999999999994,
+        "energy_wh": 0.3595628692769638,
+        "final_soc": 0.48000000000000004,
+        "final_voltage_v": 3.5733324111905866,
+        "max_temperature_c": 25.86848441745383,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 0,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.01
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 32.6240730078162,
+        "contact_heat_j": 10.799999999999997,
+        "cell_boundary_heat_j": 0.0,
+        "environment_heat_j": 0.0,
+        "cell_stored_energy_j": 43.424220872694264,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00014786487806617288,
+        "system_residual_j": 0.00014786487806617288,
+        "tolerance_j": 0.08684844174538853,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394268805200227e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 5.551115123125783e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "contact_charge": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "contact_charge",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": -2,
+            "duration_s": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 30.0,
+        "capacity_ah": 0.01666666666666666,
+        "energy_wh": -0.06405768130766146,
+        "final_soc": 0.5033333333333333,
+        "final_voltage_v": 3.854574501878018,
+        "max_temperature_c": 25.097360431253435,
+        "point_count": 31,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.01
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 3.74439156137936,
+        "contact_heat_j": 1.200000000000001,
+        "cell_boundary_heat_j": -0.07643480972413247,
+        "environment_heat_j": -0.07643480972413247,
+        "cell_stored_energy_j": 4.868021562674585,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 6.481101935612577e-05,
+        "system_residual_j": 6.481101935612577e-05,
+        "tolerance_j": 0.009888783122758723,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 8.929513128919098e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 2.7755575615628914e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 5.551115123125783e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "analytic_cooling": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "analytic_cooling",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 35,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 30,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-08,
+        "atol": 1e-08,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "rest",
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.0,
+        "energy_wh": 0.0,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.750873608447337,
+        "max_temperature_c": 35.00000000000006,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 30,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.0,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -158.8618417818609,
+        "environment_heat_j": -158.8618417818609,
+        "cell_stored_energy_j": -158.85959048733866,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.0022512945222388225,
+        "system_residual_j": 0.0022512945222388225,
+        "tolerance_j": 0.3177236835637218,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "first_step_ambient": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "first_step_ambient",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 35,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 30,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-08,
+        "atol": 1e-08,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "rest",
+            "duration_s": 60,
+            "temperature_c": 20
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 60.0,
+        "capacity_ah": 0.0,
+        "energy_wh": 0.0,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.750873608447337,
+        "max_temperature_c": 35.00000000000006,
+        "point_count": 61,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 30,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.0,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -130.49918226339952,
+        "environment_heat_j": -130.49918226339952,
+        "cell_stored_energy_j": -130.50328879552353,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": -0.004106532124012574,
+        "system_residual_j": -0.004106532124012574,
+        "tolerance_j": 0.26100657759104706,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "two_node": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "two_node",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "lumped",
+          "casing_heat_capacity_j_k": 5,
+          "environment_thermal_resistance_k_w": 2,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.10000000000000002,
+        "energy_wh": 0.36254154996212923,
+        "final_soc": 0.48,
+        "final_voltage_v": 3.6028907906796723,
+        "max_temperature_c": 25.618010223936437,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "lumped",
+          "casing_heat_capacity_j_k": 5,
+          "environment_thermal_resistance_k_w": 2,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Casing heat capacity [J.K-1]": 5,
+          "Environment thermal resistance [K.W-1]": 2,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_surface - T)",
+          "C_surface dT_surface/dt = -h A (T_surface - T) + (T_ambient - T_surface)/R_environment"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 32.7008264247856,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -1.8004620667893896,
+        "environment_heat_j": -1.5259300525596586,
+        "cell_stored_energy_j": 30.900511196821867,
+        "surface_stored_energy_j": 0.27455573235698694,
+        "cell_residual_j": 0.00014683882565336148,
+        "system_residual_j": 0.0001705569529093509,
+        "tolerance_j": 0.06540165284957121,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394269249289437e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "isothermal_limit": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "isothermal_limit",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10000,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 30.0,
+        "capacity_ah": 0.008333333333333325,
+        "energy_wh": 0.03094924010684738,
+        "final_soc": 0.49833333333333335,
+        "final_voltage_v": 3.709010474629702,
+        "max_temperature_c": 25.0006268378375,
+        "point_count": 31,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10000,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.9575165630417122,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.9236113030834996,
+        "environment_heat_j": -0.9236113030834996,
+        "cell_stored_energy_j": 0.031341891875058536,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": -0.0025633680831540495,
+        "system_residual_j": -0.0025633680831540495,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.464756564459549e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 6.938893903907228e-18,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "isothermal_reference": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "isothermal_reference",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 1,
+            "duration_s": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 30.0,
+        "capacity_ah": 0.008333333333333333,
+        "energy_wh": 0.03094923556643114,
+        "final_soc": 0.49833333333333335,
+        "final_voltage_v": 3.7090098930959545,
+        "max_temperature_c": 25.0,
+        "point_count": 31,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "isothermal",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": null,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "not_applicable",
+        "reason": "等温では蓄熱・冷却の微分方程式を解きません。熱源の有効/無効は設定に記録します。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.464756564459549e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.3877787807814457e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "SPM_mixing": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "SPM_mixing",
+        "model": "SPM",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": true,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 30.0,
+        "capacity_ah": 0.024999999999999998,
+        "energy_wh": 0.09181074766122801,
+        "final_soc": 0.495,
+        "final_voltage_v": 3.662469105357592,
+        "max_temperature_c": 25.15219347480786,
+        "point_count": 31,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": true,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 42.77529812749004,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 6.629247633017851,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.11918846334578485,
+        "environment_heat_j": -0.11918846334578485,
+        "cell_stored_energy_j": 6.510121257964824,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 6.208829275837491e-05,
+        "system_residual_j": 6.208829275837491e-05,
+        "tolerance_j": 0.013258495266035702,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.440892098500626e-16,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "SPMe_mixing": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "SPMe_mixing",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": true,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 30.0,
+        "capacity_ah": 0.025000000000000005,
+        "energy_wh": 0.0912697857534505,
+        "final_soc": 0.495,
+        "final_voltage_v": 3.6369975584048606,
+        "max_temperature_c": 25.196895737792318,
+        "point_count": 31,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": true,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 42.77529812749004,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 8.574630503338485,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.15251566357633545,
+        "environment_heat_j": -0.15251566357633545,
+        "cell_stored_energy_j": 8.422273884098487,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00015904433633823212,
+        "system_residual_j": 0.00015904433633823212,
+        "tolerance_j": 0.01714926100667697,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394268805200227e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "DFN_mixing": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "DFN_mixing",
+        "model": "DFN",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": true,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 30.0,
+        "capacity_ah": 0.025000000000000015,
+        "energy_wh": 0.09129286932826769,
+        "final_soc": 0.495,
+        "final_voltage_v": 3.638068252287055,
+        "max_temperature_c": 25.19495890350686,
+        "point_count": 31,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": true,
+          "isothermal_heat_source": true,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 42.77529812749004,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 8.490317441979537,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -0.15106105548914694,
+        "environment_heat_j": -0.15106105548914694,
+        "cell_stored_energy_j": 8.339425220114432,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00016883362404218616,
+        "system_residual_j": 0.00016883362404218616,
+        "tolerance_j": 0.016980634883959074,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.331346055621907e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "isothermal_heat_off": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "isothermal_heat_off",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "thermal_settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": false,
+          "source": ""
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.09999999999999991,
+        "energy_wh": 0.3624862179965179,
+        "final_soc": 0.48000000000000004,
+        "final_voltage_v": 3.6017898536359843,
+        "max_temperature_c": 25.0,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "isothermal",
+        "settings": {
+          "capacity_mode": "literature",
+          "cell_heat_capacity_j_k": null,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": false,
+          "source": ""
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": null,
+        "capacity_basis": "literature_layer_density_specific_heat_thickness",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "Chen2020 bundled thermal parameters",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "not_applicable",
+        "reason": "等温では蓄熱・冷却の微分方程式を解きません。熱源の有効/無効は設定に記録します。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394268805200227e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "unavailable",
+          "max_absolute_residual": null,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": null,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "unavailable",
+          "max_absolute_residual": null,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": null,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "contact_cp": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "contact_cp",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cp",
+            "control": "explicit",
+            "duration_s": 20,
+            "power_w": 3
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.00448730614681795,
+        "energy_wh": 0.01666666666666666,
+        "final_soc": 0.49910253877063643,
+        "final_voltage_v": 3.7109378696270316,
+        "max_temperature_c": 25.010753263161234,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.01
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.41283997604065803,
+        "contact_heat_j": 0.13048067750190417,
+        "cell_boundary_heat_j": -0.005664436816411821,
+        "environment_heat_j": -0.005664436816411821,
+        "cell_stored_energy_j": 0.5376631580617186,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 6.941335568221539e-06,
+        "system_residual_j": 6.941335568221539e-06,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 3.609402554616281e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 6.938893903907228e-18,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "contact_cr": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "contact_cr",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cr",
+            "control": "explicit",
+            "duration_s": 20,
+            "resistance_ohm": 4
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005151247250120324,
+        "energy_wh": 0.01910545874445593,
+        "final_soc": 0.49896975054997594,
+        "final_voltage_v": 3.70526591677656,
+        "max_temperature_c": 25.014116888731337,
+        "point_count": 21,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.01,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.01
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.5413346875550655,
+        "contact_heat_j": 0.17194928855157537,
+        "cell_boundary_heat_j": -0.007447555270027272,
+        "environment_heat_j": -0.007447555270027272,
+        "cell_stored_energy_j": 0.7058444365668493,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 8.015730235565698e-06,
+        "system_residual_j": 8.015730235565698e-06,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.145269461020007e-09,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 6.938893903907228e-18,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "ambient_step": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "ambient_step",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "rest",
+            "duration_s": 20,
+            "temperature_c": 20
+          },
+          {
+            "kind": "rest",
+            "duration_s": 20,
+            "temperature_c": 30
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 40.0,
+        "capacity_ah": 0.0,
+        "energy_wh": 0.0,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.750873608447337,
+        "max_temperature_c": 25.00220842534526,
+        "point_count": 42,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.42e-05,
+        "cooling_area_m2": 0.00531,
+        "geometry_basis": {
+          "volume": "literature_parameter_set",
+          "area": "literature_parameter_set"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2066115.702479339,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 0.0,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": 0.11041976995923886,
+        "environment_heat_j": 0.11041976995923886,
+        "cell_stored_energy_j": 0.1104212672629501,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 1.4973037112397947e-06,
+        "system_residual_j": 1.4973037112397947e-06,
+        "tolerance_j": 0.005,
+        "passed": true,
+        "quadrature_points": 1002,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "saved_design_False": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "saved_design_False",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": "1b63422b-a6ee-4fe6-b346-ba11596d6e6b",
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.09999999999999995,
+        "energy_wh": 0.3648186793134148,
+        "final_soc": 0.4765855616939413,
+        "final_voltage_v": 3.6223849006012525,
+        "max_temperature_c": 25.64022620126036,
+        "point_count": 121,
+        "c_rate_reference_ah": 4.270869054933677
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.4245241304079233e-05,
+        "cooling_area_m2": 0.005310862380893546,
+        "geometry_basis": {
+          "volume": "saved_design_dimensions",
+          "area": "saved_design_dimensions"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2062260.357523749,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 34.065236110813714,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -2.054087249742124,
+        "environment_heat_j": -2.054087249742124,
+        "cell_stored_energy_j": 32.011310063020915,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00016120194932423004,
+        "system_residual_j": 0.00016120194932423004,
+        "tolerance_j": 0.06813047222162744,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.668230442675167e-07,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 1.1102230246251565e-16,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "saved_design_True": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "saved_design_True",
+        "model": "DFN",
+        "parameter_set": "Chen2020_composite",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": "488b1b1e-1650-4eff-b267-422b7bb8805e",
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.09999999999999996,
+        "energy_wh": 0.34917126039072,
+        "final_soc": 0.47722473017161215,
+        "final_voltage_v": 3.4722479881089017,
+        "max_temperature_c": 25.752226527036612,
+        "point_count": 121,
+        "c_rate_reference_ah": 4.390727343891081
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": null,
+          "cell_volume_m3": null,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2.4245241304079233e-05,
+        "cooling_area_m2": 0.005310862380893546,
+        "geometry_basis": {
+          "volume": "saved_design_dimensions",
+          "area": "saved_design_dimensions"
+        },
+        "cell_heat_capacity_initial_j_k": 50.0,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2062260.357523749,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 40.02909890964456,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -2.4179363731767154,
+        "environment_heat_j": -2.4179363731767154,
+        "cell_stored_energy_j": 37.6113263518306,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00016381536275389408,
+        "system_residual_j": 0.00016381536275389408,
+        "tolerance_j": 0.08005819781928912,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 4.440892098500626e-16,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 6.494804694057166e-15,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    },
+    "explicit_geometry": {
+      "input": {
+        "config_schema_version": "1.3",
+        "solver": "IDAKLUSolver",
+        "model_options": {},
+        "name": "explicit_geometry",
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "thermal_settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": 0.005,
+          "cell_volume_m3": 2e-05,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "initial_soc": 0.5,
+        "initial_temp_c": 25,
+        "ambient_temp_c": 25,
+        "heat_transfer_w_m2_k": 10,
+        "min_voltage_v": 2.5,
+        "max_voltage_v": 4.2,
+        "dt_s": 1,
+        "mesh": "normal",
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "timeout_s": 120,
+        "design_id": null,
+        "cycles": 1,
+        "start_time": null,
+        "initial_ocv_v": null,
+        "reference_electrode_fraction": 0.5,
+        "output": {
+          "variables": [
+            "surface_ocv_v",
+            "reaction_overpotential_v",
+            "electrolyte_ohmic_loss_v",
+            "concentration_overpotential_v",
+            "solid_ohmic_loss_v",
+            "ohmic_heating_w",
+            "reaction_heating_w",
+            "reversible_heating_w",
+            "hysteresis_heating_w",
+            "mixing_heating_w",
+            "total_heating_w",
+            "contact_voltage_loss_v",
+            "contact_heating_w",
+            "total_heat_with_contact_w",
+            "surface_cooling_w",
+            "environment_cooling_w",
+            "surface_temperature_c",
+            "bulk_ocv_v",
+            "negative_stoichiometry",
+            "positive_stoichiometry",
+            "negative_primary_stoichiometry",
+            "negative_secondary_stoichiometry",
+            "negative_capacity_ah",
+            "positive_capacity_ah",
+            "lithium_capacity_ah",
+            "reference_potential_v",
+            "positive_3e_v",
+            "negative_3e_v"
+          ],
+          "distributions": [
+            "electrolyte_concentration_x",
+            "negative_particle_r",
+            "positive_particle_r",
+            "negative_primary_r",
+            "negative_secondary_r"
+          ],
+          "frames": 21,
+          "max_nodes": 80
+        },
+        "protocol": [
+          {
+            "kind": "cc",
+            "current_a": 3,
+            "duration_s": 120
+          }
+        ]
+      },
+      "summary": {
+        "duration_s": 120.0,
+        "capacity_ah": 0.1,
+        "energy_wh": 0.36254150746584707,
+        "final_soc": 0.48,
+        "final_voltage_v": 3.602889166521266,
+        "max_temperature_c": 25.617092427981618,
+        "point_count": 121,
+        "c_rate_reference_ah": 5.0
+      },
+      "thermal_provenance": {
+        "version": "1.0",
+        "model": "lumped",
+        "settings": {
+          "capacity_mode": "user",
+          "cell_heat_capacity_j_k": 50,
+          "surface_temperature": "ambient",
+          "casing_heat_capacity_j_k": null,
+          "environment_thermal_resistance_k_w": null,
+          "contact_resistance_ohm": 0.0,
+          "cooling_area_m2": 0.005,
+          "cell_volume_m3": 2e-05,
+          "heat_of_mixing": false,
+          "isothermal_heat_source": true,
+          "source": "synthetic thermal verification; not measured"
+        },
+        "cell_volume_m3": 2e-05,
+        "cooling_area_m2": 0.005,
+        "geometry_basis": {
+          "volume": "explicit_user",
+          "area": "explicit_user"
+        },
+        "cell_heat_capacity_initial_j_k": 50.00000000000001,
+        "capacity_basis": "explicit_user_cell_capacity",
+        "capacity_note": "熱容量は文献層別値または明示入力。設計の質量×仮定比熱・接触率・ASRは転用しません。",
+        "parameter_overrides": {
+          "Total heat transfer coefficient [W.m-2.K-1]": 10,
+          "Cell heat capacity [J.K-1.m-3]": 2500000.0,
+          "Contact resistance [Ohm]": 0.0
+        },
+        "source": "synthetic thermal verification; not measured",
+        "boundary_equations": [
+          "C_cell dT/dt = Q_electrochemical + I²R_contact + h A (T_ambient - T)"
+        ],
+        "note": "接触抵抗はセル全体の電気抵抗。正負極3E電位差は接触抵抗手前の電圧で、端子電圧はそこからI Rを引いた値。端面・タブの局所発熱分布や熱接触抵抗は未計算。外側ノードはモデル上の表面/環境で、実缶温度として未校正。"
+      },
+      "thermal_balance": {
+        "status": "available",
+        "electrochemical_heat_j": 32.70097960527808,
+        "contact_heat_j": 0.0,
+        "cell_boundary_heat_j": -1.8465071596979765,
+        "environment_heat_j": -1.8465071596979765,
+        "cell_stored_energy_j": 30.85462139908089,
+        "surface_stored_energy_j": 0.0,
+        "cell_residual_j": 0.00014895350078880654,
+        "system_residual_j": 0.00014895350078880654,
+        "tolerance_j": 0.06540195921055617,
+        "passed": true,
+        "quadrature_points": 501,
+        "method": "Per executed step: 501 equally spaced native-solution samples; trapezoidal Q dt and C(T) dT. No step-boundary integration.",
+        "sign": "Heat into each node is positive. Native cooling is negative when the cell is hotter.",
+        "note": "数値積分による熱収支確認。許容差=max(0.005 J, エネルギー尺度の0.2%)。実測精度・局所温度の検証ではありません。"
+      },
+      "balances": {
+        "voltage": {
+          "status": "available",
+          "max_absolute_residual": 1.3394269249289437e-08,
+          "tolerance": 0.0001,
+          "unit": "V",
+          "passed": true,
+          "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+        },
+        "heat": {
+          "status": "available",
+          "max_absolute_residual": 5.551115123125783e-17,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+        },
+        "heat_with_contact": {
+          "status": "available",
+          "max_absolute_residual": 0.0,
+          "tolerance": 1e-06,
+          "unit": "W",
+          "passed": true,
+          "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+        }
+      }
+    }
+  },
+  "environment": {
+    "available": true,
+    "versions": {
+      "python": [
+        3,
+        13
+      ],
+      "pybamm": "26.10.1.0",
+      "solvers": "0.11.1",
+      "numpy": "2.3.5",
+      "casadi": "3.8.1"
+    },
+    "checks": [
+      {
+        "id": "python",
+        "ok": true,
+        "expected": [
+          3,
+          13
+        ],
+        "actual": [
+          3,
+          13
+        ]
+      },
+      {
+        "id": "pybamm",
+        "ok": true,
+        "expected": "26.10.1.0",
+        "actual": "26.10.1.0"
+      },
+      {
+        "id": "solvers",
+        "ok": true,
+        "expected": "0.11.1",
+        "actual": "0.11.1"
+      },
+      {
+        "id": "numpy",
+        "ok": true,
+        "expected": "2.3.5",
+        "actual": "2.3.5"
+      },
+      {
+        "id": "casadi",
+        "ok": true,
+        "expected": "3.8.1",
+        "actual": "3.8.1"
+      },
+      {
+        "id": "os",
+        "ok": true,
+        "expected": [
+          "Windows"
+        ],
+        "actual": "Windows"
+      },
+      {
+        "id": "runtime_imports",
+        "ok": true,
+        "expected": "PyBaMM・依存ライブラリ読込とIDAKLU構築",
+        "actual": "成功"
+      }
+    ],
+    "solver": "IDAKLUSolver",
+    "checked_at": "2026-10-17T03:49:59.907473+00:00",
+    "message": "固定計算環境とソルバ読込を確認しました。",
+    "scope": "版・依存読込・ソルバ構築の診断。計算成功や対象セルの物理精度の検証は含みません。"
+  },
+  "passed": true
+}

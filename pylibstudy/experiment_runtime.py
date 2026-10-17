@@ -39,6 +39,10 @@ def build_experiment(pybamm, config, design):
             common = dict(duration=item['duration_s'], period=item['period_s'],
                           skip_ok=s.get('skip_ok', False), tags=s.get('tags', []),
                           temperature=s.get('temperature_c', config['ambient_temp_c']) + 273.15)
+            # Pinned Simulation otherwise replaces Initial temperature with the
+            # first step's ambient. Keep initial cell T independent of ambient T.
+            # The worker supplies this step's ambient through ParameterValues.
+            if cycle_i == 0 and step_i == 0: common['temperature'] = None
             if config['start_time'] and cycle_i == 0 and step_i == 0:
                 common['start_time'] = datetime.fromisoformat(config['start_time'])
             limits = [pybamm.step.VoltageTermination(config['min_voltage_v'], operator='<'),

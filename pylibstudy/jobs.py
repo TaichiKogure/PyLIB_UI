@@ -232,6 +232,9 @@ class PhysicsJobs:
                                 latest['message'] = '初期状態でステップの終止条件に達しています。SOC・電流方向・終止条件を確認してください。'
                             if payload.get('error_code') == 'all_steps_skipped':
                                 latest['message'] = '全ステップが初期条件でスキップされ、有効な計算結果がありません。試験条件を確認してください。'
+                            if payload.get('error_code') == 'missing_material_parameters':
+                                latest['message'] = '計算に必要な材料物性が不足しています: ' + ', '.join(
+                                    payload.get('missing_parameters', []))[:2000]
                         else:
                             result = payload['result']
                             if result['id'] != job['result_id'] or result['project_id'] != job['project_id']:

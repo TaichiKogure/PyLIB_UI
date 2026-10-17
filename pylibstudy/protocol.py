@@ -3,7 +3,9 @@ import math
 from copy import deepcopy
 from datetime import datetime
 
-REFERENCE_CAPACITIES = {'Chen2020': 5.0, 'Chen2020_composite': 5.0}
+from .materials import SETS
+
+REFERENCE_CAPACITIES = {k: v['capacity'] for k, v in SETS.items()}
 MAX_STEPS = 200
 COMMON = {'duration_s', 'period_s', 'temperature_c', 'tags', 'skip_ok'}
 FIELDS = {
@@ -127,7 +129,13 @@ def expand_protocol(c):
 
 
 def capacity_reference(c, design=None):
-    return (design['capacity']['c_rate_reference_ah'] if design else REFERENCE_CAPACITIES[c['parameter_set']])
+    if c['parameter_set'] == 'BPX': return c['material_settings']['overrides'].get('Nominal cell capacity [A.h]',
+                                                                                   c['material_settings']['bpx'][
+                                                                                       'Parameterisation']['Cell'][
+                                                                                       'Nominal cell capacity [A.h]'])
+    return (design['capacity']['c_rate_reference_ah'] if design else c.get('material_settings', {}).get('overrides',
+                                                                                                        {}).get(
+        'Nominal cell capacity [A.h]', REFERENCE_CAPACITIES[c['parameter_set']]))
 
 
 def preview_protocol(c, design=None):

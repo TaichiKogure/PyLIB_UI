@@ -1,0 +1,1858 @@
+{
+  "scope": "Pinned native solvers and result contracts; no target-cell measured validation",
+  "cases": {
+    "SPM_Chen2020_isothermal": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784236,
+        "initial_soc": 0.49999999999999983,
+        "positive_window_capacity_ah": 5.15319832613194,
+        "electrode_capacity_mismatch_ah": 8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.26384522459133,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784236,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784236,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713958,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282335,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250568,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.180833807628453
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.03101160380992217,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.440892098500626e-16,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 4.163336342344337e-17,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "negative_reaction_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "negative_particle_r": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "SPM_Chen2020_lumped": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784236,
+        "initial_soc": 0.49999999999999983,
+        "positive_window_capacity_ah": 5.15319832613194,
+        "electrode_capacity_mismatch_ah": 8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.26384522459133,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784236,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784236,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713958,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282335,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250568,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.180833807628453
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.031011670909641645,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.440892098500626e-16,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 4.163336342344337e-17,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "negative_reaction_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "negative_particle_r": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Timms2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "SPMe_Chen2020_isothermal": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784236,
+        "initial_soc": 0.49999999999999983,
+        "positive_window_capacity_ah": 5.15319832613194,
+        "electrode_capacity_mismatch_ah": 8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.26384522459133,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784236,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784236,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713958,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282335,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250568,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.180833807628453
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.030949529311252565,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.464756564459549e-09,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 1.3877787807814457e-17,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "negative_reaction_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "negative_particle_r": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "SPMe_Chen2020_lumped": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784236,
+        "initial_soc": 0.49999999999999983,
+        "positive_window_capacity_ah": 5.15319832613194,
+        "electrode_capacity_mismatch_ah": 8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.26384522459133,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784236,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784236,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713958,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282335,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250568,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.180833807628453
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.030949613770269814,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.464756120370339e-09,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 6.938893903907228e-18,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "negative_reaction_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "negative_particle_r": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Timms2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "DFN_Chen2020_isothermal": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784234,
+        "initial_soc": 0.49999999999999944,
+        "positive_window_capacity_ah": 5.153198326131941,
+        "electrode_capacity_mismatch_ah": 1.7763568394002505e-15,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.2638452245913297,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784234,
+          "n_Li": 0.2839660968924,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784234,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713955,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282362,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250593,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.026345790270645788,
+          "y_0": 0.8539746746300467,
+          "Un(x_0)": 1.105435965511283,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.18083380762846
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.030951713539574967,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.5626546985033656e-09,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 6.938893903907228e-18,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "negative_reaction_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "negative_particle_r": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Doyle1993",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "DFN_Chen2020_lumped": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784234,
+        "initial_soc": 0.49999999999999944,
+        "positive_window_capacity_ah": 5.153198326131941,
+        "electrode_capacity_mismatch_ah": 1.7763568394002505e-15,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.2638452245913297,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784234,
+          "n_Li": 0.2839660968924,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784234,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713955,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282362,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250593,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.026345790270645788,
+          "y_0": 0.8539746746300467,
+          "Un(x_0)": 1.105435965511283,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.18083380762846
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.030951797652387335,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.5626546985033656e-09,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 1.0408340855860843e-17,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "negative_reaction_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "negative_particle_r": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Doyle1993",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Timms2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "DFN_Chen2020_composite_isothermal": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHComposite.solve_full",
+        "capacity_ah": 5.722557658499814,
+        "negative_capacity_ah": 5.924879763514969,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 8.10533726254826,
+        "initial_soc": 0.49999999999999994,
+        "positive_window_capacity_ah": 5.722557658499816,
+        "electrode_capacity_mismatch_ah": 1.7763568394002505e-15,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100_1": 0.9862499031407674,
+          "y_100_1": 0.2721048062446169,
+          "x_0_1": 0.0012647753906871316,
+          "y_0_1": 0.9274356493639818,
+          "x_init_1": 0.39407043378300455,
+          "y_init_1": 0.5997702278042993,
+          "x_100_2": 0.8694916210789748,
+          "x_0_2": 0.00042638959137253834,
+          "x_init_2": 0.9392384844011911
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.030358198050949456,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 3.3514857555871913e-15,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ],
+        "negative_primary_r": [
+          7,
+          12
+        ],
+        "negative_secondary_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Ai2022",
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Doyle1993",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "DFN_Chen2020_composite_lumped": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHComposite.solve_full",
+        "capacity_ah": 5.722557658499814,
+        "negative_capacity_ah": 5.924879763514969,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 8.10533726254826,
+        "initial_soc": 0.49999999999999994,
+        "positive_window_capacity_ah": 5.722557658499816,
+        "electrode_capacity_mismatch_ah": 1.7763568394002505e-15,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100_1": 0.9862499031407674,
+          "y_100_1": 0.2721048062446169,
+          "x_0_1": 0.0012647753906871316,
+          "y_0_1": 0.9274356493639818,
+          "x_init_1": 0.39407043378300455,
+          "y_init_1": 0.5997702278042993,
+          "x_100_2": 0.8694916210789748,
+          "x_0_2": 0.00042638959137253834,
+          "x_init_2": 0.9392384844011911
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.030358291748912733,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 3.3584246494910985e-15,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          7,
+          12
+        ],
+        "electrolyte_potential_x": [
+          7,
+          12
+        ],
+        "negative_potential_x": [
+          7,
+          12
+        ],
+        "positive_potential_x": [
+          7,
+          12
+        ],
+        "positive_reaction_x": [
+          7,
+          12
+        ],
+        "temperature_x": [
+          7,
+          12
+        ],
+        "positive_particle_r": [
+          7,
+          12
+        ],
+        "negative_primary_r": [
+          7,
+          12
+        ],
+        "negative_secondary_r": [
+          7,
+          12
+        ]
+      },
+      "unavailable": {
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Ai2022",
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Doyle1993",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Timms2021",
+        "Virtanen2020"
+      ],
+      "csv_rows": 7,
+      "spatial_csv_rows": 756
+    },
+    "SPM_ocv_Chen2020": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131943,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784237,
+        "initial_soc": 0.5518394657859776,
+        "positive_window_capacity_ah": 5.1531983261319425,
+        "electrode_capacity_mismatch_ah": -8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524102,
+          "y_100": 0.2638452245913296,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784237,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784237,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713959,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282326,
+          "Formation capacity loss [mA.h.cm-2]": 1.092119307525056,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131943,
+          "Capacity [A.h]": 5.153198326131943,
+          "Capacity [mA.h.cm-2]": 5.017719889125552,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817644,
+          "y_0 - y_100": 0.5901294500387174,
+          "Q_n * (x_100 - x_0)": 5.153198326131943,
+          "Q_p * (y_0 - y_100)": 5.153198326131943,
+          "Negative electrode excess capacity ratio": 1.1308734304203623,
+          "Positive electrode excess capacity ratio": 1.6945434598025766,
+          "Practical negative positive ratio": 1.1010796761998616,
+          "Practical NPR": 1.1010796761998616,
+          "Maximum theoretical energy [W.h]": 19.180833807628463
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.0,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.0,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          2,
+          60
+        ],
+        "negative_particle_r": [
+          2,
+          20
+        ],
+        "positive_particle_r": [
+          2,
+          20
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 2,
+      "spatial_csv_rows": 200
+    },
+    "SPMe_ocv_Chen2020": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131943,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784237,
+        "initial_soc": 0.5518394657859776,
+        "positive_window_capacity_ah": 5.1531983261319425,
+        "electrode_capacity_mismatch_ah": -8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524102,
+          "y_100": 0.2638452245913296,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784237,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784237,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713959,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282326,
+          "Formation capacity loss [mA.h.cm-2]": 1.092119307525056,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131943,
+          "Capacity [A.h]": 5.153198326131943,
+          "Capacity [mA.h.cm-2]": 5.017719889125552,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817644,
+          "y_0 - y_100": 0.5901294500387174,
+          "Q_n * (x_100 - x_0)": 5.153198326131943,
+          "Q_p * (y_0 - y_100)": 5.153198326131943,
+          "Negative electrode excess capacity ratio": 1.1308734304203623,
+          "Positive electrode excess capacity ratio": 1.6945434598025766,
+          "Practical negative positive ratio": 1.1010796761998616,
+          "Practical NPR": 1.1010796761998616,
+          "Maximum theoretical energy [W.h]": 19.180833807628463
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.0,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.0,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          2,
+          60
+        ],
+        "negative_particle_r": [
+          2,
+          20
+        ],
+        "positive_particle_r": [
+          2,
+          20
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 2,
+      "spatial_csv_rows": 200
+    },
+    "DFN_ocv_Chen2020_composite": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHComposite.solve_full",
+        "capacity_ah": 5.722557658499808,
+        "negative_capacity_ah": 5.924879763514969,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 8.10533726254825,
+        "initial_soc": 0.6111221262602784,
+        "positive_window_capacity_ah": 5.7225576584998095,
+        "electrode_capacity_mismatch_ah": 1.7763568394002505e-15,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100_1": 0.9862499031407673,
+          "y_100_1": 0.2721048062446176,
+          "x_0_1": 0.0012647753906871312,
+          "y_0_1": 0.9274356493639818,
+          "x_init_1": 0.521196409977202,
+          "y_init_1": 0.526948471112935,
+          "x_100_2": 0.8694916210789692,
+          "x_0_2": 0.0004263895913725303,
+          "x_init_2": 0.9464130048242604
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.0,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.0,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 1.0761972206014595e-42,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          2,
+          60
+        ],
+        "positive_particle_r": [
+          2,
+          20
+        ],
+        "negative_primary_r": [
+          2,
+          20
+        ],
+        "negative_secondary_r": [
+          2,
+          20
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Ai2022",
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Doyle1993",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020"
+      ],
+      "csv_rows": 2,
+      "spatial_csv_rows": 240
+    },
+    "nested_pulses": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784236,
+        "initial_soc": 0.49999999999999983,
+        "positive_window_capacity_ah": 5.15319832613194,
+        "electrode_capacity_mismatch_ah": 8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.26384522459133,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784236,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784236,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713958,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282335,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250568,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.180833807628453
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.03333333333333332,
+        "charge_ah": 0.0,
+        "discharge_wh": 0.12354299909393851,
+        "charge_wh": 0.0,
+        "coulombic_efficiency": null,
+        "energy_efficiency": null,
+        "efficiency_status": "unavailable",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "available",
+            "max_absolute_residual": 4.464756564459549e-09,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": true,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "available",
+            "max_absolute_residual": 6.938893903907228e-18,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "available",
+            "max_absolute_residual": 0.0,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": true,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {
+        "electrolyte_concentration_x": [
+          21,
+          60
+        ],
+        "negative_particle_r": [
+          21,
+          20
+        ],
+        "positive_particle_r": [
+          21,
+          20
+        ]
+      },
+      "unavailable": {
+        "surface_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "environment_cooling_w": "この境界の熱収支ノードは使用していません。未計算の熱流をゼロとして扱いません。",
+        "negative_primary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。",
+        "negative_secondary_stoichiometry": "このモデル・物性・試験で変数が存在しないか、有限のスカラー系列として取得できません。"
+      },
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 47,
+      "spatial_csv_rows": 2100
+    },
+    "sparse_output": {
+      "status": "completed",
+      "electrode_soh": {
+        "status": "available",
+        "source": "PyBaMM ElectrodeSOHSolver",
+        "capacity_ah": 5.153198326131939,
+        "negative_capacity_ah": 5.827615068709299,
+        "positive_capacity_ah": 8.73231852061247,
+        "cyclable_lithium_ah": 7.610711991784236,
+        "initial_soc": 0.49999999999999983,
+        "positive_window_capacity_ah": 5.15319832613194,
+        "electrode_capacity_mismatch_ah": 8.881784197001252e-16,
+        "voltage_window_v": [
+          2.5,
+          4.2
+        ],
+        "native_variables": {
+          "x_100": 0.9106180466524094,
+          "y_100": 0.26384522459133,
+          "Un(x_100)": 0.09202000102092976,
+          "Up(y_100)": 4.29202000102093,
+          "Up(y_100) - Un(x_100)": 4.2,
+          "Q_Li": 7.610711991784236,
+          "n_Li": 0.2839660968924001,
+          "Q_n": 5.827615068709299,
+          "Q_p": 8.73231852061247,
+          "Cyclable lithium capacity [A.h]": 7.610711991784236,
+          "Negative electrode capacity [A.h]": 5.827615068709299,
+          "Positive electrode capacity [A.h]": 8.73231852061247,
+          "Cyclable lithium capacity [mA.h.cm-2]": 7.410625113713958,
+          "Negative electrode capacity [mA.h.cm-2]": 5.674406103903893,
+          "Positive electrode capacity [mA.h.cm-2]": 8.502744421239015,
+          "Formation capacity loss [A.h]": 1.1216065288282335,
+          "Formation capacity loss [mA.h.cm-2]": 1.0921193075250568,
+          "Negative positive ratio": 0.6673617155573661,
+          "NPR": 0.6673617155573661,
+          "Q": 5.153198326131939,
+          "Capacity [A.h]": 5.153198326131939,
+          "Capacity [mA.h.cm-2]": 5.017719889125548,
+          "x_0": 0.02634579027064577,
+          "y_0": 0.853974674630047,
+          "Un(x_0)": 1.1054359655112835,
+          "Up(y_0)": 3.6054359655112833,
+          "Up(y_0) - Un(x_0)": 2.5,
+          "x_100 - x_0": 0.8842722563817637,
+          "y_0 - y_100": 0.590129450038717,
+          "Q_n * (x_100 - x_0)": 5.153198326131939,
+          "Q_p * (y_0 - y_100)": 5.153198326131939,
+          "Negative electrode excess capacity ratio": 1.1308734304203631,
+          "Positive electrode excess capacity ratio": 1.6945434598025781,
+          "Practical negative positive ratio": 1.1010796761998627,
+          "Practical NPR": 1.1010796761998627,
+          "Maximum theoretical energy [W.h]": 19.180833807628453
+        },
+        "note": "指定電圧窓と文献物性による平衡容量・化学量論。定格容量・実測容量・寿命SOH(%)とは異なります。複合相・ヒステリシスの初期化はPyBaMMの定義に従います。"
+      },
+      "performance": {
+        "discharge_ah": 0.008333333333333333,
+        "charge_ah": 0.008333333333333331,
+        "discharge_wh": 0.03101160380992217,
+        "charge_wh": 0.031462464230623634,
+        "coulombic_efficiency": 1.0000000000000002,
+        "energy_efficiency": 0.9856698948500472,
+        "efficiency_status": "conditional_ledger_ratio",
+        "skipped_intervals": 0,
+        "note": "出力点間のI,V線形近似の区間積分。区間境界・欠損を跨がない。効率はSOC帳簿差≤0.005かつ充放電がある場合の区間比で、完全サイクルや実測精度を保証しません。",
+        "balance_checks": {
+          "voltage": {
+            "status": "unavailable",
+            "max_absolute_residual": null,
+            "tolerance": 0.0001,
+            "unit": "V",
+            "passed": null,
+            "equation": "voltage_v = surface_ocv_v + reaction_overpotential_v + electrolyte_ohmic_loss_v + concentration_overpotential_v + solid_ohmic_loss_v + contact_voltage_loss_v"
+          },
+          "heat": {
+            "status": "unavailable",
+            "max_absolute_residual": null,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": null,
+            "equation": "total_heating_w = ohmic_heating_w + reaction_heating_w + reversible_heating_w + hysteresis_heating_w + mixing_heating_w"
+          },
+          "heat_with_contact": {
+            "status": "unavailable",
+            "max_absolute_residual": null,
+            "tolerance": 1e-06,
+            "unit": "W",
+            "passed": null,
+            "equation": "total_heat_with_contact_w = total_heating_w + contact_heating_w"
+          }
+        }
+      },
+      "spatial_shapes": {},
+      "unavailable": {},
+      "citation_keys": [
+        "Andersson2019",
+        "Bruggeman1935",
+        "Chen2020",
+        "Harris2020",
+        "Hindmarsh2000",
+        "Hindmarsh2005",
+        "Marquis2019",
+        "Mohtat2019",
+        "Sulzer2021",
+        "Virtanen2020",
+        "Weng2023"
+      ],
+      "csv_rows": 17,
+      "spatial_csv_rows": 0
+    }
+  },
+  "environment": {
+    "available": true,
+    "versions": {
+      "python": [
+        3,
+        13
+      ],
+      "pybamm": "26.10.1.0",
+      "solvers": "0.11.1",
+      "numpy": "2.3.5",
+      "casadi": "3.8.1"
+    },
+    "checks": [
+      {
+        "id": "python",
+        "ok": true,
+        "expected": [
+          3,
+          13
+        ],
+        "actual": [
+          3,
+          13
+        ]
+      },
+      {
+        "id": "pybamm",
+        "ok": true,
+        "expected": "26.10.1.0",
+        "actual": "26.10.1.0"
+      },
+      {
+        "id": "solvers",
+        "ok": true,
+        "expected": "0.11.1",
+        "actual": "0.11.1"
+      },
+      {
+        "id": "numpy",
+        "ok": true,
+        "expected": "2.3.5",
+        "actual": "2.3.5"
+      },
+      {
+        "id": "casadi",
+        "ok": true,
+        "expected": "3.8.1",
+        "actual": "3.8.1"
+      },
+      {
+        "id": "os",
+        "ok": true,
+        "expected": [
+          "Windows"
+        ],
+        "actual": "Windows"
+      },
+      {
+        "id": "runtime_imports",
+        "ok": true,
+        "expected": "PyBaMM・依存ライブラリ読込とIDAKLU構築",
+        "actual": "成功"
+      }
+    ],
+    "solver": "IDAKLUSolver",
+    "checked_at": "2026-10-17T04:39:04.786095+00:00",
+    "message": "固定計算環境とソルバ読込を確認しました。",
+    "scope": "版・依存読込・ソルバ構築の診断。計算成功や対象セルの物理精度の検証は含みません。"
+  },
+  "known_residual": {
+    "count": 7,
+    "rmse": 0.009999999999999787,
+    "mae": 0.009999999999999787,
+    "bias": -0.009999999999999787,
+    "max_absolute": 0.009999999999999787
+  },
+  "postprocess_counts": {
+    "derivatives": 18,
+    "pulses": 4,
+    "gitt": 2
+  },
+  "passed": true
+}

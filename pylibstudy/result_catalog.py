@@ -1,7 +1,7 @@
 """Versioned, stdlib-only P2 output contract. Spatial coordinates are metres."""
 from copy import deepcopy
 
-RESULT_VERSION = '1.0'
+RESULT_VERSION = '1.1'
 CORE = {
     'time_s': ('Time [s]', '時間', 's'), 'voltage_v': ('Terminal voltage [V]', '端子電圧', 'V'),
     'current_a': ('Current [A]', '電流（放電＋）', 'A'), 'soc': (None, '基準容量のSOC帳簿', '1'),
@@ -19,8 +19,14 @@ DIAGNOSTICS = {
     'reaction_heating_w': ('Irreversible electrochemical heating [W]', '不可逆反応発熱', 'W'),
     'reversible_heating_w': ('Reversible heating [W]', '可逆反応熱', 'W'),
     'hysteresis_heating_w': ('Hysteresis electrochemical heating [W]', 'ヒステリシス発熱', 'W'),
-    'mixing_heating_w': ('Heat of mixing [W]', '混合熱（現モデルでは無効）', 'W'),
-    'total_heating_w': ('Total heating [W]', '全発熱', 'W'),
+    'mixing_heating_w': ('Heat of mixing [W]', '混合熱（設定で選択）', 'W'),
+    'total_heating_w': ('Total heating [W]', '電気化学の合計発熱（接触を除く）', 'W'),
+    'contact_voltage_loss_v': ('Adapter contact voltage loss [V]', '接触抵抗の電圧成分（符号付き）', 'V'),
+    'contact_heating_w': ('Adapter contact heating [W]', '電気接触抵抗の発熱 I²R', 'W'),
+    'total_heat_with_contact_w': ('Adapter total heat including contact [W]', '接触を含む合計発熱', 'W'),
+    'surface_cooling_w': ('Surface total cooling [W]', 'セル境界熱流（流入＋）', 'W'),
+    'environment_cooling_w': ('Environment total cooling [W]', '外側ノードの環境熱流（流入＋）', 'W'),
+    'surface_temperature_c': ('Surface temperature [K]', '外側ノード温度（周囲境界では周囲温度）', 'degC'),
 }
 EXTRA = {
     'bulk_ocv_v': ('Bulk open-circuit voltage [V]', 'バルクOCV', 'V'),

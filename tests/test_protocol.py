@@ -73,7 +73,7 @@ class ProtocolTests(unittest.TestCase):
     def test_v10_migration_and_waveform_in_mixed_protocol(self):
         c = validate_request(dict(config_schema_version='1.0', protocol=[
             dict(kind='profile', points=[[0, 1], [10, -1]]), dict(kind='rest', duration_s=10)]))
-        self.assertEqual(c['config_schema_version'], '1.2')
+        self.assertEqual(c['config_schema_version'], '1.4')
         self.assertEqual(c['cycles'], 1)
         self.assertEqual(preview_protocol(c)['duration_upper_s'], 20)
 

@@ -387,13 +387,13 @@
     {
       "id": "A07",
       "label": "黒鉛＋Si等の複数活物質相、相別反応・拡散",
-      "status": "一部: Chen2020_compositeのDFN等温",
+      "status": "対応範囲: Chen2020_composite DFN、Siのcurrent sigmoid/2種の状態ヒステリシス。追加係数は出典付き明示入力。",
       "phase": "P4"
     },
     {
       "id": "A08",
       "label": "半セル、Li対極、正極working electrode",
-      "status": "未",
+      "status": "対応: Xu2019正極半セル・Li対極、DFN等温。円筒全セル設計とは接続しない。",
       "phase": "P4"
     },
     {
@@ -405,7 +405,7 @@
     {
       "id": "A10",
       "label": "複合電極・半セルのSOH/初期状態補助モデル",
-      "status": "一部: 複合負極eSOHはP2接続。半セルはP4",
+      "status": "対応範囲: 複合負極/正極半セルの平衡容量と初期化学量論。",
       "phase": "P4"
     },
     {
@@ -447,19 +447,19 @@
     {
       "id": "A17",
       "label": "標準19物性セットの説明・出典・差分閲覧、互換性判定",
-      "status": "一部: 実行はChen系2種",
+      "status": "対応: 標準19セットの物性・出典・関数ハッシュ比較。実行は採用5セット＋独自BPX。",
       "phase": "P1/P4"
     },
     {
       "id": "A18",
       "label": "独自ParameterValues、関数・補間曲線、BPXの取込",
-      "status": "未",
+      "status": "対応範囲: 出典付き数値ParameterValues差分・OCP表・同梱関数・BPX1.xのDFN単相等温。任意Pythonなし。",
       "phase": "P4"
     },
     {
       "id": "A19",
       "label": "LFP/NCA等の物性セットを選んだ実ソルバ計算",
-      "status": "未: 現公開正極曲線計算とは別",
+      "status": "対応: Prada2013 LFP、NCA_Kim2011 NCAのSPM/SPMe/DFN等温基準計算。対象円筒セル未校正。",
       "phase": "P4"
     },
     {
@@ -555,13 +555,13 @@
     {
       "id": "C01",
       "label": "固相拡散: Fickian/一様/二次/四次、球形粒子",
-      "status": "一部: 既定値",
+      "status": "対応: 球形粒子Fickian/一様/二次/四次。",
       "phase": "P4"
     },
     {
       "id": "C02",
       "label": "OCP: single/current sigmoid/1状態ヒステリシス/微分容量ヒステリシス/MSMR",
-      "status": "一部: 固定の複合設定",
+      "status": "対応範囲: single、複合Siのcurrent sigmoid/1状態/微分容量ヒステリシス。MSMRはP7。",
       "phase": "P4/P7"
     },
     {
@@ -573,7 +573,7 @@
     {
       "id": "C04",
       "label": "充放電方向依存の拡散係数・交換電流密度",
-      "status": "未",
+      "status": "対応: current sigmoidの方向別拡散係数/交換電流密度。必須物性の明示入力。",
       "phase": "P4"
     },
     {
@@ -585,7 +585,7 @@
     {
       "id": "C06",
       "label": "輸送効率: Bruggeman・tortuosity factor等8候補",
-      "status": "一部: 既定値。設計解析値とは別",
+      "status": "対応: 輸送効率8モデル。tortuosity factorは追加物性必須。",
       "phase": "P4"
     },
     {
@@ -609,7 +609,7 @@
     {
       "id": "C10",
       "label": "接触抵抗のPyBaMMモデル反映",
-      "status": "未: 現設計帳簿抵抗とは別",
+      "status": "対応: 出典付きセル電気抵抗を電圧とI²R発熱へ接続。設計帳簿値は転用しない",
       "phase": "P3"
     },
     {
@@ -621,25 +621,25 @@
     {
       "id": "D01",
       "label": "等温・集中熱モデル",
-      "status": "対応: 複合負極は等温に限定",
+      "status": "対応: SPM/SPMe/DFN。複合負極DFNは明示セル熱容量が必須",
       "phase": "P3"
     },
     {
       "id": "D02",
       "label": "等温時の発熱計算、オーム/反応/可逆熱等の内訳",
-      "status": "一部: 診断変数あり、混合熱は無効",
+      "status": "対応: 等温熱源の有効/無効、符号付き発熱内訳、接触を含む合計を区別",
       "phase": "P2/P3"
     },
     {
       "id": "D03",
       "label": "混合熱、ヒステリシス発熱、接触抵抗発熱",
-      "status": "未/一部",
+      "status": "対応範囲: 単相の混合熱、電気接触抵抗の発熱。複合負極の混合熱は固定版で未対応。ヒステリシスの変更はP4",
       "phase": "P3/P4"
     },
     {
       "id": "D04",
       "label": "表面温度ambient/lumped、熱容量・冷却面積・体積",
-      "status": "一部",
+      "status": "対応: 周囲/外側集中熱、明示熱容量、冷却面積・体積、熱収支",
       "phase": "P3"
     },
     {
@@ -831,7 +831,7 @@
     {
       "id": "F17",
       "label": "DataLoader・公開参照データ・BPX、パラメータの来歴",
-      "status": "一部: 独自参照資料管理",
+      "status": "対応範囲: 標準物性来歴・BPX原本/構造ハッシュ。DataLoader全般は未接続。",
       "phase": "P4"
     },
     {

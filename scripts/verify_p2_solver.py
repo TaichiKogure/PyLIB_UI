@@ -1,4 +1,5 @@
 """P2 native solver/extraction, accounting and CSV roundtrip evidence."""
+import argparse
 import copy
 import csv
 import io
@@ -9,7 +10,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from pylibstudy.capabilities import COMBINATIONS
+from pylibstudy.capabilities import COMBINATIONS as ALL_COMBINATIONS
+
+COMBINATIONS = tuple(c for c in ALL_COMBINATIONS if c['parameter_set'] in {'Chen2020', 'Chen2020_composite'})
 from pylibstudy.datasets import import_curve
 from pylibstudy.jobs import PhysicsJobs, TERMINAL
 from pylibstudy.result_catalog import DISTRIBUTIONS
@@ -19,13 +22,15 @@ from pylibstudy.storage import RunRepository
 
 
 def main():
-    output = Path('docs/evidence/p2');
+    parser = argparse.ArgumentParser();
+    parser.add_argument('--output', type=Path, default=Path('docs/evidence/p2'));
+    args = parser.parse_args()
+    output = args.output;
     output.mkdir(parents=True, exist_ok=True)
     report = dict(scope='Pinned native solvers and result contracts; no target-cell measured validation', cases={})
     with tempfile.TemporaryDirectory(prefix='p2-', dir=Path('.test_tmp').resolve()) as tmp:
         repo = RunRepository(Path(tmp) / 'runs.sqlite3');
         jobs = PhysicsJobs(repo)
-
         def run(name, config, full=True):
             job = jobs.submit(dict(name=name, **config));
             end = time.monotonic() + 140
@@ -79,11 +84,14 @@ def main():
             Path('.test_tmp/p2-results', name + '.json').write_text(json.dumps(r, ensure_ascii=False), encoding='utf-8')
             print(name + ': completed', flush=True)
             return r
-
         try:
             assert jobs.availability['available'];
             report['environment'] = jobs.availability
             for combo in COMBINATIONS:
+                combo = dict(combo)
+                if combo['parameter_set'] == 'Chen2020_composite' and combo['thermal'] == 'lumped':
+                    combo['thermal_settings'] = dict(capacity_mode='user', cell_heat_capacity_j_k=50,
+                                                     source='synthetic verification fixture')
                 r = run('_'.join([combo['model'], combo['parameter_set'], combo['thermal']]),
                         dict(combo, protocol=[dict(kind='cc', current_a=1, duration_s=30)],
                              output={'distributions': list(DISTRIBUTIONS), 'frames': 7, 'max_nodes': 12}))

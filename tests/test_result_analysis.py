@@ -134,7 +134,7 @@ class AnalysisTests(unittest.TestCase):
             with self.assertRaises(ValueError): validate_request({'output': output})
         for changes in [{'initial_ocv_v': True}, {'reference_electrode_fraction': 0}, {'initial_ocv_v': 4.5}]:
             with self.assertRaises(ValueError): validate_request(changes)
-        self.assertEqual(validate_request({'config_schema_version': '1.1'})['config_schema_version'], '1.2')
+        self.assertEqual(validate_request({'config_schema_version': '1.1'})['config_schema_version'], '1.4')
         self.assertEqual(validate_request({})['output'], DEFAULT_OUTPUT)
         for settings in [{'smoothing_window': 2}, {'pulse_delay_s': float('nan')}, {'rest_min_s': 0}]:
             with self.assertRaises(ValueError): postprocess(record([]), settings)

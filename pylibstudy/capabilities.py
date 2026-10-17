@@ -5,9 +5,11 @@ import re
 from copy import deepcopy
 from pathlib import Path
 
+from .thermal import thermal_options
+from .materials import SETS, material_options
 PINNED_PYBAMM = '26.10.1.0'
-CONFIG_SCHEMA_VERSION = '1.2'
-CATALOG_VERSION = '1.2'
+CONFIG_SCHEMA_VERSION = '1.4'
+CATALOG_VERSION = '1.4'
 SOLVER = 'IDAKLUSolver'
 SUPPORTED_OS = ('Windows',)
 PHASE_DEPENDENCIES = {
@@ -18,13 +20,27 @@ PHASE_DEPENDENCIES = {
 COMBINATIONS = tuple(
     dict(model=model, parameter_set='Chen2020', thermal=thermal, solver=SOLVER)
     for model in ('SPM', 'SPMe', 'DFN') for thermal in ('isothermal', 'lumped')
-) + (dict(model='DFN', parameter_set='Chen2020_composite', thermal='isothermal', solver=SOLVER),)
+) + tuple(dict(model='DFN', parameter_set='Chen2020_composite', thermal=thermal, solver=SOLVER)
+          for thermal in ('isothermal', 'lumped')) + tuple(
+    dict(model=m, parameter_set=p, thermal=t, solver=SOLVER)
+    for p in ('Prada2013', 'NCA_Kim2011') for m in ('SPM', 'SPMe', 'DFN') for t in ('isothermal',)
+) + tuple(dict(model='DFN', parameter_set=p, thermal='isothermal', solver=SOLVER) for p in ('Xu2019', 'BPX'))
 CONNECTED_OPTIONS = {
-    'thermal': '温度モデルで選択。複合負極は等温のみ。',
+    'particle': '球形粒子のFickian・一様・二次・四次近似。',
+    'particle shape': '球形粒子のみ。no particlesは対象外。',
+    'transport efficiency': '8種の輸送近似。tortuosity factorでは明示物性が必要。',
+    'working electrode': '全セルまたはXu2019正極半セル。',
+    'diffusivity': 'singleまたは方向別current sigmoid。方向別の必須物性を事前検出。',
+    'exchange-current density': 'singleまたは方向別current sigmoid。方向別の必須物性を事前検出。',
+    'thermal': '等温/集中熱。複合負極の集中熱は出典付きのセル熱容量が必須。',
     'calculate discharge energy': 'エネルギー出力用にtrue固定。',
-    'calculate heat source for isothermal models': '熱源出力用にtrue固定。',
+    'calculate heat source for isothermal models': '等温の熱源計算を明示選択。無効時は未計算と表示。',
+    'contact resistance': '明示したセル電気抵抗。端子電圧とI²R発熱へ接続。設計の接触率・ASRは転用しない。',
+    'heat of mixing': '熱物性のある単相のみ。LFP/Xu半セルと複合負極は未対応。',
+    'surface temperature': '周囲温度または外側集中熱ノード。後者は熱容量と環境熱抵抗が必須。',
+    'use lumped thermal capacity': '文献層別熱容量または出典付きのセル熱容量J/K。体積で換算して渡す。',
     'particle phases': '文献物性セットに連動。Chen2020は単相、compositeは負極2相。',
-    'open-circuit potential': '文献物性セットに連動。compositeのSi相はcurrent sigmoid。',
+    'open-circuit potential': '複合Siはcurrent sigmoid・1状態・微分容量ヒステリシス。追加物性必須。',
     'operating mode': 'ExperimentステップでCC/C-rate/CV/CP/CRを構築。CP/CRは定義済みの代数・明示・微分制御。',
     'voltage as a state': '明示CP/CRを含む場合だけtrueに連動し、電圧と電流の循環参照を避けます。単独選択は未接続。',
 }
@@ -40,7 +56,10 @@ def compatibility(config, os_name=None):
             return dict(compatible=False, reason=f'{key}: 未接続の選択肢です。機能カタログを確認してください。')
     if not any(all(config[k] == c[k] for k in c) for c in COMBINATIONS):
         return dict(compatible=False,
-                    reason='Chen2020_compositeはDFN・等温のみ対応。複合負極の集中熱用物性は未接続です。')
+                    reason='選択した物性・モデル・熱の組合せは未接続です。複合負極はDFN、半セル/BPXはDFN等温、LFP/NCAは等温を使用してください。')
+    if config['parameter_set'] == 'Chen2020_composite' and config['thermal'] == 'lumped':
+        return dict(compatible=True,
+                    reason='条件付き経路: 複合負極の集中熱には出典付きのセル熱容量(J/K)が必須。対象セルは実測未検証。')
     return dict(compatible=True, reason='登録済みの計算経路です。対象セルの実測検証は未実施。')
 
 
@@ -55,17 +74,16 @@ def model_options(config):
     if config['parameter_set'] == 'Chen2020_composite':
         options.update({'particle phases': ('2', '1'),
                         'open-circuit potential': (('single', 'current sigmoid'), 'single')})
-
+    options.update(thermal_options(config))
+    options.update(material_options(config))
     def explicit_steps(nodes, depth=0):
         if not isinstance(nodes, list) or depth > 3: return False
         return any(isinstance(s, dict) and ((s.get('kind') in ('cp', 'cr') and s.get('control') == 'explicit') or
                                             (s.get('kind') == 'repeat' and explicit_steps(s.get('steps'), depth + 1)))
                    for s in nodes)
-
     if explicit_steps(config.get('protocol')):
         options['voltage as a state'] = 'true'
     return options
-
 
 def validate_options(config):
     supplied = config['model_options']
@@ -113,9 +131,8 @@ def catalog(environment):
                 models=[
                     dict(family=family, id=name, connected=family == 'lithium_ion' and name in {'SPM', 'SPMe', 'DFN'})
                     for family, names in inventory['models'].items() for name in names],
-                parameter_sets=[dict(id=name, connected=name in {'Chen2020', 'Chen2020_composite'},
-                                     reason='登録済み組合せのみ使用可能。' if name in {'Chen2020',
-                                                                                      'Chen2020_composite'} else
+                parameter_sets=[dict(id=name, connected=name in SETS,
+                                     reason='登録済み組合せのみ使用可能。' if name in SETS else
                                      '物性・モデル・熱の組合せ検証とUI接続が未完了。') for name in
                                 inventory['parameter_sets']],
                 solvers=[dict(id=name, connected=name == SOLVER,
@@ -123,5 +140,5 @@ def catalog(environment):
                          for name in inventory['solvers']],
                 protocol=dict(kinds=['cc', 'c_rate', 'cv', 'cp', 'cr', 'rest', 'profile', 'repeat'],
                               max_expanded_steps=200, max_cycles=20, max_repeat_depth=3),
-                next_increment='P3: 集中熱・冷却/熱容量/接触抵抗・発熱比較',
+                next_increment='P5: SEI・析出・LAM等の単独機構',
                 limitation='API候補の存在・短時間ソルバ実行・数値収束・実測適合は別の検証です。対象18650/21700セルは実測未検証。')

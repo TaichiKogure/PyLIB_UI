@@ -16,6 +16,7 @@ from .models import MODEL_REGISTRY
 from .physics import DEFAULTS as PHYSICS_DEFAULTS
 from .physics import validate_design as validate_physics_design
 from .physics import validate_request as validate_physics
+from .materials import catalog as material_catalog
 from .protocol import protocol_templates, preview_protocol
 from .schema import SimulationInput
 from .service import SimulationService, export_csv, export_spatial_csv
@@ -37,6 +38,15 @@ def create_server(port=8765, data_dir=None, research_python=None):
         # connection. Avoid closing a socket immediately after a large write.
         protocol_version = "HTTP/1.1"
         timeout = 30
+
+        def handle(self):
+            try:
+                super().handle()
+            except (ConnectionResetError, BrokenPipeError):
+                # A reload can discard a persistent connection while we await the
+                # next request or write its response. This is a peer disconnect.
+                self.close_connection = True
+                logger.debug('Local browser connection closed by peer')
 
         def log_message(self, format, *args):
             logger.debug(format, *args)
@@ -88,6 +98,7 @@ def create_server(port=8765, data_dir=None, research_python=None):
                       "/library.js": ("library.js", "text/javascript; charset=utf-8"),
                       "/design.js": ("design.js", "text/javascript; charset=utf-8"),
                       "/design-insights.js": ("design-insights.js", "text/javascript; charset=utf-8"),
+                      "/materials.js": ("materials.js", "text/javascript; charset=utf-8"),
                       "/physics.js": ("physics.js", "text/javascript; charset=utf-8"),
                       "/capabilities.js": ("capabilities.js", "text/javascript; charset=utf-8"),
                       "/results.js": ("results.js", "text/javascript; charset=utf-8"),
@@ -109,10 +120,12 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 if path == "/api/physics/config":
                     return self.send(200, {"defaults": PHYSICS_DEFAULTS, "environment": jobs.availability,
                                            "templates": protocol_templates(),
-                                           "result_catalog": result_catalog(),
+                                           "result_catalog": result_catalog(), "materials": material_catalog(),
                                            "capabilities": capability_catalog(jobs.availability)})
                 if path == "/api/capabilities":
                     return self.send(200, capability_catalog(jobs.availability))
+                if path == '/api/materials':
+                    return self.send(200, material_catalog())
                 if path == '/api/result-catalog':
                     return self.send(200, result_catalog())
                 if path == '/api/analyses':
@@ -194,7 +207,7 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= (
                         3 * 1024 * 1024 if path.startswith(
-                            "/api/import/") else 262144 if path in {"/api/jobs", "/api/physics/validate",
+                            "/api/import/") else 2097152 if path in {"/api/jobs", "/api/physics/validate",
                                                                     "/api/physics/preview"} else 65536):
                     raise ValueError("リクエストサイズが範囲外です。")
                 try:

@@ -31,7 +31,7 @@ def interpolate(points, time, key):
     return a[key] + (b[key] - a[key]) * (time - a['time_s']) / (b['time_s'] - a['time_s'])
 
 
-def balance_summary(points, initial_soc=None):
+def balance_summary(points, initial_soc=None, include_contact=False):
     totals = dict(discharge_ah=0., charge_ah=0., discharge_wh=0., charge_wh=0.)
     skipped = 0
     for a, b in zip(points, points[1:]):
@@ -66,10 +66,13 @@ def balance_summary(points, initial_soc=None):
     for name, components, total, tolerance in [
         ('voltage',
          ['surface_ocv_v', 'reaction_overpotential_v', 'electrolyte_ohmic_loss_v', 'concentration_overpotential_v',
-          'solid_ohmic_loss_v'], 'voltage_v', 1e-4),
+          'solid_ohmic_loss_v'] +
+         (['contact_voltage_loss_v'] if include_contact or any('contact_voltage_loss_v' in p for p in points) else []),
+         'voltage_v', 1e-4),
         ('heat',
          ['ohmic_heating_w', 'reaction_heating_w', 'reversible_heating_w', 'hysteresis_heating_w', 'mixing_heating_w'],
-         'total_heating_w', 1e-6)]:
+         'total_heating_w', 1e-6),
+        ('heat_with_contact', ['total_heating_w', 'contact_heating_w'], 'total_heat_with_contact_w', 1e-6)]:
         residuals = [p[total] - sum(p[k] for k in components) for p in points if
                      all(finite(p.get(k)) for k in components + [total])]
         checks[name] = dict(status='available' if len(residuals) == len(points) and points else 'unavailable',

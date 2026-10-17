@@ -290,7 +290,9 @@ $("original").addEventListener("click", () => {
 });
 
 async function refreshComparisons() {
-    const records = await api(`/api/comparisons?project_id=${encodeURIComponent(library.projectId)}`);
+    const project = library.projectId;
+    const records = await api(`/api/comparisons?project_id=${encodeURIComponent(project)}`);
+    if (project !== library.projectId) return;
     $("comparison-list").replaceChildren(...records.map(record => {
         const row = element("div", undefined, "comparison-row"), open = element("button", "復元");
         open.type = "button";

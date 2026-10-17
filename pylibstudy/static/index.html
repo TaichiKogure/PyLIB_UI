@@ -9,6 +9,7 @@
     <script defer src="/library.js"></script>
     <script defer src="/design-insights.js"></script>
     <script defer src="/design.js"></script>
+    <script defer src="/materials.js"></script>
     <script defer src="/physics.js"></script>
     <script defer src="/capabilities.js"></script>
     <script defer src="/results.js"></script>
@@ -109,8 +110,8 @@
                     </tr>
                     <tr>
                         <th scope="row">物性セット・対応材料</th>
-                        <td>○ Chen2020：NMC811/黒鉛</td>
-                        <td>○ Chen2020、composite：NMC811/黒鉛＋Si（等温のみ）</td>
+                        <td>○ Chen2020：NMC811/黒鉛、Prada2013：LFP、NCA_Kim2011：NCA（後2種は等温）</td>
+                        <td>○ Chen系、LFP、NCA、Xu2019正極半セル、BPX。集中熱はChen系のみ</td>
                         <td>— 文献物性ではなくNMC/LFPの模式OCV</td>
                     </tr>
                     <tr>
@@ -283,10 +284,52 @@
                     <option value="">文献セットの基準形状</option>
                 </select></label>
             </div>
+
+            <details id="material-settings">
+                <summary>材料物性・差分・粒子/輸送・ヒステリシス・BPX</summary>
+                <p class="field-note" id="material-selection-note">
+                    文献基準と独自差分を区別して保存します。対象セルは実測未校正。単位付きの物性名を使用してください。</p>
+                <div class="fields two">
+                    <label>粒子内濃度の近似<select id="material-particle"></select></label>
+                    <label>輸送効率モデル<select id="material-transport"></select></label>
+                    <label>複合負極SiのOCPヒステリシス<select id="material-silicon_ocp"></select></label>
+                    <label>拡散係数の方向依存<select id="material-diffusivity"></select></label>
+                    <label>交換電流密度の方向依存<select id="material-exchange_current"></select></label>
+                    <label>独自物性の出典・仮定<input id="material-source" maxlength="2000"
+                                                      placeholder="文献URL、測定条件、仮定・未校正など"></label>
+                </div>
+                <p class="field-note">方向別・ヒステリシス・tortuosity factorは追加物性が必要です。不足時はAPIが物性名を表示して拒否します。no
+                    particlesとMSMRは後続段階です。</p>
+                <details>
+                    <summary>独自ParameterValues差分</summary>
+                    <p class="field-note">値は数値、OCP曲線は {"kind":"ocp_table","points":[[0,4.3],[0.5,3.8],[1,3]]}
+                        形式です。曲線は化学量論0〜1の全域が必要です。独自Pythonコードは受け付けません。</p>
+                    <datalist id="material-parameter-keys"></datalist>
+                    <div id="material-overrides"></div>
+                    <button id="material-add-override" type="button">＋ 物性の差分</button>
+                </details>
+                <details>
+                    <summary>BPX 1.xファイルを使用</summary>
+                    <label>BPX JSON（DFN・単相・等温、500KB以内）<input accept=".json,application/json" id="material-bpx-file"
+                                                                     type="file"></label>
+                    <button id="material-bpx-clear" type="button">BPX入力を解除</button>
+                    <p class="field-note" id="material-bpx-status" role="status"></p>
+                </details>
+                <details id="material-browser">
+                    <summary>標準19物性セットの閲覧・比較</summary>
+                    <div class="fields two"><label>閲覧対象<select
+                            id="material-view"></select></label><label>比較対象<select
+                            id="material-compare"></select></label></div>
+                    <label>物性名で絞り込み<input id="material-filter"
+                                                  placeholder="diffusivity, OCP, porosity など"></label>
+                    <p class="field-note" id="material-description"></p>
+                    <div id="material-inventory"></div>
+                </details>
+            </details>
             <p aria-live="polite" class="field-note" id="physics-thermal-note">
                 等温：初期温度・熱伝達係数は使用しません。周囲温度に固定します。</p>
             <p class="field-note">
-                保存済み設計を選ぶと寸法・空隙率・相分率を上書きします。設計の仮定密度と文献の反応・輸送物性を組み合わせた仮想セルです。LFP・NCA・SiOxは物性接続が未検証のため無効です。</p>
+                保存済み設計を選ぶと寸法・空隙率・相分率を上書きします。設計の仮定密度と文献の反応・輸送物性を組み合わせた仮想セルです。LFP・NCA・半セル・BPX・独自差分は文献基準形状のみ対応します。円筒設計への写像はChen系の基準物性のみです。</p>
             <div class="fields two">
                 <label>物理計算の初期SOC (0–1)<input id="physics-initial_soc" max="1" min="0" required step="any"
                                                      type="number"></label>
@@ -358,9 +401,43 @@
                                               type="number"></label>
                     <label>ジョブの実時間上限 (s)<input id="physics-timeout_s" max="300" min="5" required
                                                         step="any" type="number"></label>
-                    <label>熱伝達係数 (W/m²/K)<input id="physics-heat_transfer_w_m2_k" max="100" min="0" required
-                                                     step="any" type="number"></label>
                 </div>
+            </details>
+            <details id="physics-thermal-settings">
+                <summary>熱容量・冷却境界・電気接触抵抗・混合熱</summary>
+                <p class="field-note">
+                    セル全体の集中熱です。文献の層別熱物性と、利用者が指定するJ/Kを区別します。設計帳簿の質量・比熱・接触率・ASRは転用しません。複合負極の集中熱には熱容量の明示入力が必要です。</p>
+                <div class="fields two">
+                    <label>セル熱容量の根拠<select id="thermal-capacity_mode">
+                        <option value="literature">文献の層別ρ・cp・厚さ</option>
+                        <option value="user">セル全体の熱容量を明示 (J/K)</option>
+                    </select></label>
+                    <label>セル全体の熱容量 (J/K)<input id="thermal-cell_heat_capacity_j_k" max="10000" min="0.1"
+                                                        step="any" type="number"></label>
+                    <label>セル−外側の熱伝達係数 (W/m²/K)<input id="physics-heat_transfer_w_m2_k" max="10000" min="0"
+                                                                required step="any" type="number"></label>
+                    <label>外側温度モデル<select id="thermal-surface_temperature">
+                        <option value="ambient">周囲温度境界</option>
+                        <option value="lumped">外側ノードの集中熱（2温度）</option>
+                    </select></label>
+                    <label>外側ノードの熱容量 (J/K)<input id="thermal-casing_heat_capacity_j_k" max="10000" min="0.1"
+                                                          step="any" type="number"></label>
+                    <label>外側−環境の熱抵抗 (K/W)<input id="thermal-environment_thermal_resistance_k_w" max="10000"
+                                                         min="0.001" step="any" type="number"></label>
+                    <label>冷却面積 (m²・空欄は文献/保存設計)<input id="thermal-cooling_area_m2" max="1"
+                                                                    min="0.000001" step="any" type="number"></label>
+                    <label>熱モデルのセル体積 (m³・空欄は文献/保存設計)<input id="thermal-cell_volume_m3" max="0.01"
+                                                                              min="0.0000001" step="any"
+                                                                              type="number"></label>
+                    <label>セルの電気接触抵抗 (Ω・0は無効)<input id="thermal-contact_resistance_ohm" max="0.1"
+                                                                 min="0" required step="any" type="number"></label>
+                    <label><input id="thermal-heat_of_mixing" type="checkbox">混合熱を計算（熱物性のある単相）</label>
+                    <label><input id="thermal-isothermal_heat_source" type="checkbox">等温でも熱源を計算</label>
+                </div>
+                <label>独自物性の出典・仮定（明示入力時は必須）<textarea id="thermal-source" maxlength="1000" placeholder="測定条件・文献・仮定を記入。仮定値は対象セル未校正として扱います。"
+                                                                       rows="2"></textarea></label>
+                <p class="field-note">
+                    接触抵抗は電気抵抗で、端子電圧とI²Rに反映します。2温度ではセル側と外側を別容量として扱うため、重複しない熱容量配分を指定してください。端面の局所集電・局所温度・熱接触抵抗は計算しません。外側ノードはモデル上の温度であり実缶温度として未校正です。</p>
             </details>
             <details id="physics-result-settings">
                 <summary>結果変数・x/r分布・初期OCV・参照電極</summary>
@@ -513,6 +590,11 @@
                 </div>
                 <p class="result-notice" id="result-relationship" role="status">
                     タブの設定と表示結果は別です。実行・保存一覧の表示・取込プレビューで結果が切り替わります。</p>
+                <details>
+                    <summary>計算に使用した材料の出典・差分</summary>
+                    <p id="result-material-source"></p>
+                    <div id="result-material-differences"></div>
+                </details>
                 <p class="result-meta" id="result-meta">各方式の実行結果、または取込プレビューをここに表示します。</p>
                 <div class="metrics">
                     <div><span>通過容量</span><strong id="metric-capacity">—</strong><small>Ah ·
@@ -560,6 +642,13 @@
                     <summary>結果を詳しく見る：損失・電極SOH・x/r分布・実測残差</summary>
                     <p class="field-note" id="result-explorer-note"></p>
                     <div id="result-performance"></div>
+                    <details id="result-thermal-details">
+                        <summary>熱収支・熱物性の根拠・発熱比較</summary>
+                        <div id="result-thermal-summary"></div>
+                        <p class="field-note">
+                            保存履歴の比較チェックで選んだ計算を並べます。条件差を表示し、自動整列しません。系列メニューで「接触を含む合計発熱」や温度を重ねて確認できます。</p>
+                        <div id="result-thermal-comparison"></div>
+                    </details>
                     <details id="result-loss-details">
                         <summary>時刻別の電圧成分・発熱成分</summary>
                         <label>結果点の時刻<input id="result-time" min="0" step="1" type="range" value="0"></label>

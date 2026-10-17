@@ -31,6 +31,9 @@ class CatalogTests(unittest.TestCase):
                 ['isothermal', 'lumped', 'x-full'], ['IDAKLUSolver', 'CasadiSolver']):
             c = dict(model=model, parameter_set=params, thermal=thermal, solver=solver)
             expected = c in COMBINATIONS
+            if params == 'Chen2020_composite' and thermal == 'lumped':
+                c['thermal_settings'] = dict(capacity_mode='user', cell_heat_capacity_j_k=50,
+                                             source='synthetic fixture')
             with self.subTest(c=c):
                 self.assertEqual(compatibility(c)['compatible'], expected)
                 if expected:
@@ -88,7 +91,7 @@ class CapabilityHttpTests(unittest.TestCase):
         with self.request('/api/capabilities') as response:
             catalog_data = json.load(response)
         self.assertEqual(len(catalog_data['options']), 39)
-        self.assertEqual(len(catalog_data['combinations']), 7)
+        self.assertEqual(len(catalog_data['combinations']), len(COMBINATIONS))
         for bad in [{'model': 'SPM', 'parameter_set': 'Chen2020_composite'},
                     {'model': 'SPMe', 'parameter_set': 'Chen2020_composite'},
                     {'solver': 'CasadiSolver'}, {'config_schema_version': '9.0'},
@@ -127,7 +130,6 @@ class CapabilityHttpTests(unittest.TestCase):
         self.assertGreater(len(json.dumps(config).encode()), 65536)
         with self.request('/api/physics/validate', config) as response:
             self.assertEqual(json.load(response)['input']['protocol'], config['protocol'])
-
 
 if __name__ == '__main__':
     unittest.main()

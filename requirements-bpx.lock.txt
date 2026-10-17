@@ -1,0 +1,7 @@
+# Optional BPX parser, isolated under vendor/bpx; Python 3.13 Windows x64.
+bpx==1.1.1
+pydantic==2.12.3
+pydantic-core==2.41.4
+annotated-types==0.7.0
+typing-inspection==0.4.2
+typing-extensions==4.15.0

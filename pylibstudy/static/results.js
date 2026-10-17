@@ -3,6 +3,13 @@
 const resultView = {catalog: null, version: 0, records: [], analysis: null};
 const resultStatus = {available: "取得可", unavailable: "取得不可", not_selected: "未選択", pending: "未取得"};
 const resultNumber = (x, digits = 5) => Number.isFinite(x) ? (x !== 0 && (Math.abs(x) < 1e-4 || Math.abs(x) >= 1e6) ? x.toExponential(digits - 1) : x.toLocaleString("ja-JP", {maximumSignificantDigits: digits})) : "取得不可";
+const thermalBasisLabel = value => ({
+    explicit_user_cell_capacity: "明示したセル熱容量",
+    literature_layer_density_specific_heat_thickness: "文献の層別ρ・cp・厚さ",
+    literature_parameter_set: "文献形状",
+    saved_design_dimensions: "保存設計の寸法",
+    explicit_user: "明示入力"
+}[value] || value || "記録なし");
 
 function initResultSettings(catalog) {
     resultView.catalog = catalog;
@@ -104,7 +111,7 @@ function showLossFrame() {
     const run = state.current, p = run?.points[Number($("result-time").value)];
     if (!p) return;
     $("result-time-label").textContent = `${resultNumber(p.time_s)} s / 区間 ${p.segment_id} · 端子電圧 ${resultNumber(p.voltage_v)} V`;
-    const rows = Object.entries(run.result_variables || {}).filter(([key]) => key.endsWith("_w") || key.includes("overpotential") || key.includes("ohmic_loss") || key === "surface_ocv_v");
+    const rows = Object.entries(run.result_variables || {}).filter(([key]) => key.endsWith("_w") || key.includes("overpotential") || key.includes("ohmic_loss") || key === "surface_ocv_v" || key === "contact_voltage_loss_v");
     capabilityTable("result-loss-table", ["成分", "値", "単位"], rows.map(([key, v]) => [v.label, resultNumber(p[key]), v.unit]));
     const losses = rows.filter(([key, v]) => v.unit === "V" && key !== "surface_ocv_v" && Number.isFinite(p[key]));
     const svg = svgElement("svg", {
@@ -128,6 +135,56 @@ function showLossFrame() {
             svgElement("text", {x: 650, y: y + 14}, `${resultNumber(p[key])} V`));
     });
     $("result-loss-chart").replaceChildren(svg);
+}
+
+function showThermalSummary(run) {
+    const target = $("result-thermal-summary"), t = run.thermal_provenance, b = run.thermal_balance;
+    $("result-thermal-details").hidden = run.record_type !== "physics";
+    target.replaceChildren();
+    if (!t) {
+        target.append(element("p", "旧結果にはP3の熱物性・熱収支の記録がありません。元の結果はそのまま表示します。"));
+        return;
+    }
+    capabilityTable(target.id, ["熱設定", "値", "根拠・単位"], [
+        ["セル温度モデル", t.model === "lumped" ? "集中熱" : "等温", "体積平均"],
+        ["実際の初期セル温度", resultNumber(run.initial_state?.actual_temperature_c), "°C · 周囲温度とは独立"],
+        ["初期セル熱容量", resultNumber(t.cell_heat_capacity_initial_j_k), `J/K · ${thermalBasisLabel(t.capacity_basis)}`],
+        ["セル体積", resultNumber(t.cell_volume_m3), `m³ · ${thermalBasisLabel(t.geometry_basis.volume)}`],
+        ["冷却面積", resultNumber(t.cooling_area_m2), `m² · ${thermalBasisLabel(t.geometry_basis.area)}`],
+        ["熱伝達係数", resultNumber(run.input.heat_transfer_w_m2_k), "W/(m² K) · 集中熱で使用"],
+        ["外側温度モデル", t.settings.surface_temperature === "lumped" ? "外側ノードの集中熱" : "周囲温度境界", "セル側と外側の熱容量は別に扱います"],
+        ["外側ノード熱容量 / 環境熱抵抗", `${resultNumber(t.settings.casing_heat_capacity_j_k)} / ${resultNumber(t.settings.environment_thermal_resistance_k_w)}`, "J/K / K/W · 外側集中熱で使用"],
+        ["電気接触抵抗", resultNumber(t.settings.contact_resistance_ohm), "Ω · 発熱I²R"],
+        ["混合熱 / 等温熱源", `${t.settings.heat_of_mixing ? "有効" : "無効"} / ${t.settings.isothermal_heat_source ? "有効" : "無効"}`, "等温熱源の切替は等温で適用"],
+        ["独自物性の出典・仮定", t.source, "対象セル未校正"]]);
+    target.append(element("p", t.capacity_note, "field-note"), element("p", t.note, "field-note"));
+    if (b?.status === "available") {
+        const box = element("div");
+        box.id = "result-thermal-energy";
+        target.append(box);
+        capabilityTable(box.id, ["熱収支", "J"], [
+            ["電気化学の発熱", resultNumber(b.electrochemical_heat_j)], ["接触の発熱", resultNumber(b.contact_heat_j)],
+            ["セル境界からの熱流入", resultNumber(b.cell_boundary_heat_j)], ["環境からの熱流入", resultNumber(b.environment_heat_j)],
+            ["セル蓄熱 / 外側ノード蓄熱", `${resultNumber(b.cell_stored_energy_j)} / ${resultNumber(b.surface_stored_energy_j)}`],
+            ["セル残差 / 系全体残差", `${resultNumber(b.cell_residual_j)} / ${resultNumber(b.system_residual_j)}`],
+            ["許容差 / 判定", `${resultNumber(b.tolerance_j)} / ${b.passed ? "許容差内" : "要確認"}`]]);
+        target.append(element("p", b.note + " 冷却時の熱流は負です。", "field-note"));
+    } else target.append(element("p", b?.reason || "熱収支は取得不可です。", "field-note"));
+    showThermalComparison();
+}
+
+function showThermalComparison() {
+    if (!$("result-thermal-comparison")) return;
+    const runs = [...new Map([state.current, ...state.comparisons.values()].filter(Boolean).map(r => [r.id, r])).values()].filter(r => r.record_type === "physics");
+    capabilityTable("result-thermal-comparison", ["計算・条件", "熱容量 J/K", "冷却 / 接触", "最高平均温度 °C", "電気化学 / 接触の熱 J", "熱収支"], runs.map(r => {
+        const t = r.thermal_provenance, b = r.thermal_balance;
+        const currents = r.points.map(p => p.current_a).filter(Number.isFinite);
+        return [`${r.name} · ${r.input.model}/${r.input.parameter_set}/${r.input.thermal} · ${r.summary.duration_s} s · 初期SOC ${r.initial_state?.ledger_initial_soc ?? r.input.initial_soc} · 初期 ${r.input.initial_temp_c}°C / 周囲 ${r.input.ambient_temp_c}°C · I ${resultNumber(Math.min(...currents))}〜${resultNumber(Math.max(...currents))} A · ${r.input.design_id || "文献形状"}`,
+            `${resultNumber(t?.cell_heat_capacity_initial_j_k)} · ${thermalBasisLabel(t?.capacity_basis)}`,
+            `${r.input.heat_transfer_w_m2_k} W/(m²K) / ${resultNumber(t?.settings.contact_resistance_ohm)} Ω · A ${resultNumber(t?.cooling_area_m2)} m² · ${t?.settings.surface_temperature === "lumped" ? "外側集中熱" : "周囲境界"} · ${t?.source || "根拠の追加記録なし"}`,
+            resultNumber(r.summary.max_temperature_c), `${resultNumber(b?.electrochemical_heat_j)} / ${resultNumber(b?.contact_heat_j)}`,
+            b?.status === "available" ? b.passed ? "許容差内" : "要確認" : b?.reason || "旧結果・取得不可"];
+    }));
 }
 
 function showSpatialFrame() {
@@ -160,7 +217,7 @@ function showPerformance(run) {
         checks.id = "result-balance-checks";
         $("result-performance").append(checks);
         capabilityTable(checks.id, ["収支", "最大残差", "許容差", "判定"], Object.entries(p.balance_checks).map(([key, v]) => [
-            key === "voltage" ? "電圧成分の合計" : "発熱成分の合計", `${resultNumber(v.max_absolute_residual)} ${v.unit}`, `${v.tolerance} ${v.unit}`,
+            key === "voltage" ? "電圧成分の合計" : key === "heat_with_contact" ? "接触を含む合計発熱" : "電気化学の発熱合計", `${resultNumber(v.max_absolute_residual)} ${v.unit}`, `${v.tolerance} ${v.unit}`,
             v.passed === null ? "必要な系列が未取得" : v.passed ? "許容差内" : "要確認"]));
     }
 }
@@ -219,6 +276,7 @@ function showResultExplorer(run) {
     $("result-spatial-details").hidden = run.record_type !== "physics";
     $("result-residual-details").hidden = run.record_type !== "physics";
     showPerformance(run);
+    showThermalSummary(run);
     $("result-time").max = run.points.length - 1;
     $("result-time").value = 0;
     showLossFrame();

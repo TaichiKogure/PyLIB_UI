@@ -20,7 +20,7 @@ class P0BrowserTests(unittest.TestCase):
         original = self.page.evaluate('readPhysics()')
         self.page.locator('#capabilities-link').click()
         expect(self.page.locator('#capabilities-summary')).to_contain_text('39設定キー')
-        expect(self.page.locator('#capabilities-combinations tbody tr')).to_have_count(7)
+        expect(self.page.locator('#capabilities-combinations tbody tr')).to_have_count(16)
         expect(self.page.locator('#capabilities-checks tbody tr')).to_have_count(7)
         self.page.get_by_text('全39設定キーの接続状態', exact=True).click()
         expect(self.page.locator('#capabilities-options tbody tr')).to_have_count(39)
@@ -54,9 +54,9 @@ class P0BrowserTests(unittest.TestCase):
         self.page.locator('#physics-parameter_set').select_option('Chen2020_composite')
         expect(self.page.locator('#physics-model')).to_have_value('DFN')
         expect(self.page.locator('#physics-model option[value="SPMe"]')).to_have_js_property('disabled', True)
-        expect(self.page.locator('#physics-thermal option[value="lumped"]')).to_have_js_property('disabled', True)
-        expect(self.page.locator('#physics-compatibility')).to_contain_text('DFN・等温のみ')
-
+        expect(self.page.locator('#physics-thermal option[value="lumped"]')).to_have_js_property('disabled', False)
+        self.page.locator('#physics-thermal').select_option('lumped')
+        expect(self.page.locator('#physics-compatibility')).to_contain_text('セル熱容量')
     def test_missing_environment_keeps_catalog_available(self):
         def missing_environment(route):
             response = route.fetch()

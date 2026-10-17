@@ -21,3 +21,30 @@ textarea{font:inherit;width:100%;min-width:0;max-width:100%;padding:10px;border:
 
 .result-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}.result-checks label{display:flex;align-items:center;gap:8px;font-size:12px}.result-checks input[type=checkbox]{width:auto;margin:0}.result-scientific-chart svg,#result-loss-chart svg{display:block;width:100%;height:auto;background:#f8faf8;border-radius:8px}.result-scientific-chart text,#result-loss-chart text{font:12px Segoe UI,Meiryo,sans-serif;fill:#476057}#result-explorer{margin-top:20px;min-width:0}#result-explorer details{margin:16px 0}#result-explorer pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;font-size:11px}#result-time,#result-spatial-time{width:100%}#result-variable{max-width:100%}#result-loss-chart{overflow:auto}#result-loss-chart svg{min-width:560px}@media(max-width:600px){.result-checks{grid-template-columns:1fr}#result-explorer .fields{grid-template-columns:1fr}}
 #result-performance table,#result-residual-metrics table,#result-condition-table table,#result-loss-table table{min-width:100%;width:100%;table-layout:fixed;white-space:normal;overflow-wrap:anywhere}#result-performance th:first-child,#result-residual-metrics th:first-child,#result-condition-table th:first-child,#result-loss-table th:first-child{width:45%}@media(max-width:600px){#result-explorer td,#result-explorer th{padding:8px 5px;font-size:11px}#result-balance-checks th:first-child{width:25%}}
+
+#material-settings {
+    min-width: 0
+}
+
+#material-settings input, #material-settings textarea, #material-settings select {
+    max-width: 100%;
+    min-width: 0
+}
+
+#material-overrides textarea {
+    width: 100%;
+    font: 12px Consolas, monospace
+}
+
+#material-description {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere
+}
+
+#result-material-source {
+    overflow-wrap: anywhere
+}
+
+#material-inventory {
+    min-width: 0
+}
