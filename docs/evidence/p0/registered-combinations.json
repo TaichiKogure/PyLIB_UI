@@ -1,0 +1,389 @@
+{
+  "scope": "All five P0 registry routes, real pinned solvers; no measured-cell accuracy validation",
+  "cases": [
+    {
+      "combination": {
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "solver": "IDAKLUSolver"
+      },
+      "status": "completed",
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.020642780846466622,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.711747481896276,
+        "max_temperature_c": 25.0,
+        "point_count": 5,
+        "c_rate_reference_ah": 5.0
+      },
+      "model_options": {
+        "calculate discharge energy": "true",
+        "calculate heat source for isothermal models": "true",
+        "cell geometry": "arbitrary",
+        "contact resistance": "false",
+        "convection": "none",
+        "current collector": "uniform",
+        "diffusivity": "single",
+        "dimensionality": 0,
+        "electrolyte conductivity": "default",
+        "exchange-current density": "single",
+        "heat of mixing": "false",
+        "hydrolysis": "false",
+        "intercalation kinetics": "symmetric Butler-Volmer",
+        "interface utilisation": "full",
+        "lithium plating": "none",
+        "lithium plating porosity change": "false",
+        "loss of active material": "none",
+        "number of MSMR reactions": "none",
+        "open-circuit potential": "single",
+        "operating mode": "current",
+        "particle": "Fickian diffusion",
+        "particle mechanics": "none",
+        "particle phases": "1",
+        "particle shape": "spherical",
+        "particle size": "single",
+        "SEI": "none",
+        "SEI film resistance": "none",
+        "SEI on cracks": "false",
+        "SEI porosity change": "false",
+        "stress-induced diffusion": "false",
+        "surface form": "false",
+        "surface temperature": "ambient",
+        "thermal": "isothermal",
+        "total interfacial current density as a state": "false",
+        "transport efficiency": "Bruggeman",
+        "voltage as a state": "false",
+        "working electrode": "both",
+        "x-average side reactions": "false",
+        "use lumped thermal capacity": "false"
+      },
+      "input_sha256": "3bd3fb919dbb5db2a88de06b9c6e40f2264c70b6c206347c94f0f42221ff1672"
+    },
+    {
+      "combination": {
+        "model": "SPMe",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "solver": "IDAKLUSolver"
+      },
+      "status": "completed",
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.020642818293700994,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.7117609975834767,
+        "max_temperature_c": 25.014494610865768,
+        "point_count": 5,
+        "c_rate_reference_ah": 5.0
+      },
+      "model_options": {
+        "calculate discharge energy": "true",
+        "calculate heat source for isothermal models": "true",
+        "cell geometry": "arbitrary",
+        "contact resistance": "false",
+        "convection": "none",
+        "current collector": "uniform",
+        "diffusivity": "single",
+        "dimensionality": 0,
+        "electrolyte conductivity": "default",
+        "exchange-current density": "single",
+        "heat of mixing": "false",
+        "hydrolysis": "false",
+        "intercalation kinetics": "symmetric Butler-Volmer",
+        "interface utilisation": "full",
+        "lithium plating": "none",
+        "lithium plating porosity change": "false",
+        "loss of active material": "none",
+        "number of MSMR reactions": "none",
+        "open-circuit potential": "single",
+        "operating mode": "current",
+        "particle": "Fickian diffusion",
+        "particle mechanics": "none",
+        "particle phases": "1",
+        "particle shape": "spherical",
+        "particle size": "single",
+        "SEI": "none",
+        "SEI film resistance": "none",
+        "SEI on cracks": "false",
+        "SEI porosity change": "false",
+        "stress-induced diffusion": "false",
+        "surface form": "false",
+        "surface temperature": "ambient",
+        "thermal": "lumped",
+        "total interfacial current density as a state": "false",
+        "transport efficiency": "Bruggeman",
+        "voltage as a state": "false",
+        "working electrode": "both",
+        "x-average side reactions": "false",
+        "use lumped thermal capacity": "false"
+      },
+      "input_sha256": "ada1dc46344c24ca5c9f99141392ac8b00fa4564c6de0d9c2a89af9500eb744a"
+    },
+    {
+      "combination": {
+        "model": "DFN",
+        "parameter_set": "Chen2020",
+        "thermal": "isothermal",
+        "solver": "IDAKLUSolver"
+      },
+      "status": "completed",
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555551,
+        "energy_wh": 0.020644144295210852,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.7120243007454587,
+        "max_temperature_c": 25.0,
+        "point_count": 5,
+        "c_rate_reference_ah": 5.0
+      },
+      "model_options": {
+        "calculate discharge energy": "true",
+        "calculate heat source for isothermal models": "true",
+        "cell geometry": "arbitrary",
+        "contact resistance": "false",
+        "convection": "none",
+        "current collector": "uniform",
+        "diffusivity": "single",
+        "dimensionality": 0,
+        "electrolyte conductivity": "default",
+        "exchange-current density": "single",
+        "heat of mixing": "false",
+        "hydrolysis": "false",
+        "intercalation kinetics": "symmetric Butler-Volmer",
+        "interface utilisation": "full",
+        "lithium plating": "none",
+        "lithium plating porosity change": "false",
+        "loss of active material": "none",
+        "number of MSMR reactions": "none",
+        "open-circuit potential": "single",
+        "operating mode": "current",
+        "particle": "Fickian diffusion",
+        "particle mechanics": "none",
+        "particle phases": "1",
+        "particle shape": "spherical",
+        "particle size": "single",
+        "SEI": "none",
+        "SEI film resistance": "none",
+        "SEI on cracks": "false",
+        "SEI porosity change": "false",
+        "stress-induced diffusion": "false",
+        "surface form": "false",
+        "surface temperature": "ambient",
+        "thermal": "isothermal",
+        "total interfacial current density as a state": "false",
+        "transport efficiency": "Bruggeman",
+        "voltage as a state": "false",
+        "working electrode": "both",
+        "x-average side reactions": "false",
+        "use lumped thermal capacity": "false"
+      },
+      "input_sha256": "10cdab10ee38b6159e390b4fc5e0a34041b182eb6128fe869b1d9925e316fa5c"
+    },
+    {
+      "combination": {
+        "model": "DFN",
+        "parameter_set": "Chen2020",
+        "thermal": "lumped",
+        "solver": "IDAKLUSolver"
+      },
+      "status": "completed",
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555557,
+        "energy_wh": 0.02064418156876099,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.712037762550968,
+        "max_temperature_c": 25.014374990419412,
+        "point_count": 5,
+        "c_rate_reference_ah": 5.0
+      },
+      "model_options": {
+        "calculate discharge energy": "true",
+        "calculate heat source for isothermal models": "true",
+        "cell geometry": "arbitrary",
+        "contact resistance": "false",
+        "convection": "none",
+        "current collector": "uniform",
+        "diffusivity": "single",
+        "dimensionality": 0,
+        "electrolyte conductivity": "default",
+        "exchange-current density": "single",
+        "heat of mixing": "false",
+        "hydrolysis": "false",
+        "intercalation kinetics": "symmetric Butler-Volmer",
+        "interface utilisation": "full",
+        "lithium plating": "none",
+        "lithium plating porosity change": "false",
+        "loss of active material": "none",
+        "number of MSMR reactions": "none",
+        "open-circuit potential": "single",
+        "operating mode": "current",
+        "particle": "Fickian diffusion",
+        "particle mechanics": "none",
+        "particle phases": "1",
+        "particle shape": "spherical",
+        "particle size": "single",
+        "SEI": "none",
+        "SEI film resistance": "none",
+        "SEI on cracks": "false",
+        "SEI porosity change": "false",
+        "stress-induced diffusion": "false",
+        "surface form": "false",
+        "surface temperature": "ambient",
+        "thermal": "lumped",
+        "total interfacial current density as a state": "false",
+        "transport efficiency": "Bruggeman",
+        "voltage as a state": "false",
+        "working electrode": "both",
+        "x-average side reactions": "false",
+        "use lumped thermal capacity": "false"
+      },
+      "input_sha256": "fa7c5775c83b987808911670943dd7ac9699e85c9a5f1468dad85f1f176bd1e7"
+    },
+    {
+      "combination": {
+        "model": "DFN",
+        "parameter_set": "Chen2020_composite",
+        "thermal": "isothermal",
+        "solver": "IDAKLUSolver"
+      },
+      "status": "completed",
+      "summary": {
+        "duration_s": 20.0,
+        "capacity_ah": 0.005555555555555554,
+        "energy_wh": 0.020246742513009796,
+        "final_soc": 0.4988888888888889,
+        "final_voltage_v": 3.6411854837098923,
+        "max_temperature_c": 25.0,
+        "point_count": 5,
+        "c_rate_reference_ah": 5.0
+      },
+      "model_options": {
+        "calculate discharge energy": "true",
+        "calculate heat source for isothermal models": "true",
+        "cell geometry": "arbitrary",
+        "contact resistance": "false",
+        "convection": "none",
+        "current collector": "uniform",
+        "diffusivity": "single",
+        "dimensionality": 0,
+        "electrolyte conductivity": "default",
+        "exchange-current density": "single",
+        "heat of mixing": "false",
+        "hydrolysis": "false",
+        "intercalation kinetics": "symmetric Butler-Volmer",
+        "interface utilisation": "full",
+        "lithium plating": "none",
+        "lithium plating porosity change": "false",
+        "loss of active material": "none",
+        "number of MSMR reactions": "none",
+        "open-circuit potential": [
+          [
+            "single",
+            "current sigmoid"
+          ],
+          "single"
+        ],
+        "operating mode": "current",
+        "particle": "Fickian diffusion",
+        "particle mechanics": "none",
+        "particle phases": [
+          "2",
+          "1"
+        ],
+        "particle shape": "spherical",
+        "particle size": "single",
+        "SEI": "none",
+        "SEI film resistance": "none",
+        "SEI on cracks": "false",
+        "SEI porosity change": "false",
+        "stress-induced diffusion": "false",
+        "surface form": "algebraic",
+        "surface temperature": "ambient",
+        "thermal": "isothermal",
+        "total interfacial current density as a state": "false",
+        "transport efficiency": "Bruggeman",
+        "voltage as a state": "false",
+        "working electrode": "both",
+        "x-average side reactions": "false",
+        "use lumped thermal capacity": "false"
+      },
+      "input_sha256": "eeb72852f73008d029c04b2f7658a148deb101479aaa69c69b7b7fc86231ac1b"
+    }
+  ],
+  "environment": {
+    "available": true,
+    "versions": {
+      "python": [
+        3,
+        13
+      ],
+      "pybamm": "26.10.1.0",
+      "solvers": "0.11.1",
+      "numpy": "2.3.5",
+      "casadi": "3.8.1"
+    },
+    "checks": [
+      {
+        "id": "python",
+        "ok": true,
+        "expected": [
+          3,
+          13
+        ],
+        "actual": [
+          3,
+          13
+        ]
+      },
+      {
+        "id": "pybamm",
+        "ok": true,
+        "expected": "26.10.1.0",
+        "actual": "26.10.1.0"
+      },
+      {
+        "id": "solvers",
+        "ok": true,
+        "expected": "0.11.1",
+        "actual": "0.11.1"
+      },
+      {
+        "id": "numpy",
+        "ok": true,
+        "expected": "2.3.5",
+        "actual": "2.3.5"
+      },
+      {
+        "id": "casadi",
+        "ok": true,
+        "expected": "3.8.1",
+        "actual": "3.8.1"
+      },
+      {
+        "id": "os",
+        "ok": true,
+        "expected": [
+          "Windows"
+        ],
+        "actual": "Windows"
+      },
+      {
+        "id": "runtime_imports",
+        "ok": true,
+        "expected": "PyBaMM・依存ライブラリ読込とIDAKLU構築",
+        "actual": "成功"
+      }
+    ],
+    "solver": "IDAKLUSolver",
+    "checked_at": "2026-10-16T14:28:07.450737+00:00",
+    "message": "固定計算環境とソルバ読込を確認しました。",
+    "scope": "版・依存読込・ソルバ構築の診断。計算成功や対象セルの物理精度の検証は含みません。"
+  },
+  "passed": true
+}

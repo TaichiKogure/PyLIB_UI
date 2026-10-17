@@ -1,0 +1,19 @@
+{
+  "scope": "Real solver subprocess lifecycle; no measured-data validation",
+  "cases": {
+    "timeout": {
+      "status": "timeout",
+      "elapsed_s": 5.064098600007128,
+      "result_saved": false
+    },
+    "cancel": {
+      "status": "cancelled",
+      "result_saved": false
+    },
+    "restart": {
+      "status": "interrupted",
+      "result_saved": false
+    }
+  },
+  "passed": true
+}

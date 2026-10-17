@@ -31,6 +31,7 @@ function sourceLabel(run) {
         synthetic: "合成モデル・未校正",
         synthetic_demo: "合成デモ・未校正",
         simulation: "計算結果・実測未検証",
+        simulation_import: "計算CSV再取込・元計算未確認",
         public_measured: "公開実測・未検証",
         user_measured: "ユーザー実測・未検証",
         digitized: "図読取・未検証"
@@ -80,6 +81,9 @@ async function switchProject() {
     localStorage.setItem("pylibstudy-project", library.projectId);
     ++state.viewVersion;
     state.current = null;
+    ++resultView.version;
+    $("result-explorer").hidden = true;
+    for (const id of ['spatial-csv', 'citations-bib', 'result-analysis-json', 'result-analysis-csv']) $(id).hidden = true;
     state.comparisons.clear();
     for (const id of ["save", "csv", "json", "restore", "original"]) $(id).disabled = true;
     $("result-title").textContent = "カーブを選択・計算・取込";

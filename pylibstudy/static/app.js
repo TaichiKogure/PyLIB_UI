@@ -149,6 +149,7 @@ function busy(enabled, operation = "計算") {
 
 function showResult(run) {
     state.current = run;
+    showResultExplorer(run);
     $("result-origin").textContent = `表示中：${run.name} / ${run.engine?.label || sourceLabel(run)} / ${sourceLabel(run)} / ID ${run.id.slice(0, 8)}`;
     $("metric-temp-title").textContent = "最高温度";
     $("metric-temp-kind").textContent = "°C · セル平均";
@@ -196,6 +197,8 @@ function svgElement(tag, attrs = {}, text) {
 }
 
 function renderChart() {
+    if ($("result-variable")) $("result-variable").value = state.variable;
+    for (const button of document.querySelectorAll('[data-chart]')) button.setAttribute('aria-pressed', String(button.dataset.chart === state.variable));
     const runs = new Map();
     if (state.current) runs.set(state.current.id, state.current);
     for (const [id, run] of state.comparisons) if (run) runs.set(id, run);
@@ -269,7 +272,13 @@ function renderChart() {
             "font-size": 11
         }, x.toFixed(1)));
     }
-    svg.append(svgElement("text", {x: left, y: 13, fill: "#708078", "font-size": 11}, labels[variable]));
+    const variableMeta = state.current?.result_variables?.[variable];
+    svg.append(svgElement("text", {
+        x: left,
+        y: 13,
+        fill: "#708078",
+        "font-size": 11
+    }, labels[variable] || `${variableMeta?.label || variable} (${variableMeta?.unit || state.current?.units?.[variable] || '単位不明'})`));
     svg.append(svgElement("text", {
         x: width - right,
         y: height - 4,
@@ -484,6 +493,7 @@ $("save").addEventListener("click", async () => {
         state.savedIds.add(run.id);
         message("カーブと来歴を保存しました。");
         await refreshHistory();
+        if (state.current?.id === run.id) await refreshResultSources(run, resultView.version);
     } catch (error) {
         message(error.message, "error");
     } finally {

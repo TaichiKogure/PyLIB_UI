@@ -140,8 +140,8 @@ def export_csv(run):
             stream.write(f"# {key}: {json.dumps(run[key], ensure_ascii=False)}\n")
     if run.get("record_type") == "physics":
         import json
-        from .physics import DIAGNOSTICS
-        columns += tuple(key for key in DIAGNOSTICS if key in run.get('diagnostic_summary', {}))
+        columns += tuple(
+            key for key in run.get('units', {}) if key not in columns and any(key in p for p in run['points']))
         for key in ("input", "parameter_provenance", "numerical", "step_results"):
             stream.write(f"# {key}: {json.dumps(run[key], ensure_ascii=False)}\n")
         if run.get('diagnostic_summary'):
@@ -149,7 +149,30 @@ def export_csv(run):
             stream.write(f'# diagnostic_summary: {json.dumps(run["diagnostic_summary"], ensure_ascii=False)}\n')
         if run.get("design_snapshot"):
             stream.write(f'# design_id: {run["design_snapshot"]["id"]}\n')
+        for key in ('result_variables', 'electrode_soh', 'performance', 'input_sha256'):
+            if key in run: stream.write(f'# {key}: {json.dumps(run[key], ensure_ascii=False)}\n')
     writer = csv.DictWriter(stream, fieldnames=columns, extrasaction="ignore")
     writer.writeheader()
     writer.writerows(run["points"])
     return stream.getvalue().encode("utf-8-sig")
+
+
+def export_spatial_csv(run):
+    import json
+    stream = io.StringIO(newline='')
+    stream.write('# run_id: ' + run['id'] + '\n')
+    stream.write('# input_sha256: ' + str(run.get('input_sha256', 'unknown')) + '\n')
+    stream.write('# sampling: ' + json.dumps({k: {key: val for key, val in v.items() if key not in {'frames'}}
+                                              for k, v in run.get('distributions', {}).get('variables', {}).items()},
+                                             ensure_ascii=False) + '\n')
+    writer = csv.writer(stream)
+    writer.writerow(
+        ['variable', 'unit', 'coordinate', 'coordinate_unit', 'node_index', 'coordinate_value', 'time_s', 'segment_id',
+         'point_index', 'value'])
+    for key, item in run.get('distributions', {}).get('variables', {}).items():
+        if item['status'] != 'available': continue
+        for frame in item['frames']:
+            for i, (coordinate, val) in enumerate(zip(item['coordinates'], frame['values'])):
+                writer.writerow([key, item['unit'], item['coordinate'], 'm', item['node_indices'][i], coordinate,
+                                 frame['time_s'], frame['segment_id'], frame['point_index'], val])
+    return stream.getvalue().encode('utf-8-sig')

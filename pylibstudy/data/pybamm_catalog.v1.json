@@ -1,0 +1,850 @@
+{
+  "pybamm_version": "26.10.1.0",
+  "scope": "Public exported model classes, BatteryModelOptions, parameter sets, solvers and step factories. Presence does not imply compatibility or a successful solve.",
+  "models": {
+    "lithium_ion": [
+      "BaseModel",
+      "Basic3DThermalSPM",
+      "BasicDFN",
+      "BasicDFN2D",
+      "BasicDFNComposite",
+      "BasicDFNHalfCell",
+      "BasicDFNUnstructured",
+      "BasicSPM",
+      "DFN",
+      "ElectrodeSOHComposite",
+      "ElectrodeSOHHalfCell",
+      "MPM",
+      "MSMR",
+      "NewmanTobias",
+      "SPM",
+      "SPMe",
+      "SplitOCVR",
+      "Yang2017"
+    ],
+    "lithium_metal": [],
+    "sodium_ion": [
+      "BasicDFN"
+    ],
+    "lead_acid": [
+      "BaseModel",
+      "BasicFull",
+      "Full",
+      "LOQS"
+    ],
+    "equivalent_circuit": [
+      "Thevenin"
+    ]
+  },
+  "battery_options": {
+    "calculate discharge energy": [
+      "false",
+      "true"
+    ],
+    "calculate heat source for isothermal models": [
+      "false",
+      "true"
+    ],
+    "cell geometry": [
+      "arbitrary",
+      "pouch",
+      "cylindrical"
+    ],
+    "contact resistance": [
+      "false",
+      "true"
+    ],
+    "convection": [
+      "none",
+      "uniform transverse",
+      "full transverse"
+    ],
+    "current collector": [
+      "uniform",
+      "potential pair",
+      "potential pair quite conductive"
+    ],
+    "diffusivity": [
+      "single",
+      "current sigmoid"
+    ],
+    "dimensionality": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "electrolyte conductivity": [
+      "default",
+      "full",
+      "leading order",
+      "composite",
+      "integrated"
+    ],
+    "exchange-current density": [
+      "single",
+      "current sigmoid"
+    ],
+    "heat of mixing": [
+      "false",
+      "true"
+    ],
+    "hydrolysis": [
+      "false",
+      "true"
+    ],
+    "intercalation kinetics": [
+      "symmetric Butler-Volmer",
+      "asymmetric Butler-Volmer",
+      "linear",
+      "Marcus",
+      "Marcus-Hush-Chidsey",
+      "MSMR"
+    ],
+    "interface utilisation": [
+      "full",
+      "constant",
+      "current-driven"
+    ],
+    "lithium plating": [
+      "none",
+      "reversible",
+      "partially reversible",
+      "irreversible"
+    ],
+    "lithium plating porosity change": [
+      "false",
+      "true"
+    ],
+    "loss of active material": [
+      "none",
+      "stress-driven",
+      "asymmetric stress-driven",
+      "reaction-driven",
+      "current-driven",
+      "stress and reaction-driven",
+      "asymmetric stress and reaction-driven"
+    ],
+    "number of MSMR reactions": [
+      "none"
+    ],
+    "open-circuit potential": [
+      "single",
+      "current sigmoid",
+      "MSMR",
+      "one-state hysteresis",
+      "one-state differential capacity hysteresis"
+    ],
+    "operating mode": [
+      "current",
+      "voltage",
+      "power",
+      "differential power",
+      "explicit power",
+      "resistance",
+      "differential resistance",
+      "explicit resistance",
+      "CCCV"
+    ],
+    "particle": [
+      "Fickian diffusion",
+      "uniform profile",
+      "quadratic profile",
+      "quartic profile",
+      "MSMR"
+    ],
+    "particle mechanics": [
+      "none",
+      "swelling only",
+      "swelling and cracking"
+    ],
+    "particle phases": [
+      "1",
+      "2"
+    ],
+    "particle shape": [
+      "spherical",
+      "no particles"
+    ],
+    "particle size": [
+      "single",
+      "distribution"
+    ],
+    "SEI": [
+      "none",
+      "constant",
+      "reaction limited",
+      "reaction limited (asymmetric)",
+      "solvent-diffusion limited",
+      "electron-migration limited",
+      "interstitial-diffusion limited",
+      "ec reaction limited",
+      "ec reaction limited (asymmetric)",
+      "VonKolzenberg2020",
+      "tunnelling limited"
+    ],
+    "SEI film resistance": [
+      "none",
+      "distributed",
+      "average"
+    ],
+    "SEI on cracks": [
+      "false",
+      "true"
+    ],
+    "SEI porosity change": [
+      "false",
+      "true"
+    ],
+    "stress-induced diffusion": [
+      "false",
+      "true"
+    ],
+    "surface form": [
+      "false",
+      "differential",
+      "algebraic"
+    ],
+    "surface temperature": [
+      "ambient",
+      "lumped"
+    ],
+    "thermal": [
+      "isothermal",
+      "lumped",
+      "x-lumped",
+      "x-full"
+    ],
+    "total interfacial current density as a state": [
+      "false",
+      "true"
+    ],
+    "transport efficiency": [
+      "Bruggeman",
+      "ordered packing",
+      "hyperbola of revolution",
+      "overlapping spheres",
+      "tortuosity factor",
+      "random overlapping cylinders",
+      "heterogeneous catalyst",
+      "cation-exchange membrane"
+    ],
+    "voltage as a state": [
+      "false",
+      "true"
+    ],
+    "working electrode": [
+      "both",
+      "positive"
+    ],
+    "x-average side reactions": [
+      "false",
+      "true"
+    ],
+    "use lumped thermal capacity": [
+      "false",
+      "true"
+    ]
+  },
+  "parameter_sets": [
+    "Ai2020",
+    "Bonkile2024",
+    "Chayambuka2022",
+    "Chen2020",
+    "Chen2020_composite",
+    "ECM_Example",
+    "Ecker2015",
+    "Ecker2015_graphite_halfcell",
+    "MSMR_Example",
+    "Marquis2019",
+    "Mohtat2020",
+    "NCA_Kim2011",
+    "OKane2022",
+    "OKane2022_graphite_SiOx_halfcell",
+    "ORegan2022",
+    "Prada2013",
+    "Ramadass2004",
+    "Sulzer2019",
+    "Xu2019"
+  ],
+  "solvers": [
+    "AlgebraicSolver",
+    "BaseSolver",
+    "CasadiAlgebraicSolver",
+    "CasadiSolver",
+    "CompositeSolver",
+    "DummySolver",
+    "IDAKLUSolver",
+    "JaxSolver",
+    "NonlinearSolver",
+    "ScipySolver"
+  ],
+  "experiment_steps": [
+    "BaseStep",
+    "BaseStepExplicit",
+    "BaseStepImplicit",
+    "BaseTermination",
+    "CRate",
+    "CRateTermination",
+    "ControlKind",
+    "CrateTermination",
+    "Current",
+    "CurrentTermination",
+    "CustomStepExplicit",
+    "CustomStepImplicit",
+    "CustomTermination",
+    "Power",
+    "Resistance",
+    "Rest",
+    "Voltage",
+    "VoltageTermination",
+    "c_rate",
+    "current",
+    "power",
+    "resistance",
+    "rest",
+    "string",
+    "voltage"
+  ],
+  "option_phases": {
+    "operating mode": "P1",
+    "calculate discharge energy": "P2",
+    "calculate heat source for isothermal models": "P3",
+    "contact resistance": "P3",
+    "heat of mixing": "P3",
+    "surface temperature": "P3",
+    "thermal": "P3",
+    "use lumped thermal capacity": "P3",
+    "diffusivity": "P4",
+    "exchange-current density": "P4",
+    "open-circuit potential": "P4",
+    "particle": "P4",
+    "particle phases": "P4",
+    "particle shape": "P4",
+    "transport efficiency": "P4",
+    "working electrode": "P4",
+    "lithium plating": "P5",
+    "lithium plating porosity change": "P5",
+    "loss of active material": "P5",
+    "particle mechanics": "P5",
+    "SEI": "P5",
+    "SEI film resistance": "P5",
+    "SEI on cracks": "P5",
+    "SEI porosity change": "P5",
+    "stress-induced diffusion": "P5",
+    "x-average side reactions": "P5",
+    "surface form": "P6/P7",
+    "voltage as a state": "P6/P7",
+    "total interfacial current density as a state": "P6/P7",
+    "electrolyte conductivity": "P7",
+    "intercalation kinetics": "P7",
+    "interface utilisation": "P7",
+    "number of MSMR reactions": "P7",
+    "particle size": "P7",
+    "cell geometry": "P8",
+    "current collector": "P8",
+    "dimensionality": "P8",
+    "convection": "P9",
+    "hydrolysis": "P9"
+  },
+  "features": [
+    {
+      "id": "A01",
+      "label": "SPM: 単粒子近似",
+      "status": "対応: SPM（Chen2020・等温/集中熱）",
+      "phase": "P1"
+    },
+    {
+      "id": "A02",
+      "label": "SPMe: 電解液を含む単粒子近似",
+      "status": "対応",
+      "phase": "P1維持"
+    },
+    {
+      "id": "A03",
+      "label": "DFN: 多孔質電極モデル",
+      "status": "対応",
+      "phase": "P1維持"
+    },
+    {
+      "id": "A04",
+      "label": "NewmanTobias: 中間の縮約モデル",
+      "status": "未",
+      "phase": "P7"
+    },
+    {
+      "id": "A05",
+      "label": "MPM・DFN粒径分布: 粒子群の応答",
+      "status": "未",
+      "phase": "P7"
+    },
+    {
+      "id": "A06",
+      "label": "MSMR: 複数種・複数反応の電極表現",
+      "status": "未",
+      "phase": "P7"
+    },
+    {
+      "id": "A07",
+      "label": "黒鉛＋Si等の複数活物質相、相別反応・拡散",
+      "status": "一部: Chen2020_compositeのDFN等温",
+      "phase": "P4"
+    },
+    {
+      "id": "A08",
+      "label": "半セル、Li対極、正極working electrode",
+      "status": "未",
+      "phase": "P4"
+    },
+    {
+      "id": "A09",
+      "label": "電極SOH、初期化学量論・電極容量・利用可能Li量の計算",
+      "status": "対応: 単相/複合負極の平衡容量・化学量論・Li量。実測SOH%ではない",
+      "phase": "P2"
+    },
+    {
+      "id": "A10",
+      "label": "複合電極・半セルのSOH/初期状態補助モデル",
+      "status": "一部: 複合負極eSOHはP2接続。半セルはP4",
+      "phase": "P4"
+    },
+    {
+      "id": "A11",
+      "label": "Thevenin等価回路: RC数・熱・拡散等の設定",
+      "status": "一部: 現1RCは独自合成計算",
+      "phase": "P9"
+    },
+    {
+      "id": "A12",
+      "label": "ナトリウムイオンBasicDFN",
+      "status": "未",
+      "phase": "P9"
+    },
+    {
+      "id": "A13",
+      "label": "鉛蓄電池LOQS・Full、対流・加水分解",
+      "status": "未",
+      "phase": "P9"
+    },
+    {
+      "id": "A14",
+      "label": "BasicSPM/BasicDFN/BasicDFNComposite/BasicDFNHalfCell: 教育・拡張の基礎モデル",
+      "status": "未",
+      "phase": "P10"
+    },
+    {
+      "id": "A15",
+      "label": "Yang2017、SplitOCVR等の個別モデル",
+      "status": "調査",
+      "phase": "P10"
+    },
+    {
+      "id": "A16",
+      "label": "BasicDFN2D・BasicDFNUnstructured・Basic3DThermalSPM",
+      "status": "調査",
+      "phase": "P8"
+    },
+    {
+      "id": "A17",
+      "label": "標準19物性セットの説明・出典・差分閲覧、互換性判定",
+      "status": "一部: 実行はChen系2種",
+      "phase": "P1/P4"
+    },
+    {
+      "id": "A18",
+      "label": "独自ParameterValues、関数・補間曲線、BPXの取込",
+      "status": "未",
+      "phase": "P4"
+    },
+    {
+      "id": "A19",
+      "label": "LFP/NCA等の物性セットを選んだ実ソルバ計算",
+      "status": "未: 現公開正極曲線計算とは別",
+      "phase": "P4"
+    },
+    {
+      "id": "B01",
+      "label": "定電流充放電・休止・定電圧、電圧/電流による終了",
+      "status": "対応",
+      "phase": "P1維持"
+    },
+    {
+      "id": "B02",
+      "label": "AとC-rateの相互変換・C-rateステップ",
+      "status": "対応: A/C-rateステップと設計基準容量による相互換算",
+      "phase": "P1"
+    },
+    {
+      "id": "B03",
+      "label": "CC-CV試験テンプレート、電流打切り",
+      "status": "対応: 編集可能なCCCV充電テンプレート・電流打切り",
+      "phase": "P1"
+    },
+    {
+      "id": "B04",
+      "label": "定電力・定抵抗、微分/明示制御モード",
+      "status": "対応: CP/CRの代数・明示・定義済み微分追従制御",
+      "phase": "P1"
+    },
+    {
+      "id": "B05",
+      "label": "測定電流波形、走行波形、パルス/GITT/HPPCの組合せ",
+      "status": "対応: 電流波形・パルス/HPPC/GITT例示テンプレート。指標後処理はP2接続",
+      "phase": "P1"
+    },
+    {
+      "id": "B06",
+      "label": "繰返しサイクル・ネストした試験ブロック",
+      "status": "対応: 全体サイクルと3階層までの繰返しブロック",
+      "phase": "P1"
+    },
+    {
+      "id": "B07",
+      "label": "開始日時、温度、ステップ周期、タグ、スキップ可否",
+      "status": "対応: 試験開始時刻ラベル・ステップ温度/周期/タグ/skip",
+      "phase": "P1"
+    },
+    {
+      "id": "B08",
+      "label": "全体終了条件: 容量保持率・電圧・時間等",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "B09",
+      "label": "初期SOC/初期温度、上下限電圧",
+      "status": "対応",
+      "phase": "P1維持"
+    },
+    {
+      "id": "B10",
+      "label": "初期OCV・formation/保存時Li損失、初期状態再設定",
+      "status": "一部: 初期OCV指定。formation/保存時Li損失はP5",
+      "phase": "P2/P5"
+    },
+    {
+      "id": "B11",
+      "label": "継続計算: starting_solution、step、状態引継ぎ",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "B12",
+      "label": "長期サイクルの保存間引き、要約変数、RPT挿入",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "B13",
+      "label": "CustomStepExplicit/Implicit、独自終了条件",
+      "status": "未",
+      "phase": "P10"
+    },
+    {
+      "id": "B14",
+      "label": "ジョブ取消・時間制限・中断回復・保存",
+      "status": "対応",
+      "phase": "P0維持"
+    },
+    {
+      "id": "B15",
+      "label": "Callbacksによる進捗・サイクル到達・失敗通知",
+      "status": "一部: P1のサイクル/ステップ到達・失敗通知。長期保存/再開はP5",
+      "phase": "P1/P5"
+    },
+    {
+      "id": "C01",
+      "label": "固相拡散: Fickian/一様/二次/四次、球形粒子",
+      "status": "一部: 既定値",
+      "phase": "P4"
+    },
+    {
+      "id": "C02",
+      "label": "OCP: single/current sigmoid/1状態ヒステリシス/微分容量ヒステリシス/MSMR",
+      "status": "一部: 固定の複合設定",
+      "phase": "P4/P7"
+    },
+    {
+      "id": "C03",
+      "label": "Butler-Volmer対称/非対称、linear、Marcus/MHC、MSMR反応",
+      "status": "一部: 既定値",
+      "phase": "P7"
+    },
+    {
+      "id": "C04",
+      "label": "充放電方向依存の拡散係数・交換電流密度",
+      "status": "未",
+      "phase": "P4"
+    },
+    {
+      "id": "C05",
+      "label": "電解液伝導: full/leading order/composite/integrated等",
+      "status": "一部: モデル既定値",
+      "phase": "P7"
+    },
+    {
+      "id": "C06",
+      "label": "輸送効率: Bruggeman・tortuosity factor等8候補",
+      "status": "一部: 既定値。設計解析値とは別",
+      "phase": "P4"
+    },
+    {
+      "id": "C07",
+      "label": "空間的に傾斜した電極物性・厚さ方向の分布",
+      "status": "未",
+      "phase": "P8"
+    },
+    {
+      "id": "C08",
+      "label": "界面利用率 full/constant/current-driven",
+      "status": "未",
+      "phase": "P7"
+    },
+    {
+      "id": "C09",
+      "label": "surface form、電圧状態化・全界面電流状態化",
+      "status": "一部: P1の明示CP/CRで電圧状態を連動適用。surface form等は後続",
+      "phase": "P6/P7"
+    },
+    {
+      "id": "C10",
+      "label": "接触抵抗のPyBaMMモデル反映",
+      "status": "未: 現設計帳簿抵抗とは別",
+      "phase": "P3"
+    },
+    {
+      "id": "C11",
+      "label": "参照電極挿入・3電極相当の電位取得",
+      "status": "対応: セパレータ内の位置指定と正負極3E電位",
+      "phase": "P2"
+    },
+    {
+      "id": "D01",
+      "label": "等温・集中熱モデル",
+      "status": "対応: 複合負極は等温に限定",
+      "phase": "P3"
+    },
+    {
+      "id": "D02",
+      "label": "等温時の発熱計算、オーム/反応/可逆熱等の内訳",
+      "status": "一部: 診断変数あり、混合熱は無効",
+      "phase": "P2/P3"
+    },
+    {
+      "id": "D03",
+      "label": "混合熱、ヒステリシス発熱、接触抵抗発熱",
+      "status": "未/一部",
+      "phase": "P3/P4"
+    },
+    {
+      "id": "D04",
+      "label": "表面温度ambient/lumped、熱容量・冷却面積・体積",
+      "status": "一部",
+      "phase": "P3"
+    },
+    {
+      "id": "D05",
+      "label": "x-full/x-lumped、面内温度分布と集電モデルの組合せ",
+      "status": "未",
+      "phase": "P8"
+    },
+    {
+      "id": "D06",
+      "label": "arbitrary/pouch/cylindrical形状",
+      "status": "一部: 現円筒設計から限定写像",
+      "phase": "P3/P8"
+    },
+    {
+      "id": "D07",
+      "label": "uniform/potential pair/高導電率集電モデル、次元0–3",
+      "status": "未: 既定uniformのみ",
+      "phase": "P8"
+    },
+    {
+      "id": "D08",
+      "label": "粒子膨張、swelling and cracking、応力誘起拡散",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "D09",
+      "label": "巻回モデル・円筒熱・非構造メッシュの例に沿った拡張",
+      "status": "調査",
+      "phase": "P8"
+    },
+    {
+      "id": "E01",
+      "label": "SEI: constant、反応/溶媒拡散/電子移動/格子間Li拡散/EC反応/VonKolzenberg/tunnelling律速",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E02",
+      "label": "SEI膜抵抗 none/distributed/average",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E03",
+      "label": "SEIによる空隙率変化",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E04",
+      "label": "Li析出 reversible/partially reversible/irreversible、剥離・dead Li",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E05",
+      "label": "Li析出による空隙率変化、複合負極の相別析出",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E06",
+      "label": "活物質損失: 応力/非対称応力/反応/電流/複合要因",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E07",
+      "label": "亀裂面SEI、粒子割れと劣化の連成",
+      "status": "未",
+      "phase": "P5後半"
+    },
+    {
+      "id": "E08",
+      "label": "LLI/LAM/SEI厚/析出Li/容量低下のサイクル要約",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E09",
+      "label": "カレンダー保存、サイクル劣化、定期RPTの比較",
+      "status": "未",
+      "phase": "P5"
+    },
+    {
+      "id": "E10",
+      "label": "劣化・熱・力学の組合せ互換性チェック、収支検証",
+      "status": "未",
+      "phase": "P5全体"
+    },
+    {
+      "id": "F01",
+      "label": "電圧・電流・SOC・平均温度、保存、CSV/JSON",
+      "status": "対応",
+      "phase": "P2維持"
+    },
+    {
+      "id": "F02",
+      "label": "過電圧・電解液/固相損失・発熱成分の表示",
+      "status": "対応: 時刻別の符号付き電圧成分・発熱成分・収支",
+      "phase": "P2"
+    },
+    {
+      "id": "F03",
+      "label": "x/r/y/zの濃度・電位・反応電流・温度分布、時間スライダー",
+      "status": "一部: x/r分布と時刻スライダー、座標/単位保存。y/zはP8",
+      "phase": "P2/P8"
+    },
+    {
+      "id": "F04",
+      "label": "電極SOH、容量/エネルギー/効率、電圧成分図",
+      "status": "対応: eSOH・区間容量/エネルギー・条件付き帳簿効率・電圧成分図",
+      "phase": "P2"
+    },
+    {
+      "id": "F05",
+      "label": "dQ/dV・dV/dQ、パルス抵抗、GITT指標の後処理",
+      "status": "対応: 平滑化条件付き微分・指定遅延抵抗・GITT型指標。拡散係数Dは対象外",
+      "phase": "P2"
+    },
+    {
+      "id": "F06",
+      "label": "EISSimulation、Nyquist/Bode、SOC・温度別比較、複素数出力",
+      "status": "未: 固定版にAPIあり",
+      "phase": "P6"
+    },
+    {
+      "id": "F07",
+      "label": "実測照合、条件照合、残差・RMSE、出典付き結果",
+      "status": "一部: 明示区間/時間ずれ・電流温度照合・残差/RMSE・原本ハッシュ。自動同定はP7",
+      "phase": "P2/P7"
+    },
+    {
+      "id": "F08",
+      "label": "InputParameter・パラメータ走査・BatchStudy・レート特性",
+      "status": "未",
+      "phase": "P7"
+    },
+    {
+      "id": "F09",
+      "label": "前進感度、パラメータ同定、幾何最適化",
+      "status": "未: PyBaMM感度＋外部最適化器",
+      "phase": "P7"
+    },
+    {
+      "id": "F10",
+      "label": "不確かさ・事後分布・DOE/グローバル感度",
+      "status": "未: PyBOP/SALib等の外部連携",
+      "phase": "P7後半"
+    },
+    {
+      "id": "F11",
+      "label": "Casadi/IDAKLU/Scipy、代数ソルバ、CompositeSolver等の選択",
+      "status": "一部: IDAKLU固定（P0登録表経由）",
+      "phase": "P0/P7"
+    },
+    {
+      "id": "F12",
+      "label": "JAX/IDAKLU-JAX、OpenMP並列、多数条件の高速計算",
+      "status": "調査: Windows/追加依存を確認",
+      "phase": "P7後半"
+    },
+    {
+      "id": "F13",
+      "label": "メッシュ粗中細・rtol/atol・計算時間制限",
+      "status": "対応",
+      "phase": "P0維持"
+    },
+    {
+      "id": "F14",
+      "label": "空間法・境界条件・メッシュ・時間補間・出力変数絞込み",
+      "status": "一部: 保存変数・分布時刻/座標点数を制限。空間法/境界条件の変更は後続",
+      "phase": "P2/P8/P10"
+    },
+    {
+      "id": "F15",
+      "label": "時間/メッシュ収束、モデル間比較、数値不安定性の診断",
+      "status": "一部: 検証スクリプトは既存",
+      "phase": "P0/P7"
+    },
+    {
+      "id": "F16",
+      "label": "Simulation/解の保存・再読込、モデルJSON、データ出力、引用収集",
+      "status": "一部: アプリJSON・スカラー/分布/解析CSV・引用BibTeX。ネイティブ解/モデルJSONはP10",
+      "phase": "P2/P10"
+    },
+    {
+      "id": "F17",
+      "label": "DataLoader・公開参照データ・BPX、パラメータの来歴",
+      "status": "一部: 独自参照資料管理",
+      "phase": "P4"
+    },
+    {
+      "id": "F18",
+      "label": "独自ODE/DAE/PDE、サブモデル交換、式木/離散化、コード生成、latexify",
+      "status": "未",
+      "phase": "P10"
+    },
+    {
+      "id": "F19",
+      "label": "QuickPlot・アニメーション・モデル比較可視化",
+      "status": "一部: Web系列切替・x/r時刻スライダー・既存重ね描き。QuickPlot/動画出力は未接続",
+      "phase": "P2"
+    }
+  ]
+}

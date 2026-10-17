@@ -9,7 +9,7 @@ import random
 from datetime import datetime, timezone
 from uuid import uuid4
 
-SOURCE_TYPES = {"synthetic_demo", "simulation", "public_measured", "user_measured", "digitized"}
+SOURCE_TYPES = {"synthetic_demo", "simulation", "simulation_import", "public_measured", "user_measured", "digitized"}
 UNITS = {
     "time_s": {"s": (1, 0), "min": (60, 0), "h": (3600, 0)},
     "voltage_v": {"V": (1, 0), "mV": (.001, 0)},
@@ -109,6 +109,9 @@ def import_curve(data):
     source = text_field(data, "source", limit=2000)
     if source_type in {"public_measured", "digitized"} and not source:
         raise ValueError("公開実測・図読取データは出典を入力してください。")
+    if source_type == 'simulation_import' and not source:
+        raise ValueError(
+            '計算CSV再取込は元の計算IDや出力元を出典に記録してください。CSV内の計算条件は未確認として扱います。')
     mapping = data.get("mapping")
     if not isinstance(mapping, dict) or any(k not in FIELDS + ("step", "direction") for k in mapping):
         raise ValueError("列の対応付けを確認してください。")

@@ -247,11 +247,13 @@ function readPhysics() {
         points: readPhysicsPoints($("physics-profile").value)
     }];
     else input.protocol = [...$("physics-steps").children].map(row => row.read());
+    readResultOutput(input);
     return input;
 }
 
 function physicsCompatibility() {
     if (!physical.config) return;
+    $("physics-initial_soc").disabled = $("physics-initial_ocv_v").value !== "";
     const material = physical.config.capabilities.combinations.filter(c => c.parameter_set === $("physics-parameter_set").value);
     for (const option of $("physics-model").options) option.disabled = !material.some(c => c.model === option.value);
     if (!material.some(c => c.model === $("physics-model").value) && material.length) $("physics-model").value = material[0].model;
@@ -291,6 +293,7 @@ function setPhysics(input) {
     input = {...physical.config.defaults, ...input};
     if (input.config_schema_version !== physical.config.defaults.config_schema_version) throw new Error("未対応の計算設定スキーマ版です。");
     if (input.design_id && !designing.records.some(r => r.id === input.design_id)) throw new Error("この設計は現在のプロジェクトにありません。");
+    setResultOutput(input);
     for (const key of physicsFields) $("physics-" + key).value = input[key];
     physicsCompatibility();
     $("physics-design").value = input.design_id || "";
@@ -453,6 +456,7 @@ async function refreshPhysicsJobs() {
 
 async function initPhysics() {
     physical.config = await api("/api/physics/config");
+    initResultSettings(physical.config.result_catalog);
     $("physics-environment").textContent = physical.config.environment.message;
     setPhysics(physical.config.defaults);
     initCapabilities();
@@ -484,6 +488,7 @@ async function initPhysics() {
     $("physics-model").addEventListener("change", physicsCompatibility);
     $("physics-parameter_set").addEventListener("change", physicsCompatibility);
     $("physics-thermal").addEventListener("change", physicsCompatibility);
+    $("physics-initial_ocv_v").addEventListener("input", physicsCompatibility);
     $("physics-solver").addEventListener("change", physicsCompatibility);
     $("physics-protocol-mode").addEventListener("change", syncPhysicsEditor);
     $("physics-add-step").addEventListener("click", () => {

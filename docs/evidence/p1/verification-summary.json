@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-17",
+  "scope": "P1 local regression and real pinned solvers; no target-cell measured validation",
+  "unittest": {
+    "passed": true,
+    "count": 93,
+    "elapsed_s": 34.452
+  },
+  "browser": {
+    "p1": 5,
+    "model_tabs": 9,
+    "catalog": 4,
+    "passed": true
+  },
+  "p1_solver_cases": 25,
+  "existing_solver_cases": 15,
+  "lifecycle_cases": 3,
+  "syntax_checks_passed": true,
+  "diff_check_passed": true
+}

@@ -18,7 +18,9 @@ from .physics import validate_design as validate_physics_design
 from .physics import validate_request as validate_physics
 from .protocol import protocol_templates, preview_protocol
 from .schema import SimulationInput
-from .service import SimulationService, export_csv
+from .service import SimulationService, export_csv, export_spatial_csv
+from .result_catalog import catalog as result_catalog
+from .result_analysis import postprocess, compare as compare_results, analysis_csv
 from .storage import RunRepository
 
 STATIC = Path(__file__).parent / "static"
@@ -88,6 +90,7 @@ def create_server(port=8765, data_dir=None, research_python=None):
                       "/design-insights.js": ("design-insights.js", "text/javascript; charset=utf-8"),
                       "/physics.js": ("physics.js", "text/javascript; charset=utf-8"),
                       "/capabilities.js": ("capabilities.js", "text/javascript; charset=utf-8"),
+                      "/results.js": ("results.js", "text/javascript; charset=utf-8"),
                       "/model-tabs.js": ("model-tabs.js", "text/javascript; charset=utf-8"),
                       "/cathodes.js": ("cathodes.js", "text/javascript; charset=utf-8"),
                       "/style.css": ("style.css", "text/css; charset=utf-8")}
@@ -106,9 +109,21 @@ def create_server(port=8765, data_dir=None, research_python=None):
                 if path == "/api/physics/config":
                     return self.send(200, {"defaults": PHYSICS_DEFAULTS, "environment": jobs.availability,
                                            "templates": protocol_templates(),
+                                           "result_catalog": result_catalog(),
                                            "capabilities": capability_catalog(jobs.availability)})
                 if path == "/api/capabilities":
                     return self.send(200, capability_catalog(jobs.availability))
+                if path == '/api/result-catalog':
+                    return self.send(200, result_catalog())
+                if path == '/api/analyses':
+                    return self.send(200, repository.analyses(project_id))
+                if path.startswith('/api/analyses/'):
+                    identity = path.removeprefix('/api/analyses/')
+                    as_csv = identity.endswith('.csv')
+                    identity = identity.removesuffix('.csv') if as_csv else identity.removesuffix('.json')
+                    record = repository.analysis(identity, project_id)
+                    return self.send(200, analysis_csv(record), 'text/csv; charset=utf-8',
+                                     'analysis-' + identity + '.csv') if as_csv else self.send(200, record)
                 if path == "/api/cathodes":
                     return self.send(200, {"defaults": CATHODE_DEFAULTS, "catalog": cathode_catalog()})
                 if path == "/api/jobs":
@@ -123,6 +138,19 @@ def create_server(port=8765, data_dir=None, research_python=None):
                     return self.send(200, repository.comparisons(project_id))
                 if path.startswith("/api/results/"):
                     run_id = path.removeprefix("/api/results/")
+                    if run_id.endswith('.spatial.csv') or run_id.endswith('.bib'):
+                        spatial = run_id.endswith('.spatial.csv')
+                        run_id = run_id[:-12] if spatial else run_id[:-4]
+                        result = service.get(run_id)
+                        if result is None: return self.send(404, {'error': '結果が見つかりません。'})
+                        if spatial:
+                            return self.send(200, export_spatial_csv(result), 'text/csv; charset=utf-8',
+                                             'spatial-' + run_id + '.csv')
+                        citations = result.get('citation_export', {})
+                        if citations.get('status') != 'available': raise ValueError(
+                            'この保存結果には引用BibTeXがありません。')
+                        return self.send(200, citations['bibtex'], 'text/plain; charset=utf-8',
+                                         'citations-' + run_id + '.bib')
                     if run_id.endswith("/original"):
                         run_id = run_id.removesuffix("/original")
                         original = service.original(run_id)
@@ -157,11 +185,12 @@ def create_server(port=8765, data_dir=None, research_python=None):
             if path not in {"/api/simulate", "/api/save", "/api/projects", "/api/comparisons", "/api/import/inspect",
                             "/api/import/preview", "/api/import/demo", "/api/design/evaluate", "/api/designs",
                             "/api/jobs", "/api/jobs/cancel", "/api/cathodes/simulate",
-                            "/api/physics/validate", "/api/physics/environment", "/api/physics/preview"}:
+                            "/api/physics/validate", "/api/physics/environment", "/api/physics/preview",
+                            '/api/analysis/postprocess', '/api/analysis/compare'}:
                 return self.send(404, {"error": "APIが見つかりません。"})
             try:
                 if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
-                    raise ValueError("application/json で送信してください。")
+                    return self.reject_post(400, "application/json で送信してください。")
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= (
                         3 * 1024 * 1024 if path.startswith(
@@ -176,6 +205,24 @@ def create_server(port=8765, data_dir=None, research_python=None):
                     raise ValueError("入力はオブジェクトで指定してください。")
                 if path == "/api/projects":
                     return self.send(200, repository.create_project(data.get("name")))
+                if path in {'/api/analysis/postprocess', '/api/analysis/compare'}:
+                    allowed_keys = {'project_id', 'config', 'run_id'} if path.endswith('postprocess') else {
+                        'project_id', 'config', 'simulation_id', 'dataset_id'}
+                    if set(data) - allowed_keys: raise ValueError('解析の入力項目を確認してください。')
+                    project = data.get('project_id', 'default')
+                    repository.require_project(project)
+                    ids = [data.get('run_id')] if path.endswith('postprocess') else [data.get('simulation_id'),
+                                                                                     data.get('dataset_id')]
+                    records = []
+                    for identity in ids:
+                        if not isinstance(identity, str): raise ValueError('保存済みの結果IDを指定してください。')
+                        record = repository.get(identity)
+                        if record is None or record.get('project_id', 'default') != project:
+                            raise ValueError('同じプロジェクトの保存済み結果を指定してください。')
+                        records.append(record)
+                    result = postprocess(records[0], data.get('config', {})) if len(records) == 1 else compare_results(
+                        *records, data.get('config', {}))
+                    return self.send(200, repository.save_analysis(result))
                 if path == "/api/physics/environment":
                     if data:
                         raise ValueError("環境診断の入力は空のオブジェクトで指定してください。")

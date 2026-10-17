@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-17",
+  "scope": "P2 implementation and fixed local environment regression; not target-cell validation",
+  "unittest": {
+    "passed": 103,
+    "elapsed_s": 36.525
+  },
+  "browser": {
+    "P2": 5,
+    "P1": 5,
+    "P0": 4,
+    "model_navigation": 9,
+    "engine": "installed Microsoft Edge / Playwright headless",
+    "mobile_width_px": 390
+  },
+  "native_solver": {
+    "P2": 12,
+    "P1_regression": 25,
+    "step3_regression": 15,
+    "lifecycle": 3,
+    "status": "all expected states matched"
+  },
+  "static_checks": [
+    "changed JavaScript node --check",
+    "Python compileall",
+    "git diff --check"
+  ],
+  "observed_and_handled": [
+    "GITT rest duration floating-point boundary fixed with 1e-8 s comparison tolerance",
+    "Spatial extraction explicitly evaluates native mesh nodes, excluding interpolation ghost nodes",
+    "Invalid Content-Type rejection consumes a small request body to avoid Windows response reset",
+    "One concurrent-regression temporary worker.log lock occurred; final full regression passed",
+    "Analysis JSON suffix handling fixed and HTTP/browser roundtrip verified"
+  ],
+  "measured_cell_validation": false,
+  "passed": true
+}

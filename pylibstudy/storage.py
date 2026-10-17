@@ -22,6 +22,8 @@ class RunRepository:
                 "CREATE TABLE IF NOT EXISTS designs (id TEXT PRIMARY KEY, project_id TEXT NOT NULL, payload TEXT NOT NULL)")
             connection.execute(
                 "CREATE TABLE IF NOT EXISTS physics_jobs (id TEXT PRIMARY KEY, project_id TEXT NOT NULL, payload TEXT NOT NULL)")
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS result_analyses (id TEXT PRIMARY KEY, project_id TEXT NOT NULL, payload TEXT NOT NULL)")
 
     @contextmanager
     def connect(self):
@@ -57,8 +59,35 @@ class RunRepository:
             rows = connection.execute("SELECT payload FROM runs UNION ALL SELECT payload FROM datasets").fetchall()
         records = [json.loads(row[0]) for row in rows]
         records = [r for r in records if project_id is None or r.get("project_id", "default") == project_id]
-        return [{key: value for key, value in r.items() if key != "points"}
+        return [{key: value for key, value in r.items() if
+                 key not in {"points", "distributions", "result_variables", "progress_events", "citation_export"}}
                 for r in sorted(records, key=lambda r: r["created_at"], reverse=True)]
+
+    def save_analysis(self, record):
+        self.require_project(record['project_id'])
+        with self.connect() as connection:
+            connection.execute('INSERT INTO result_analyses VALUES (?, ?, ?)',
+                               (record['id'], record['project_id'],
+                                json.dumps(record, ensure_ascii=False, allow_nan=False)))
+        return record
+
+    def analyses(self, project_id):
+        self.require_project(project_id)
+        with self.connect() as connection:
+            return [dict(id=r['id'], created_at=r['created_at'], record_type=r['record_type'],
+                         source_names=[s['name'] for s in r['source_snapshots']])
+                    for (payload,) in
+                    connection.execute('SELECT payload FROM result_analyses WHERE project_id=? ORDER BY rowid DESC',
+                                       (project_id,))
+                    for r in [json.loads(payload)]]
+
+    def analysis(self, analysis_id, project_id):
+        self.require_project(project_id)
+        with self.connect() as connection:
+            row = connection.execute('SELECT payload FROM result_analyses WHERE id=? AND project_id=?',
+                                     (analysis_id, project_id)).fetchone()
+        if row is None: raise ValueError('同じプロジェクトの解析が見つかりません。')
+        return json.loads(row[0])
 
     def original(self, dataset_id):
         with self.connect() as connection:

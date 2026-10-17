@@ -4,27 +4,16 @@ from copy import deepcopy
 
 from .capabilities import CONFIG_SCHEMA_VERSION, SOLVER, compatibility, validate_options
 from .protocol import validate_protocol
+from .result_catalog import DIAGNOSTICS, DEFAULT_OUTPUT, validate_output
 
-PHYSICS_VERSION = '1.3.0'
-DIAGNOSTICS = {
-    'surface_ocv_v': ('Surface open-circuit voltage [V]', '表面濃度に基づくOCV', 'V'),
-    'reaction_overpotential_v': ('X-averaged reaction overpotential [V]', '反応過電圧（符号付き）', 'V'),
-    'electrolyte_ohmic_loss_v': ('X-averaged electrolyte ohmic losses [V]', '電解液オーム損失（符号付き）', 'V'),
-    'concentration_overpotential_v': ('X-averaged concentration overpotential [V]', '電解液濃度過電圧（符号付き）', 'V'),
-    'solid_ohmic_loss_v': ('X-averaged solid phase ohmic losses [V]', '固相オーム損失（符号付き）', 'V'),
-    'ohmic_heating_w': ('Ohmic heating [W]', 'オーム発熱', 'W'),
-    'reaction_heating_w': ('Irreversible electrochemical heating [W]', '不可逆反応発熱', 'W'),
-    'reversible_heating_w': ('Reversible heating [W]', '可逆反応熱', 'W'),
-    'hysteresis_heating_w': ('Hysteresis electrochemical heating [W]', 'ヒステリシス発熱', 'W'),
-    'mixing_heating_w': ('Heat of mixing [W]', '混合熱（現設定は無効）', 'W'),
-    'total_heating_w': ('Total heating [W]', '全発熱', 'W'),
-}
+PHYSICS_VERSION = '1.4.0'
 DEFAULTS = dict(config_schema_version=CONFIG_SCHEMA_VERSION, solver=SOLVER, model_options={},
                 name='SPMe · 基準プロトコル', model='SPMe', parameter_set='Chen2020',
                 thermal='isothermal', initial_soc=.5, initial_temp_c=25, ambient_temp_c=25,
                 heat_transfer_w_m2_k=10, min_voltage_v=2.5, max_voltage_v=4.2,
                 dt_s=5, mesh='normal', rtol=1e-6, atol=1e-6, timeout_s=120,
-                design_id=None, cycles=1, start_time=None, protocol=[dict(kind='cc', current_a=1, duration_s=30),
+                design_id=None, cycles=1, start_time=None, initial_ocv_v=None, reference_electrode_fraction=.5,
+                output=DEFAULT_OUTPUT, protocol=[dict(kind='cc', current_a=1, duration_s=30),
                                           dict(kind='rest', duration_s=10),
                                           dict(kind='cc', current_a=-1, duration_s=30)])
 MESHES = {'coarse': (10, 10), 'normal': (20, 20), 'fine': (40, 40)}
@@ -42,7 +31,7 @@ def migrate_request(data):
     if not isinstance(data, dict):
         raise ValueError('物理計算の入力はオブジェクトで指定してください。')
     version = data.get('config_schema_version', CONFIG_SCHEMA_VERSION)
-    if not isinstance(version, str) or version not in {'1.0', CONFIG_SCHEMA_VERSION}:
+    if not isinstance(version, str) or version not in {'1.0', '1.1', CONFIG_SCHEMA_VERSION}:
         raise ValueError('未対応の計算設定スキーマ版です。条件を対応版で確認してください。')
     migrated = deepcopy(data)
     migrated['config_schema_version'] = CONFIG_SCHEMA_VERSION
@@ -71,6 +60,11 @@ def validate_request(data):
         raise ValueError('下限電圧は上限電圧より小さくしてください。')
     if c['design_id'] is not None and (not isinstance(c['design_id'], str) or len(c['design_id']) > 100):
         raise ValueError('保存済み設計IDを指定してください。')
+    if c['initial_ocv_v'] is not None:
+        number(c['initial_ocv_v'], '初期OCV', c['min_voltage_v'], c['max_voltage_v'])
+    if c['reference_electrode_fraction'] is not None:
+        number(c['reference_electrode_fraction'], '参照電極のセパレータ内相対位置', .05, .95)
+    c['output'] = validate_output(c['output'])
     validate_protocol(c, number)
     return c
 

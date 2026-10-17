@@ -11,9 +11,11 @@ os.environ['PYBAMM_DISABLE_TELEMETRY'] = 'true'
 os.environ.setdefault('OMP_NUM_THREADS', '1')
 os.environ.setdefault('OPENBLAS_NUM_THREADS', '1')
 
-from .physics import PINNED_PYBAMM, PHYSICS_VERSION, MESHES, DIAGNOSTICS, validate_request, validate_design
-from .capabilities import CATALOG_VERSION, build_model, build_solver
+from .physics import PHYSICS_VERSION, MESHES, DIAGNOSTICS, validate_request, validate_design
+from .capabilities import PINNED_PYBAMM, CATALOG_VERSION, build_model, build_solver
 from .experiment_runtime import build_experiment, progress_callback
+from .result_runtime import metadata, extract_scalars, extract_distributions, electrode_soh, citation_export
+from .result_analysis import balance_summary
 
 
 def solve(request, progress_path=None):
@@ -27,6 +29,8 @@ def solve(request, progress_path=None):
     started = time.perf_counter()
     composite = c['parameter_set'] == 'Chen2020_composite'
     model = build_model(pybamm, c)
+    if c['reference_electrode_fraction'] is not None:
+        model.insert_reference_electrode(model.param.n.L + c['reference_electrode_fraction'] * model.param.s.L)
     options = dict(model.options)
     parameters = pybamm.ParameterValues(c['parameter_set'])
     citations = list(parameters.get('citations', []))
@@ -90,7 +94,8 @@ def solve(request, progress_path=None):
     solver = build_solver(pybamm, c)
     sim = pybamm.Simulation(model, parameter_values=parameters, experiment=experiment,
                             solver=solver, var_pts=var_pts)
-    solution = sim.solve(initial_soc=c['initial_soc'], calc_esoh=False, callbacks=progress)
+    initial_value = f"{c['initial_ocv_v']} V" if c['initial_ocv_v'] is not None else c['initial_soc']
+    solution = sim.solve(initial_soc=initial_value, calc_esoh=False, callbacks=progress)
     points = []
     step_results = [
         dict(row, status='skipped' if (row['cycle'], row['step_number']) in progress.ended_steps else 'not_run',
@@ -114,33 +119,33 @@ def solve(request, progress_path=None):
             raise ValueError('nonfinite_result')
         return float(v[0])
 
+    if not actual: raise ValueError('all_steps_skipped')
+    soh = electrode_soh(pybamm, model, parameters, actual[0][1], initial_value)
+    ledger_initial_soc = c['initial_soc']
+    if c['initial_ocv_v'] is not None:
+        if soh['status'] != 'available': raise ValueError('initial_ocv_soc_unavailable')
+        ledger_initial_soc = soh['initial_soc']
+    variables = metadata(c)
     for index, sub in actual:
         t0 = float(sub.t[0]);
         end = float(sub.t[-1])
-        # Keep both sides of step discontinuities and let segment_id break graph paths.
         times = np.append(np.arange(t0, end, step_results[index]['period_s']), end)
-        if len(points) + len(times) > 12050:
-            raise ValueError('output_limit')
-        for t in times:
-            signed = scalar(sub, 'Discharge capacity [A.h]', t)
-            point = dict(time_s=float(t), voltage_v=scalar(sub, 'Terminal voltage [V]', t),
-                         current_a=scalar(sub, 'Current [A]', t), soc=c['initial_soc'] - signed / reference_capacity,
-                         temperature_c=scalar(sub, 'Volume-averaged cell temperature [K]', t) - 273.15,
-                         capacity_ah=scalar(sub, 'Throughput capacity [A.h]', t),
-                         energy_wh=scalar(sub, 'Discharge energy [W.h]', t),
+        if len(points) + len(times) > 12050: raise ValueError('output_limit')
+        series = extract_scalars(sub, times, c, variables)
+        signed = np.asarray(sub['Discharge capacity [A.h]'](times)).reshape(-1)
+        for j, t in enumerate(times):
+            point = dict(time_s=float(t), soc=ledger_initial_soc - float(signed[j]) / reference_capacity,
                          segment_id=index)
-            # Spatial extrema are diagnostics, not independent plating validation.
-            for name, key, func in [('electrolyte_min_mol_m3', 'Electrolyte concentration [mol.m-3]', np.min),
-                                    ('negative_surface_max_mol_m3', 'Negative particle surface concentration [mol.m-3]',
-                                     np.max)] if not composite else [
-                ('electrolyte_min_mol_m3', 'Electrolyte concentration [mol.m-3]', np.min)]:
+            for key, values in series.items(): point[key] = float(values[j])
+            for key in c['output']['variables']:
+                if key not in point: point[key] = None
+            for name, key, func in [('electrolyte_min_mol_m3', 'Electrolyte concentration [mol.m-3]', np.min)] + (
+            [] if composite else [
+                ('negative_surface_max_mol_m3', 'Negative particle surface concentration [mol.m-3]', np.max)]):
                 values = np.asarray(sub[key](t))
-                if not np.isfinite(values).all():
-                    raise ValueError('nonfinite_result')
+                if not np.isfinite(values).all(): raise ValueError('nonfinite_result')
                 point[name] = float(func(values))
             points.append(point)
-            for name, (key, _label, _unit) in DIAGNOSTICS.items():
-                point[name] = scalar(sub, key, t)
         step_results[index].update(status='completed', start_s=t0, end_s=end, termination=str(sub.termination))
     if not points:
         raise ValueError('all_steps_skipped')
@@ -151,7 +156,8 @@ def solve(request, progress_path=None):
     last_sub = subs[-1]
     start_time = float(first_sub.t[0]);
     end_time = float(last_sub.t[-1])
-    initial_state = {'requested_soc': c['initial_soc']}
+    initial_state = {'requested_soc': c['initial_soc'] if c['initial_ocv_v'] is None else None,
+                     'requested_ocv_v': c['initial_ocv_v'], 'ledger_initial_soc': ledger_initial_soc}
     for key in ['Total lithium in particles [mol]', 'Total lithium in electrolyte [mol]',
                 'X-averaged positive particle surface stoichiometry'] + (
                        ['X-averaged negative primary particle surface stoichiometry',
@@ -167,12 +173,17 @@ def solve(request, progress_path=None):
                                                                       'termination'] != 'final time' and '[experiment]' not in
                                                                   s['termination']) for s in step_results)
     scalar_parameters = {k: float(v) for k, v in parameters.items() if isinstance(v, (int, float)) and math.isfinite(v)}
-    diagnostics = {name: dict(source_variable=key, label=label, unit=unit,
-                              initial=points[0][name], final=points[-1][name],
-                              minimum=min(p[name] for p in points), maximum=max(p[name] for p in points))
-                   for name, (key, label, unit) in DIAGNOSTICS.items()}
+    for key in ('time_s', 'soc'): variables[key].update(status='available', reason='')
+    diagnostics = {}
+    for name, (key, label, unit) in DIAGNOSTICS.items():
+        values = [p.get(name) for p in points]
+        if all(isinstance(v, (int, float)) and math.isfinite(v) for v in values):
+            diagnostics[name] = dict(source_variable=key, label=label, unit=unit, initial=values[0], final=values[-1],
+                                     minimum=min(values), maximum=max(values))
+    spatial = extract_distributions(actual, points, c)
+    balances = balance_summary(points, ledger_initial_soc)
     descriptor = json.dumps(scalar_parameters, sort_keys=True, allow_nan=False)
-    return dict(schema_version='3.0', record_type='physics', id=request['result_id'], project_id=request['project_id'],
+    return dict(schema_version='3.1', record_type='physics', id=request['result_id'], project_id=request['project_id'],
                 created_at=request['created_at'], name=c['name'], source_type='simulation',
                 validation_status='not_validated',
                 engine=dict(id='pybamm_' + c['model'].lower(), version=pybamm.__version__,
@@ -181,6 +192,8 @@ def solve(request, progress_path=None):
                 input_sha256=hashlib.sha256(json.dumps(c, sort_keys=True, allow_nan=False).encode()).hexdigest(),
                 input=c, design_snapshot=design,
                 model_options=options, protocol_preview=preview, progress_events=progress.events,
+                result_variables=variables, distributions=spatial, electrode_soh=soh, performance=balances,
+                citation_export=citation_export(pybamm),
                 experiment_metadata=dict(
                     initial_start_time=solution.initial_start_time.isoformat() if solution.initial_start_time else None,
                     tags=[s.tags for s in sim.experiment.steps],
@@ -200,7 +213,7 @@ def solve(request, progress_path=None):
                                numeric_parameter_snapshot_stage='before initial_soc initialization; actual initial state is recorded separately'),
                 diagnostic_summary=diagnostics,
                 diagnostic_basis='Native signed PyBaMM variables; extrema over exported sample times. Isothermal heat sources are calculated; temperature is fixed. Heat of mixing and external end-face contact losses are excluded.',
-                units=dict({name: value[2] for name, value in DIAGNOSTICS.items()}, time_s='s', voltage_v='V',
+                units=dict({name: value['unit'] for name, value in variables.items()}, time_s='s', voltage_v='V',
                            current_a='A', soc='1', temperature_c='degC', capacity_ah='Ah',
                            energy_wh='Wh',
                            electrolyte_min_mol_m3='mol/m3', negative_surface_max_mol_m3='mol/m3', segment_id='1'),

@@ -11,6 +11,7 @@
     <script defer src="/design.js"></script>
     <script defer src="/physics.js"></script>
     <script defer src="/capabilities.js"></script>
+    <script defer src="/results.js"></script>
     <script defer src="/model-tabs.js"></script>
     <script defer src="/cathodes.js"></script>
 </head>
@@ -361,6 +362,32 @@
                                                      step="any" type="number"></label>
                 </div>
             </details>
+            <details id="physics-result-settings">
+                <summary>結果変数・x/r分布・初期OCV・参照電極</summary>
+                <p class="field-note">
+                    基本7系列は常に保存。追加系列と分布を選択できます。取得できない変数は理由付きで記録します。</p>
+                <div class="fields two">
+                    <label>初期OCV (V・空欄は初期SOC)<input id="physics-initial_ocv_v" max="4.3" min="2" step="any"
+                                                            type="number"></label>
+                    <label>参照電極のセパレータ内相対位置 (0.05–0.95・空欄は無効)<input
+                            id="physics-reference_electrode_fraction" max="0.95" min="0.05" step="any"
+                            type="number"></label>
+                    <label>分布の最大時刻数<input id="physics-output-frames" max="61" min="2" required step="1"
+                                                  type="number"></label>
+                    <label>分布の最大座標点数<input id="physics-output-max_nodes" max="80" min="5" required
+                                                    step="1" type="number"></label>
+                </div>
+                <details>
+                    <summary>追加スカラー系列</summary>
+                    <div class="result-checks" id="physics-output-variables"></div>
+                </details>
+                <details>
+                    <summary>x/r分布</summary>
+                    <div class="result-checks" id="physics-output-distributions"></div>
+                </details>
+                <p class="field-note">
+                    初期OCVを指定した場合は初期SOCの入力を使用せず、PyBaMMの電極初期化からSOC帳簿の開始値を求めます。参照電極は1D仮想セル内の電解液電位の評価位置です。</p>
+            </details>
             <button class="primary" disabled id="physics-run" type="submit">▶ 物理計算ジョブを追加</button>
             <p class="field-note">
                 計算は別プロセスで1件ずつ実行します。完了・一部結果は自動保存してCURVE
@@ -516,6 +543,9 @@
                         <p>電圧・SOC・温度・電流を切り替えて確認できます。</p></div>
                 </div>
                 <div class="legend" id="legend"></div>
+                <label>結果系列（単位・取得状態付き）<select id="result-variable">
+                    <option value="voltage_v">端子電圧 (V)</option>
+                </select></label>
                 <p class="field-note" id="curve-meaning">
                     電圧・SOC・温度・電流の意味は結果の方式に応じて表示します。比較線の出所は凡例で確認してください。</p>
                 <div class="result-actions">
@@ -524,7 +554,73 @@
                     <button disabled id="json" type="button">条件付きJSON ↓</button>
                     <button class="text-button" disabled id="restore" type="button">この結果の条件を復元</button>
                     <button disabled id="original" type="button">取込原本 ↓</button>
+                    <a hidden id="spatial-csv">分布CSV ↓</a><a hidden id="citations-bib">引用BibTeX ↓</a>
                 </div>
+                <details hidden id="result-explorer">
+                    <summary>結果を詳しく見る：損失・電極SOH・x/r分布・実測残差</summary>
+                    <p class="field-note" id="result-explorer-note"></p>
+                    <div id="result-performance"></div>
+                    <details id="result-loss-details">
+                        <summary>時刻別の電圧成分・発熱成分</summary>
+                        <label>結果点の時刻<input id="result-time" min="0" step="1" type="range" value="0"></label>
+                        <p id="result-time-label"></p>
+                        <div id="result-loss-chart"></div>
+                        <div id="result-loss-table"></div>
+                    </details>
+                    <details id="result-spatial-details">
+                        <summary>x/r分布と時刻スライダー</summary>
+                        <label>分布変数<select id="result-spatial-variable"></select></label>
+                        <label>保存された分布時刻<input id="result-spatial-time" min="0" step="1" type="range"
+                                                        value="0"></label>
+                        <p id="result-spatial-label"></p>
+                        <div class="result-scientific-chart" id="result-spatial-chart"></div>
+                    </details>
+                    <details>
+                        <summary>dQ/dV・dV/dQ・パルス抵抗・GITT型指標</summary>
+                        <p class="field-note">
+                            保存済みカーブを後処理します。GITT型指標は休止・パルスの変化量で、拡散係数Dを意味しません。</p>
+                        <div class="fields two">
+                            <label>平滑化窓（奇数・1は無平滑）<input id="result-smoothing" max="31" min="1" step="2"
+                                                                   type="number" value="5"></label>
+                            <label>パルス評価遅延 (s)<input id="result-pulse-delay" max="600" min="0.1" step="any"
+                                                            type="number" value="10"></label>
+                            <label>GITT型の最小前後休止 (s)<input id="result-rest-min" max="3600" min="1" step="any"
+                                                                  type="number" value="30"></label>
+                            <label>微分の最小ΔV (V)<input id="result-delta-v" max="0.1" min="0.00000001" step="any"
+                                                          type="number" value="0.00001"></label>
+                        </div>
+                        <button id="result-postprocess" type="button">後処理を計算・保存</button>
+                    </details>
+                    <details id="result-residual-details">
+                        <summary>実測との条件照合・残差</summary>
+                        <p class="field-note">
+                            計算と取込データの区間・時間ずれを明示します。外挿や欠損・区間境界を跨ぐ補間はしません。測定位置と初期状態は別途確認してください。</p>
+                        <label>取込カーブ<select id="result-measured"></select></label>
+                        <div class="fields two">
+                            <label>計算区間<select id="result-sim-segment"></select></label><label>取込区間<select
+                                id="result-measured-segment"></select></label>
+                            <label>時間ずれ (s・計算時刻=測定時刻＋値)<input id="result-time-offset" step="any"
+                                                                            type="number" value="0"></label>
+                            <label>比較変数<select id="result-residual-variable">
+                                <option value="voltage_v">電圧 V</option>
+                                <option value="current_a">電流 A</option>
+                                <option value="temperature_c">温度 °C</option>
+                            </select></label>
+                        </div>
+                        <button id="result-compare" type="button">残差を計算・保存</button>
+                    </details>
+                    <p id="result-analysis-status" role="status"></p>
+                    <div id="result-analysis-output"></div>
+                    <label>保存した解析<select id="result-analysis-history"></select></label>
+                    <button id="result-analysis-open" type="button">解析を再表示</button>
+                    <div class="design-actions"><a hidden id="result-analysis-json">解析JSON ↓</a><a hidden
+                                                                                                     id="result-analysis-csv">解析CSV
+                        ↓</a></div>
+                    <details>
+                        <summary>結果変数の取得状態・単位・出典</summary>
+                        <div id="result-variable-catalog"></div>
+                    </details>
+                </details>
                 <details id="snapshot-details">
                     <summary>入力・取込条件・出典・モデルの範囲 <span>＋</span></summary>
                     <div id="snapshot">計算後に条件と制約が表示されます。</div>
@@ -594,6 +690,7 @@
                             <option value="user_measured">ユーザー実測（未検証）</option>
                             <option value="public_measured">公開実測（未検証）</option>
                             <option value="synthetic_demo">合成デモ</option>
+                            <option value="simulation_import">計算CSV再取込（元計算未確認）</option>
                             <option value="digitized">図から読取</option>
                         </select></label>
                         <label>原本の電流符号<select id="import-sign">

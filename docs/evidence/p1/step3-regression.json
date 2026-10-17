@@ -1,0 +1,1602 @@
+{
+  "scope": "Live isolated PyBaMM workers; not measured-cell accuracy validation",
+  "cases": {
+    "spme_coarse": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.01666666666666666,
+        "energy_wh": -0.0005393354323931844,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.786586537868822,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 10,
+          "x_s": 10,
+          "x_p": 10,
+          "r_n": 10,
+          "r_p": 10
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.2469198000035249,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null,
+      "max_voltage_difference_from_normal_v": 0.00203526002454657,
+      "within_2mv_of_normal": false
+    },
+    "spme_normal": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666656,
+        "energy_wh": -0.0005639026464845718,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.788619317713123,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.3386833000113256,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null
+    },
+    "spme_fine": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666673,
+        "energy_wh": -0.0005779833647742536,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.7893506466710583,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 40,
+          "x_s": 40,
+          "x_p": 40,
+          "r_n": 40,
+          "r_p": 40
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.619399000017438,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null,
+      "max_voltage_difference_from_normal_v": 0.0011900072723820543,
+      "within_2mv_of_normal": true
+    },
+    "spme_repeat": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666656,
+        "energy_wh": -0.0005639026464845718,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.788619317713123,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.6090060000133235,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null,
+      "max_voltage_difference_from_normal_v": 0.0,
+      "within_2mv_of_normal": true
+    },
+    "spme_tight": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666673,
+        "energy_wh": -0.0005639023607980848,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.788619495924084,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-07,
+        "atol": 1e-07,
+        "elapsed_s": 1.391323599993484,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null,
+      "max_voltage_difference_from_normal_v": 2.361816822116225e-07,
+      "within_2mv_of_normal": true
+    },
+    "dfn_normal": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666646,
+        "energy_wh": -0.0005602344254678729,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.78830896095202,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.525550199992722,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null,
+      "max_voltage_difference_from_normal_v": 0.0003103567611031366,
+      "within_2mv_of_normal": true
+    },
+    "thermal": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.01666666666666667,
+        "energy_wh": -0.0005635665295871677,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.7885789922677096,
+        "max_temperature_c": 25.041899176847153,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.472413300012704,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null
+    },
+    "composite": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666666,
+        "energy_wh": -0.0006542690764013591,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.7274305654227184,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20,
+          "r_n_prim": 20,
+          "r_n_sec": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 2.712877900019521,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null
+    },
+    "cv": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 60.0,
+        "capacity_ah": 0.019240803144526857,
+        "energy_wh": -0.07311505188032369,
+        "final_soc": 0.5038481606289054,
+        "final_voltage_v": 3.8000000000000003,
+        "max_temperature_c": 25.0,
+        "point_count": 13,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cv",
+          "start_upper_s": 0,
+          "duration_s": 60,
+          "end_upper_s": 60,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": null,
+          "c_rate": null,
+          "stop_current_a": 0.1,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": 3.8,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 14,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 60.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 0.8410537000163458,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null
+    },
+    "cccv": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 3894.767602133233,
+        "capacity_ah": 1.0686944875247235,
+        "energy_wh": -4.172209093253025,
+        "final_soc": 0.7137388975049447,
+        "final_voltage_v": 4.0,
+        "max_temperature_c": 25.0,
+        "point_count": 781,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 3600,
+          "end_upper_s": 3600,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.2,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": 4,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 722,
+          "status": "completed",
+          "termination": "event: Voltage > 4 [V] [experiment]",
+          "start_s": 0.0,
+          "end_s": 3594.767602133233
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "cv",
+          "start_upper_s": 3600,
+          "duration_s": 300,
+          "end_upper_s": 3900,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": null,
+          "c_rate": null,
+          "stop_current_a": 0.1,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": 4,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 62,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 3594.7676021332336,
+          "end_s": 3894.767602133233
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 18.272444199974416,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null
+    },
+    "profile": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666669182181185,
+        "energy_wh": 0.0004805724582823681,
+        "final_soc": 0.4999444484712688,
+        "final_voltage_v": 3.7883733086441684,
+        "max_temperature_c": 25.0,
+        "point_count": 15,
+        "c_rate_reference_ah": 5.0
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "profile",
+          "start_upper_s": 0,
+          "duration_s": 70,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": null,
+          "c_rate": null,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 16,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 0.8325460999913048,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": null
+    },
+    "designed_spme": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.016666666666666666,
+        "energy_wh": -0.0006281415391564001,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.8254974399230197,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 4.270869054933677
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.23414438306058744,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.23414438306058744,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.5253865999984555,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": "cf950319-402c-4c10-b0fe-02b264640b0c"
+    },
+    "designed_dfn": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.01666666666666666,
+        "energy_wh": -0.0006261408549860844,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.825319610879286,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 4.270869054933677
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.23414438306058744,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.23414438306058744,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 1.7212786999880336,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": "cf950319-402c-4c10-b0fe-02b264640b0c"
+    },
+    "designed_composite": {
+      "status": "completed",
+      "summary": {
+        "duration_s": 70.0,
+        "capacity_ah": 0.01666666666666666,
+        "energy_wh": -0.0009373573265701611,
+        "final_soc": 0.5,
+        "final_voltage_v": 3.6909198300477675,
+        "max_temperature_c": 25.0,
+        "point_count": 17,
+        "c_rate_reference_ah": 4.390727343891081
+      },
+      "steps": [
+        {
+          "index": 0,
+          "cycle": 1,
+          "step_number": 1,
+          "source_path": [
+            0
+          ],
+          "kind": "cc",
+          "start_upper_s": 0,
+          "duration_s": 30,
+          "end_upper_s": 30,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 1,
+          "c_rate": 0.22775269828387837,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 0.0,
+          "end_s": 30.0
+        },
+        {
+          "index": 1,
+          "cycle": 1,
+          "step_number": 2,
+          "source_path": [
+            1
+          ],
+          "kind": "rest",
+          "start_upper_s": 30,
+          "duration_s": 10,
+          "end_upper_s": 40,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": 0,
+          "c_rate": 0.0,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 4,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 30.000000000000004,
+          "end_s": 40.0
+        },
+        {
+          "index": 2,
+          "cycle": 1,
+          "step_number": 3,
+          "source_path": [
+            2
+          ],
+          "kind": "cc",
+          "start_upper_s": 40,
+          "duration_s": 30,
+          "end_upper_s": 70,
+          "period_s": 5,
+          "temperature_c": 25,
+          "current_a": -1,
+          "c_rate": -0.22775269828387837,
+          "stop_current_a": null,
+          "power_w": null,
+          "resistance_ohm": null,
+          "stop_voltage_v": null,
+          "voltage_v": null,
+          "control": null,
+          "skip_ok": false,
+          "tags": [],
+          "output_points_upper": 8,
+          "status": "completed",
+          "termination": "final time",
+          "start_s": 40.00000000000001,
+          "end_s": 70.0
+        }
+      ],
+      "numerical": {
+        "solver": "IDAKLUSolver",
+        "mesh_points": {
+          "x_n": 20,
+          "x_s": 20,
+          "x_p": 20,
+          "r_n": 20,
+          "r_p": 20,
+          "r_n_prim": 20,
+          "r_n_sec": 20
+        },
+        "rtol": 1e-06,
+        "atol": 1e-06,
+        "elapsed_s": 2.9730397000093944,
+        "initialization": "PyBaMM initial_soc / electrode SOH",
+        "numeric_parameter_snapshot_stage": "before initial_soc initialization; actual initial state is recorded separately"
+      },
+      "design_id": "c4ae580b-50d3-48e9-97c7-1c1a0e66b607"
+    },
+    "initially_infeasible": {
+      "status": "failed",
+      "error_code": "initial_condition_infeasible",
+      "error_type": "ValueError"
+    }
+  },
+  "environment": {
+    "available": true,
+    "versions": {
+      "python": [
+        3,
+        13
+      ],
+      "pybamm": "26.10.1.0",
+      "solvers": "0.11.1",
+      "numpy": "2.3.5",
+      "casadi": "3.8.1"
+    },
+    "checks": [
+      {
+        "id": "python",
+        "ok": true,
+        "expected": [
+          3,
+          13
+        ],
+        "actual": [
+          3,
+          13
+        ]
+      },
+      {
+        "id": "pybamm",
+        "ok": true,
+        "expected": "26.10.1.0",
+        "actual": "26.10.1.0"
+      },
+      {
+        "id": "solvers",
+        "ok": true,
+        "expected": "0.11.1",
+        "actual": "0.11.1"
+      },
+      {
+        "id": "numpy",
+        "ok": true,
+        "expected": "2.3.5",
+        "actual": "2.3.5"
+      },
+      {
+        "id": "casadi",
+        "ok": true,
+        "expected": "3.8.1",
+        "actual": "3.8.1"
+      },
+      {
+        "id": "os",
+        "ok": true,
+        "expected": [
+          "Windows"
+        ],
+        "actual": "Windows"
+      },
+      {
+        "id": "runtime_imports",
+        "ok": true,
+        "expected": "PyBaMM・依存ライブラリ読込とIDAKLU構築",
+        "actual": "成功"
+      }
+    ],
+    "solver": "IDAKLUSolver",
+    "checked_at": "2026-10-16T22:45:32.129932+00:00",
+    "message": "固定計算環境とソルバ読込を確認しました。",
+    "scope": "版・依存読込・ソルバ構築の診断。計算成功や対象セルの物理精度の検証は含みません。"
+  },
+  "restart_results_restored": true,
+  "passed": true
+}
